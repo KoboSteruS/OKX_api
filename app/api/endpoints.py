@@ -129,34 +129,74 @@ async def get_signature_post(request: SignRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-    @router.get(
-        "/health",
-        summary="Проверка здоровья сервиса",
-        description="Проверяет настройки приложения"
-    )
-    async def health_check():
-        """
-        Проверка здоровья сервиса
+@router.get(
+    "/health",
+    summary="Проверка здоровья сервиса",
+    description="Проверяет настройки приложения"
+)
+async def health_check():
+    """
+    Проверка здоровья сервиса
+    
+    Проверяет:
+    - Настройки приложения
+    - Генерацию временной метки
+    """
+    try:
+        # Генерируем локальную временную метку
+        timestamp = okx_service.get_server_timestamp()
         
-        Проверяет:
-        - Настройки приложения
-        - Генерацию временной метки
-        """
-        try:
-            # Генерируем локальную временную метку
-            timestamp = okx_service.get_server_timestamp()
-            
-            return {
-                "status": "healthy",
-                "timestamp": timestamp,
-                "api_key_configured": bool(okx_service.api_key),
-                "api_secret_configured": bool(okx_service.api_secret),
-                "passphrase_configured": bool(okx_service.passphrase)
+        return {
+            "status": "healthy",
+            "timestamp": timestamp,
+            "api_key_configured": bool(okx_service.api_key),
+            "api_secret_configured": bool(okx_service.api_secret),
+            "passphrase_configured": bool(okx_service.passphrase)
+        }
+        
+    except Exception as e:
+        logger.error(f"Ошибка проверки здоровья: {e}")
+        raise HTTPException(
+            status_code=503, 
+            detail=f"Сервис недоступен: {str(e)}"
+        )
+
+
+@router.get(
+    "/sign-debug",
+    summary="Отладочный эндпоинт для проверки подписи",
+    description="Генерирует подпись с подробной отладочной информацией"
+)
+async def get_signature_debug(
+    method: str = Query(..., description="HTTP метод"),
+    path: str = Query(..., description="Путь API запроса"),
+    body: str = Query("", description="Тело запроса")
+):
+    """
+    Отладочный эндпоинт для проверки генерации подписи
+    """
+    try:
+        logger.info(f"=== ОТЛАДКА ПОДПИСИ ===")
+        logger.info(f"Method: {method}")
+        logger.info(f"Path: {path}")
+        logger.info(f"Body: '{body}' (длина: {len(body)})")
+        
+        result = okx_service.get_sign_and_timestamp(method.upper(), path, body)
+        
+        logger.info(f"Результат: {result}")
+        logger.info(f"=== КОНЕЦ ОТЛАДКИ ===")
+        
+        return {
+            "ok_access_sign": result['OK-ACCESS-SIGN'],
+            "ok_access_timestamp": result['OK-ACCESS-TIMESTAMP'],
+            "method": method.upper(),
+            "path": path,
+            "debug_info": {
+                "body_length": len(body),
+                "body_content": body
             }
-            
-        except Exception as e:
-            logger.error(f"Ошибка проверки здоровья: {e}")
-            raise HTTPException(
-                status_code=503, 
-                detail=f"Сервис недоступен: {str(e)}"
-            ) 
+        }
+        
+    except Exception as e:
+        logger.error(f"Ошибка отладки: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) 

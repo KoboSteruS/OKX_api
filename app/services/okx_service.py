@@ -61,6 +61,11 @@ class OKXService:
             if not self.api_secret:
                 raise ValueError("API_SECRET не настроен")
             
+            # Отладочная информация
+            logger.info(f"Сообщение для подписи: '{message}'")
+            logger.info(f"Длина сообщения: {len(message)}")
+            logger.info(f"Body: '{body}' (длина: {len(body)})")
+            
             mac = hmac.new(
                 self.api_secret.encode('utf-8'), 
                 message.encode('utf-8'), 
@@ -68,7 +73,7 @@ class OKXService:
             )
             signature = base64.b64encode(mac.digest()).decode()
             
-            logger.debug(f"Сгенерирована подпись для: {method} {request_path}")
+            logger.info(f"Сгенерирована подпись: {signature}")
             return signature
             
         except Exception as e:
