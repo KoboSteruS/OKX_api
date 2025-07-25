@@ -23,31 +23,15 @@ class OKXService:
     
     def get_server_timestamp(self) -> str:
         """
-        Получение временной метки сервера OKX
+        Получение текущей временной метки в секундах
         
         Returns:
             str: Временная метка в секундах
         """
-        try:
-            url = f"{self.base_url}/api/v5/public/time"
-            response = requests.get(url, timeout=10)
-            response.raise_for_status()
-            
-            data = response.json()
-            if data.get('code') == '0':
-                timestamp = data['data'][0]['ts'][:-3]  # Убираем миллисекунды
-                logger.info(f"Получена временная метка сервера: {timestamp}")
-                return timestamp
-            else:
-                logger.error(f"Ошибка получения временной метки: {data}")
-                raise Exception(f"API Error: {data.get('msg', 'Unknown error')}")
-                
-        except requests.RequestException as e:
-            logger.error(f"Ошибка запроса к серверу: {e}")
-            raise
-        except Exception as e:
-            logger.error(f"Неожиданная ошибка: {e}")
-            raise
+        import time
+        timestamp = str(int(time.time()))
+        logger.info(f"Сгенерирована локальная временная метка: {timestamp}")
+        return timestamp
     
     def generate_signature(
         self, 

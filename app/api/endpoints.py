@@ -129,35 +129,34 @@ async def get_signature_post(request: SignRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get(
-    "/health",
-    summary="Проверка здоровья сервиса",
-    description="Проверяет доступность OKX API и настройки приложения"
-)
-async def health_check():
-    """
-    Проверка здоровья сервиса
-    
-    Проверяет:
-    - Доступность OKX API
-    - Настройки приложения
-    """
-    try:
-        # Проверяем доступность OKX API
-        timestamp = okx_service.get_server_timestamp()
+    @router.get(
+        "/health",
+        summary="Проверка здоровья сервиса",
+        description="Проверяет настройки приложения"
+    )
+    async def health_check():
+        """
+        Проверка здоровья сервиса
         
-        return {
-            "status": "healthy",
-            "okx_api": "available",
-            "server_timestamp": timestamp,
-            "api_key_configured": bool(okx_service.api_key),
-            "api_secret_configured": bool(okx_service.api_secret),
-            "passphrase_configured": bool(okx_service.passphrase)
-        }
-        
-    except Exception as e:
-        logger.error(f"Ошибка проверки здоровья: {e}")
-        raise HTTPException(
-            status_code=503, 
-            detail=f"Сервис недоступен: {str(e)}"
-        ) 
+        Проверяет:
+        - Настройки приложения
+        - Генерацию временной метки
+        """
+        try:
+            # Генерируем локальную временную метку
+            timestamp = okx_service.get_server_timestamp()
+            
+            return {
+                "status": "healthy",
+                "timestamp": timestamp,
+                "api_key_configured": bool(okx_service.api_key),
+                "api_secret_configured": bool(okx_service.api_secret),
+                "passphrase_configured": bool(okx_service.passphrase)
+            }
+            
+        except Exception as e:
+            logger.error(f"Ошибка проверки здоровья: {e}")
+            raise HTTPException(
+                status_code=503, 
+                detail=f"Сервис недоступен: {str(e)}"
+            ) 
