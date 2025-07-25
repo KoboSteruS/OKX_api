@@ -57,8 +57,8 @@ async def get_signature(
         result = okx_service.get_sign_and_timestamp(method, path, body)
         
         response = SignResponse(
-            ok_access_sign=result['OK-ACCESS-SIGN'],
-            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'],
+            ok_access_sign=result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
+            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
             method=method,
             path=path
         )
@@ -112,8 +112,8 @@ async def get_signature_post(request: SignRequest):
         result = okx_service.get_sign_and_timestamp(method, request.path, request.body)
         
         response = SignResponse(
-            ok_access_sign=result['OK-ACCESS-SIGN'],
-            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'],
+            ok_access_sign=result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
+            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
             method=method,
             path=request.path
         )
@@ -187,8 +187,8 @@ async def get_signature_debug(
         logger.info(f"=== КОНЕЦ ОТЛАДКИ ===")
         
         return {
-            "ok_access_sign": result['OK-ACCESS-SIGN'],
-            "ok_access_timestamp": result['OK-ACCESS-TIMESTAMP'],
+            "ok_access_sign": result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
+            "ok_access_timestamp": result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
             "method": method.upper(),
             "path": path,
             "debug_info": {

@@ -102,10 +102,10 @@ class OKXService:
             signature = self.generate_signature(timestamp, method, request_path, body)
             
             headers = {
-                'OK-ACCESS-KEY': self.api_key,
-                'OK-ACCESS-SIGN': signature,
-                'OK-ACCESS-TIMESTAMP': timestamp,
-                'OK-ACCESS-PASSPHRASE': self.passphrase,
+                'OK-ACCESS-KEY': self.api_key.strip(),
+                'OK-ACCESS-SIGN': signature.strip(),  # Убираем лишние пробелы
+                'OK-ACCESS-TIMESTAMP': timestamp.strip(),  # Убираем лишние пробелы
+                'OK-ACCESS-PASSPHRASE': self.passphrase.strip(),
                 'Content-Type': 'application/json'
             }
             
@@ -138,8 +138,8 @@ class OKXService:
             signature = self.generate_signature(timestamp, method, request_path, body)
             
             result = {
-                'OK-ACCESS-SIGN': signature,
-                'OK-ACCESS-TIMESTAMP': timestamp
+                'OK-ACCESS-SIGN': signature.strip(),  # Убираем лишние пробелы
+                'OK-ACCESS-TIMESTAMP': timestamp.strip()  # Убираем лишние пробелы
             }
             
             logger.info(f"Получены подпись и временная метка для {method} {request_path}")
