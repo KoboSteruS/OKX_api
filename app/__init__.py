@@ -1,0 +1,1 @@
+# FastAPI приложение для OKX API 

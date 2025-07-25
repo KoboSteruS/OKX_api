@@ -1,0 +1,37 @@
+2025-07-25 15:00:50 | INFO     | __main__:<module>:97 - Запуск приложения OKX API Helper v1.0.0
+2025-07-25 15:00:50 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/
+2025-07-25 15:00:50 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/ - 200 (0.001s)
+2025-07-25 15:00:54 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-25 15:00:55 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444854
+2025-07-25 15:00:55 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (1.008s)
+2025-07-25 15:01:01 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/api/v1/sign?method=POST&path=/api/v5/trade/order&body="instId":"BTC-USDT"
+2025-07-25 15:01:01 | INFO     | app.api.endpoints:get_signature:40 - Запрос на генерацию подписи: POST /api/v5/trade/order
+2025-07-25 15:01:02 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444860
+2025-07-25 15:01:02 | DEBUG    | app.services.okx_service:generate_signature:84 - Сгенерирована подпись для: POST /api/v5/trade/order
+2025-07-25 15:01:02 | INFO     | app.services.okx_service:get_sign_and_timestamp:153 - Получены подпись и временная метка для POST /api/v5/trade/order
+2025-07-25 15:01:02 | INFO     | app.api.endpoints:get_signature:66 - Успешно сгенерирована подпись для POST /api/v5/trade/order
+2025-07-25 15:01:02 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/sign?method=POST&path=/api/v5/trade/order&body="instId":"BTC-USDT" - 200 (0.948s)
+2025-07-25 15:01:36 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-25 15:01:37 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444895
+2025-07-25 15:01:37 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.884s)
+2025-07-25 15:01:39 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/api/v1/sign?method=POST&path=%2Fapi%2Fv5%2Ftrade%2Forder&body=%7B%22instId%22%3A%22BTC-USDT%22%2C%22tdMode%22%3A%22cash%22%2C%22side%22%3A%22buy%22%2C%22ordType%22%3A%22limit%22%2C%22sz%22%3A%220.001%22%7D
+2025-07-25 15:01:39 | INFO     | app.api.endpoints:get_signature:40 - Запрос на генерацию подписи: POST /api/v5/trade/order
+2025-07-25 15:01:39 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444898
+2025-07-25 15:01:39 | DEBUG    | app.services.okx_service:generate_signature:84 - Сгенерирована подпись для: POST /api/v5/trade/order
+2025-07-25 15:01:39 | INFO     | app.services.okx_service:get_sign_and_timestamp:153 - Получены подпись и временная метка для POST /api/v5/trade/order
+2025-07-25 15:01:39 | INFO     | app.api.endpoints:get_signature:66 - Успешно сгенерирована подпись для POST /api/v5/trade/order
+2025-07-25 15:01:39 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/sign?method=POST&path=%2Fapi%2Fv5%2Ftrade%2Forder&body=%7B%22instId%22%3A%22BTC-USDT%22%2C%22tdMode%22%3A%22cash%22%2C%22side%22%3A%22buy%22%2C%22ordType%22%3A%22limit%22%2C%22sz%22%3A%220.001%22%7D - 200 (0.888s)
+2025-07-25 15:01:41 | INFO     | app.main:log_requests:43 - Входящий запрос: POST http://localhost:8000/api/v1/sign
+2025-07-25 15:01:41 | INFO     | app.api.endpoints:get_signature_post:101 - POST запрос на генерацию подписи: GET /api/v5/account/balance
+2025-07-25 15:01:42 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444901
+2025-07-25 15:01:42 | DEBUG    | app.services.okx_service:generate_signature:84 - Сгенерирована подпись для: GET /api/v5/account/balance
+2025-07-25 15:01:42 | INFO     | app.services.okx_service:get_sign_and_timestamp:153 - Получены подпись и временная метка для GET /api/v5/account/balance
+2025-07-25 15:01:42 | INFO     | app.api.endpoints:get_signature_post:121 - Успешно сгенерирована подпись для GET /api/v5/account/balance
+2025-07-25 15:01:42 | INFO     | app.main:log_requests:52 - Запрос обработан: POST http://localhost:8000/api/v1/sign - 200 (0.913s)
+2025-07-25 15:01:44 | INFO     | app.main:log_requests:43 - Входящий запрос: GET http://localhost:8000/api/v1/sign?method=GET&path=%2Fapi%2Fv5%2Faccount%2Fbalance&body=
+2025-07-25 15:01:44 | INFO     | app.api.endpoints:get_signature:40 - Запрос на генерацию подписи: GET /api/v5/account/balance
+2025-07-25 15:01:45 | INFO     | app.services.okx_service:get_server_timestamp:39 - Получена временная метка сервера: 1753444904
+2025-07-25 15:01:45 | DEBUG    | app.services.okx_service:generate_signature:84 - Сгенерирована подпись для: GET /api/v5/account/balance
+2025-07-25 15:01:45 | INFO     | app.services.okx_service:get_sign_and_timestamp:153 - Получены подпись и временная метка для GET /api/v5/account/balance
+2025-07-25 15:01:45 | INFO     | app.api.endpoints:get_signature:66 - Успешно сгенерирована подпись для GET /api/v5/account/balance
+2025-07-25 15:01:45 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/sign?method=GET&path=%2Fapi%2Fv5%2Faccount%2Fbalance&body= - 200 (0.873s)
