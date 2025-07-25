@@ -23,14 +23,17 @@ class OKXService:
     
     def get_server_timestamp(self) -> str:
         """
-        Получение текущей временной метки в формате ISO 8601
+        Получение текущей временной метки в формате ISO 8601 для OKX API
         
         Returns:
             str: Временная метка в формате ISO 8601 (например: 2025-07-25T12:30:45.123Z)
         """
         from datetime import datetime, timezone
-        timestamp = datetime.now(timezone.utc).isoformat()
-        logger.info(f"Сгенерирована временная метка ISO 8601: {timestamp}")
+        # Получаем UTC время без микросекунд
+        timestamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+        # Заменяем +00:00 на Z для соответствия требованиям OKX
+        timestamp = timestamp.replace('+00:00', 'Z')
+        logger.info(f"Сгенерирована временная метка ISO 8601 для OKX: {timestamp}")
         return timestamp
     
     def generate_signature(
