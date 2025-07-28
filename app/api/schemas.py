@@ -118,7 +118,7 @@ class MarketDataRequest(BaseModel):
 
 
 class MarketDataResponse(BaseModel):
-    """Схема ответа с рыночными данными"""
+    """Схема ответа с упрощенными рыночными данными"""
     
     inst_id: str = Field(
         ...,
@@ -127,28 +127,18 @@ class MarketDataResponse(BaseModel):
     )
     ticker: dict = Field(
         ...,
-        description="Данные тикера (bid, ask, volume, etc.)",
-        example={"code": "0", "data": [{"instId": "BTC-USDT", "last": "50000"}]}
+        description="Основные данные тикера",
+        example={"instId": "BTC-USDT", "last": "50000", "askPx": "50001", "bidPx": "50000"}
     )
     order_book: dict = Field(
         ...,
-        description="Стакан ордеров (глубина 5)",
-        example={"code": "0", "data": [{"bids": [["50000", "1.0"]], "asks": [["50001", "1.0"]]}]}
+        description="Стакан ордеров (3 уровня)",
+        example={"instId": "BTC-USDT", "bids": [["50000", "1.0"]], "asks": [["50001", "1.0"]]}
     )
-    candles: dict = Field(
+    candles: list = Field(
         ...,
-        description="Свечи за 24 часа (5-минутные интервалы, 288 свечей)",
-        example={"code": "0", "data": [["1703123456", "50000", "50001", "50000", "50000", "100"]]}
-    )
-    instrument_info: dict = Field(
-        ...,
-        description="Информация об инструменте",
-        example={"code": "0", "data": [{"instId": "BTC-USDT", "baseCcy": "BTC", "quoteCcy": "USDT"}]}
-    )
-    system_status: dict = Field(
-        ...,
-        description="Статус системы",
-        example={"code": "0", "data": [{"title": "OKX", "state": "live"}]}
+        description="Последние 10 свечей (5-минутные интервалы)",
+        example=[["1703123456", "50000", "50001", "50000", "50000", "100"]]
     )
 
 

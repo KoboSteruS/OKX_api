@@ -256,46 +256,67 @@ class OKXService:
 
     def get_market_data(self, inst_id: str = "BTC-USDT") -> Dict:
         """
-        Получение комплексной рыночной информации
+        Получение упрощенной рыночной информации
         
         Args:
             inst_id: Инструмент (по умолчанию BTC-USDT)
             
         Returns:
-            Dict: Комплексная рыночная информация
+            Dict: Упрощенная рыночная информация
         """
         try:
             logger.info(f"Получение рыночных данных для {inst_id}")
             
             result = {}
             
-            # 1. Данные тикера
+            # 1. Только основные данные тикера
             ticker_path = f'/api/v5/market/ticker?instId={inst_id}'
             ticker_response = requests.get(self.base_url + ticker_path)
-            result['ticker'] = ticker_response.json()
+            ticker_data = ticker_response.json()
             
-            # 2. Стакан ордеров (глубина 5)
-            books_path = f'/api/v5/market/books?instId={inst_id}&sz=5'
+            # Извлекаем только нужные поля
+            if 'data' in ticker_data and ticker_data['data']:
+                ticker = ticker_data['data'][0]
+                result['ticker'] = {
+                    'instId': ticker.get('instId'),
+                    'last': ticker.get('last'),
+                    'lastSz': ticker.get('lastSz'),
+                    'askPx': ticker.get('askPx'),
+                    'askSz': ticker.get('askSz'),
+                    'bidPx': ticker.get('bidPx'),
+                    'bidSz': ticker.get('bidSz'),
+                    'open24h': ticker.get('open24h'),
+                    'high24h': ticker.get('high24h'),
+                    'low24h': ticker.get('low24h'),
+                    'volCcy24h': ticker.get('volCcy24h'),
+                    'vol24h': ticker.get('vol24h'),
+                    'sodUtc0': ticker.get('sodUtc0'),
+                    'sodUtc8': ticker.get('sodUtc8'),
+                    'ts': ticker.get('ts')
+                }
+            
+            # 2. Упрощенный стакан ордеров (только первые 3 уровня)
+            books_path = f'/api/v5/market/books?instId={inst_id}&sz=3'
             books_response = requests.get(self.base_url + books_path)
-            result['order_book'] = books_response.json()
+            books_data = books_response.json()
             
-            # 3. Свечи за 24 часа (5-минутные интервалы)
-            # 24 часа = 1440 минут, 1440 / 5 = 288 свечей для покрытия суток
-            candles_path = f'/api/v5/market/candles?instId={inst_id}&bar=5m&limit=288'
+            if 'data' in books_data and books_data['data']:
+                result['order_book'] = {
+                    'instId': books_data['data'][0].get('instId'),
+                    'bids': books_data['data'][0].get('bids', [])[:3],
+                    'asks': books_data['data'][0].get('asks', [])[:3],
+                    'ts': books_data['data'][0].get('ts')
+                }
+            
+            # 3. Только последние 10 свечей (вместо 288)
+            candles_path = f'/api/v5/market/candles?instId={inst_id}&bar=5m&limit=10'
             candles_response = requests.get(self.base_url + candles_path)
-            result['candles'] = candles_response.json()
+            candles_data = candles_response.json()
             
-            # 4. Информация об инструменте
-            instruments_path = f'/api/v5/public/instruments?instType=SPOT&instId={inst_id}'
-            instruments_response = requests.get(self.base_url + instruments_path)
-            result['instrument_info'] = instruments_response.json()
+            if 'data' in candles_data:
+                result['candles'] = candles_data['data'][:10]  # Только последние 10
             
-            # 5. Статус системы
-            status_path = '/api/v5/public/status'
-            status_response = requests.get(self.base_url + status_path)
-            result['system_status'] = status_response.json()
-            
-            logger.info(f"Рыночные данные для {inst_id} успешно получены")
+            logger.info(f"Упрощенные рыночные данные для {inst_id} успешно получены")
             return result
             
         except Exception as e:

@@ -154,8 +154,8 @@ async def health_check():
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Получить комплексные рыночные данные",
-    description="Получает полную рыночную информацию: тикер, стакан, свечи (5-минутные интервалы за 24 часа), информация об инструменте, статус системы"
+    summary="Получить упрощенные рыночные данные",
+    description="Получает основные рыночные данные: тикер, стакан (3 уровня), последние 10 свечей"
 )
 async def get_market_data(request: MarketDataRequest):
     """
@@ -181,9 +181,7 @@ async def get_market_data(request: MarketDataRequest):
             inst_id=request.inst_id,
             ticker=result['ticker'],
             order_book=result['order_book'],
-            candles=result['candles'],
-            instrument_info=result['instrument_info'],
-            system_status=result['system_status']
+            candles=result['candles']
         )
         
         logger.info(f"Рыночные данные для {request.inst_id} успешно получены")
@@ -204,8 +202,8 @@ async def get_market_data(request: MarketDataRequest):
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Получить комплексные рыночные данные (GET)",
-    description="Получает полную рыночную информацию с параметрами из query string: тикер, стакан, свечи (5-минутные интервалы за 24 часа), информация об инструменте, статус системы"
+    summary="Получить упрощенные рыночные данные (GET)",
+    description="Получает основные рыночные данные с параметрами из query string: тикер, стакан (3 уровня), последние 10 свечей"
 )
 async def get_market_data_get(
     inst_id: str = Query(default="BTC-USDT", description="Инструмент для получения данных")
@@ -228,9 +226,7 @@ async def get_market_data_get(
             inst_id=inst_id,
             ticker=result['ticker'],
             order_book=result['order_book'],
-            candles=result['candles'],
-            instrument_info=result['instrument_info'],
-            system_status=result['system_status']
+            candles=result['candles']
         )
         
         logger.info(f"Рыночные данные для {inst_id} успешно получены")
