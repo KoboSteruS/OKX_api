@@ -97,13 +97,13 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```bash
 curl -X POST "http://localhost:8000/api/v1/trade" \
   -H "Content-Type: application/json" \
-  -d '{"wait_minutes": 5}'
+  -d '{"wait_minutes": 5, "buy_amount": 10.0}'
 ```
 
 ### 2. Выполнение торговой стратегии (GET)
 
 ```bash
-curl "http://localhost:8000/api/v1/trade?wait_minutes=3"
+curl "http://localhost:8000/api/v1/trade?wait_minutes=3&buy_amount=15.0"
 ```
 
 ### 3. Получение комплексных рыночных данных (POST)
@@ -152,11 +152,15 @@ curl "http://localhost:8000/api/v1/health"
 
 Приложение выполняет **автоматическую торговую стратегию** в демо-режиме:
 
-1. **Покупка**: BTC на 100 USDT
+1. **Покупка**: BTC на указанную сумму USDT (по умолчанию 10.0 USDT)
 2. **Ожидание**: Указанное количество минут
 3. **Продажа**: Весь доступный BTC
 
 **Демо-режим**: Все операции выполняются в симуляционном режиме (`x-simulated-trading: 1`)
+
+**Параметры**:
+- `wait_minutes`: Время ожидания в минутах (1-60, по умолчанию 5)
+- `buy_amount`: Сумма в USDT для покупки BTC (больше 0, по умолчанию 10.0)
 
 ## Примеры ответов
 
@@ -166,6 +170,7 @@ curl "http://localhost:8000/api/v1/health"
 {
   "strategy_completed": true,
   "wait_minutes": 5,
+  "buy_amount": 10.0,
   "buy_order": {
     "code": "0",
     "data": [{"ordId": "2724253814203600896", "sMsg": "Order placed"}]

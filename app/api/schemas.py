@@ -75,6 +75,12 @@ class TradeRequest(BaseModel):
         ge=1,
         le=60
     )
+    buy_amount: float = Field(
+        default=10.0,
+        description="Сумма в USDT для покупки BTC",
+        example=10.0,
+        gt=0
+    )
 
 
 class TradeResponse(BaseModel):
@@ -89,6 +95,11 @@ class TradeResponse(BaseModel):
         ...,
         description="Время ожидания в минутах",
         example=5
+    )
+    buy_amount: float = Field(
+        ...,
+        description="Сумма в USDT, потраченная на покупку BTC",
+        example=10.0
     )
     buy_order: dict = Field(
         ...,

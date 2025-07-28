@@ -207,12 +207,13 @@ class OKXService:
         
         return float(data['data'][0]['details'][0]['availBal'])
     
-    def execute_trade_strategy(self, wait_minutes: int = 5) -> Dict:
+    def execute_trade_strategy(self, wait_minutes: int = 5, buy_amount: float = 10.0) -> Dict:
         """
         Выполнение торговой стратегии: покупка -> ожидание -> продажа
         
         Args:
             wait_minutes: Время ожидания в минутах
+            buy_amount: Сумма в USDT для покупки BTC
             
         Returns:
             Dict: Результат выполнения стратегии
@@ -222,10 +223,11 @@ class OKXService:
         try:
             logger.info(f"=== НАЧАЛО ТОРГОВОЙ СТРАТЕГИИ ===")
             logger.info(f"Время ожидания: {wait_minutes} минут")
+            logger.info(f"Сумма покупки: {buy_amount} USDT")
             
-            # Шаг 1: Покупка на 100 USDT
-            logger.info("Шаг 1: Покупка BTC на 100 USDT")
-            buy_result = self.place_market_order("buy", notional=100)
+            # Шаг 1: Покупка на указанную сумму USDT
+            logger.info(f"Шаг 1: Покупка BTC на {buy_amount} USDT")
+            buy_result = self.place_market_order("buy", notional=buy_amount)
             
             # Шаг 2: Ожидание
             logger.info(f"Шаг 2: Ожидание {wait_minutes} минут...")
@@ -239,6 +241,7 @@ class OKXService:
             result = {
                 "strategy_completed": True,
                 "wait_minutes": wait_minutes,
+                "buy_amount": buy_amount,
                 "buy_order": buy_result,
                 "sell_order": sell_result,
                 "btc_balance_sold": btc_balance
