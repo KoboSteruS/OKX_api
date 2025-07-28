@@ -92,7 +92,15 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ## Использование API
 
-### 1. Выполнение торговой стратегии (POST)
+### 1. Тестирование соединения с OKX API
+
+```bash
+curl "http://localhost:8000/api/v1/test-connection"
+```
+
+Проверяет соединение с OKX API и диагностирует проблемы SSL/TLS.
+
+### 2. Выполнение торговой стратегии (POST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/trade" \
@@ -100,13 +108,13 @@ curl -X POST "http://localhost:8000/api/v1/trade" \
   -d '{"wait_minutes": 5, "buy_amount": 10.0}'
 ```
 
-### 2. Выполнение торговой стратегии (GET)
+### 3. Выполнение торговой стратегии (GET)
 
 ```bash
 curl "http://localhost:8000/api/v1/trade?wait_minutes=3&buy_amount=15.0"
 ```
 
-### 3. Получение комплексных рыночных данных (POST)
+### 4. Получение упрощенных рыночных данных (POST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/market-data" \
@@ -114,7 +122,7 @@ curl -X POST "http://localhost:8000/api/v1/market-data" \
   -d '{"inst_id": "BTC-USDT"}'
 ```
 
-### 4. Получение упрощенных рыночных данных (GET)
+### 5. Получение упрощенных рыночных данных (GET)
 
 ```bash
 curl "http://localhost:8000/api/v1/market-data?inst_id=BTC-USDT"
@@ -122,7 +130,7 @@ curl "http://localhost:8000/api/v1/market-data?inst_id=BTC-USDT"
 
 **Включает**: тикер, стакан ордеров (3 уровня), последние 10 свечей
 
-### 5. Получение данных всех тикеров (POST)
+### 6. Получение данных всех тикеров (POST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/tickers" \
@@ -130,19 +138,19 @@ curl -X POST "http://localhost:8000/api/v1/tickers" \
   -d '{"inst_type": "SPOT"}'
 ```
 
-### 6. Получение данных всех тикеров (GET)
+### 7. Получение данных всех тикеров (GET)
 
 ```bash
 curl "http://localhost:8000/api/v1/tickers?inst_type=SWAP"
 ```
 
-### 7. Получение информации о валютах
+### 8. Получение информации о валютах
 
 ```bash
 curl "http://localhost:8000/api/v1/currencies"
 ```
 
-### 8. Проверка здоровья сервиса
+### 9. Проверка здоровья сервиса
 
 ```bash
 curl "http://localhost:8000/api/v1/health"
@@ -281,6 +289,46 @@ pytest tests/
 
 3. **"Неподдерживаемый HTTP метод"**
    - Используйте только: GET, POST, PUT, DELETE
+
+### SSL/TLS ошибки
+
+Если вы получаете ошибки `SSLError` или `Max retries exceeded`, это может быть связано с:
+
+1. **Устаревшими SSL сертификатами** на сервере
+2. **Файрволом** или **прокси**, блокирующими HTTPS соединения
+3. **Неправильными настройками сети**
+
+#### Решения:
+
+1. **Обновите SSL сертификаты**:
+   ```bash
+   sudo apt update
+   sudo apt install ca-certificates
+   sudo update-ca-certificates
+   ```
+
+2. **Проверьте файрвол**:
+   ```bash
+   sudo ufw status
+   # Если файрвол активен, разрешите исходящие HTTPS соединения
+   sudo ufw allow out 443
+   ```
+
+3. **Тестируйте соединение**:
+   ```bash
+   curl "http://your-server:8000/api/v1/test-connection"
+   ```
+
+4. **Запустите диагностический скрипт**:
+   ```bash
+   python test_ssl.py
+   ```
+
+5. **Проверьте DNS**:
+   ```bash
+   nslookup www.okx.com
+   ping www.okx.com
+   ```
 
 ## Лицензия
 

@@ -357,4 +357,40 @@ async def get_currencies_data():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get(
+    "/test-connection",
+    responses={
+        500: {"model": ErrorResponse}
+    },
+    summary="Тестирование соединения с OKX API",
+    description="Проверяет соединение с OKX API и диагностирует проблемы"
+)
+async def test_connection():
+    """
+    Тестирование соединения с OKX API
+    
+    Проверяет:
+    - Доступность OKX API
+    - SSL/TLS соединение
+    - Сетевые настройки
+    
+    Возвращает:
+    - **status**: Статус соединения (success/ssl_error/network_error/unknown_error)
+    - **message**: Описание результата
+    - **suggestion**: Рекомендации по исправлению (если есть)
+    """
+    try:
+        logger.info("Запрос на тестирование соединения с OKX API")
+        
+        # Тестирование соединения
+        result = okx_service.test_connection()
+        
+        logger.info(f"Результат тестирования: {result['status']}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"Ошибка тестирования соединения: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
  

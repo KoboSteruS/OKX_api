@@ -20,6 +20,14 @@ class OKXService:
         self.api_key = settings.okx_api_key
         self.api_secret = settings.okx_api_secret
         self.passphrase = settings.okx_passphrase
+        
+        # Настройка сессии requests для лучшей производительности
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'OKX-Trading-Bot/1.0',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        })
     
     def get_server_timestamp(self) -> str:
         """
@@ -35,6 +43,61 @@ class OKXService:
         timestamp = timestamp.replace('+00:00', 'Z')
         logger.info(f"Сгенерирована временная метка ISO 8601 для OKX: {timestamp}")
         return timestamp
+    
+    def test_connection(self) -> Dict:
+        """
+        Тестирование соединения с OKX API
+        
+        Returns:
+            Dict: Результат тестирования
+        """
+        try:
+            logger.info("Тестирование соединения с OKX API...")
+            
+            # Тест 1: Простой GET запрос к публичному API
+            test_url = f"{self.base_url}/api/v5/public/time"
+            
+            try:
+                response = self.session.get(
+                    test_url,
+                    timeout=10,
+                    verify=True
+                )
+                if response.status_code == 200:
+                    logger.info("✅ Соединение с OKX API успешно")
+                    return {
+                        "status": "success",
+                        "message": "Соединение с OKX API работает",
+                        "response": response.json()
+                    }
+                else:
+                    logger.error(f"❌ Ошибка HTTP: {response.status_code}")
+                    return {
+                        "status": "error",
+                        "message": f"HTTP ошибка: {response.status_code}",
+                        "response": response.text
+                    }
+            except requests.exceptions.SSLError as e:
+                logger.error(f"❌ SSL ошибка: {e}")
+                return {
+                    "status": "ssl_error",
+                    "message": f"SSL ошибка: {e}",
+                    "suggestion": "Проверьте настройки SSL сертификатов на сервере"
+                }
+            except requests.exceptions.RequestException as e:
+                logger.error(f"❌ Ошибка сети: {e}")
+                return {
+                    "status": "network_error",
+                    "message": f"Ошибка сети: {e}",
+                    "suggestion": "Проверьте интернет соединение и файрвол"
+                }
+                
+        except Exception as e:
+            logger.error(f"❌ Неожиданная ошибка: {e}")
+            return {
+                "status": "unknown_error",
+                "message": f"Неожиданная ошибка: {e}"
+            }
     
     def generate_signature(
         self, 
@@ -181,10 +244,22 @@ class OKXService:
         headers = self.get_auth_headers("POST", path, body_str)
         headers['x-simulated-trading'] = '1'  # Демо режим
         
-        response = requests.post(url, headers=headers, data=body_str)
-        logger.info(f"{side.upper()} ORDER RESULT: {response.text}")
-        
-        return response.json()
+        try:
+            response = self.session.post(
+                url, 
+                headers=headers, 
+                data=body_str,
+                timeout=30,
+                verify=True
+            )
+            logger.info(f"{side.upper()} ORDER RESULT: {response.text}")
+            return response.json()
+        except requests.exceptions.SSLError as e:
+            logger.error(f"SSL ошибка при размещении ордера: {e}")
+            raise
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Ошибка сети при размещении ордера: {e}")
+            raise
     
     def get_balance(self, ccy: str) -> float:
         """
@@ -202,10 +277,21 @@ class OKXService:
         headers = self.get_auth_headers("GET", path)
         headers['x-simulated-trading'] = '1'  # Демо режим
         
-        response = requests.get(url, headers=headers)
-        data = response.json()
-        
-        return float(data['data'][0]['details'][0]['availBal'])
+        try:
+            response = self.session.get(
+                url, 
+                headers=headers,
+                timeout=30,
+                verify=True
+            )
+            data = response.json()
+            return float(data['data'][0]['details'][0]['availBal'])
+        except requests.exceptions.SSLError as e:
+            logger.error(f"SSL ошибка при получении баланса: {e}")
+            raise
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Ошибка сети при получении баланса: {e}")
+            raise
     
     def execute_trade_strategy(self, wait_minutes: int = 5, buy_amount: float = 10.0) -> Dict:
         """
@@ -274,8 +360,19 @@ class OKXService:
             
             # 1. Только основные данные тикера
             ticker_path = f'/api/v5/market/ticker?instId={inst_id}'
-            ticker_response = requests.get(self.base_url + ticker_path)
-            ticker_data = ticker_response.json()
+            try:
+                ticker_response = self.session.get(
+                    self.base_url + ticker_path,
+                    timeout=30,
+                    verify=True
+                )
+                ticker_data = ticker_response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении тикера: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении тикера: {e}")
+                raise
             
             # Извлекаем только нужные поля
             if 'data' in ticker_data and ticker_data['data']:
@@ -300,8 +397,19 @@ class OKXService:
             
             # 2. Упрощенный стакан ордеров (только первые 3 уровня)
             books_path = f'/api/v5/market/books?instId={inst_id}&sz=3'
-            books_response = requests.get(self.base_url + books_path)
-            books_data = books_response.json()
+            try:
+                books_response = self.session.get(
+                    self.base_url + books_path,
+                    timeout=30,
+                    verify=True
+                )
+                books_data = books_response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении стакана: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении стакана: {e}")
+                raise
             
             if 'data' in books_data and books_data['data']:
                 result['order_book'] = {
@@ -313,8 +421,19 @@ class OKXService:
             
             # 3. Только последние 10 свечей (вместо 288)
             candles_path = f'/api/v5/market/candles?instId={inst_id}&bar=5m&limit=10'
-            candles_response = requests.get(self.base_url + candles_path)
-            candles_data = candles_response.json()
+            try:
+                candles_response = self.session.get(
+                    self.base_url + candles_path,
+                    timeout=30,
+                    verify=True
+                )
+                candles_data = candles_response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении свечей: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении свечей: {e}")
+                raise
             
             if 'data' in candles_data:
                 result['candles'] = candles_data['data'][:10]  # Только последние 10
@@ -340,8 +459,19 @@ class OKXService:
             logger.info(f"Получение данных тикеров для {inst_type}")
             
             path = f'/api/v5/market/tickers?instType={inst_type}'
-            response = requests.get(self.base_url + path)
-            result = response.json()
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                result = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении тикеров: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении тикеров: {e}")
+                raise
             
             logger.info(f"Данные тикеров для {inst_type} успешно получены")
             return result
@@ -361,8 +491,19 @@ class OKXService:
             logger.info("Получение информации о валютах")
             
             path = '/api/v5/public/currencies'
-            response = requests.get(self.base_url + path)
-            result = response.json()
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                result = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении валют: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении валют: {e}")
+                raise
             
             logger.info("Информация о валютах успешно получена")
             return result
