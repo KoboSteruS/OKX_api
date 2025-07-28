@@ -39,22 +39,44 @@ async def log_requests(request: Request, call_next):
     """Middleware для логирования запросов"""
     start_time = time.time()
     
-    # Логируем входящий запрос
+    # Получаем информацию о клиенте
+    client_host = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "unknown")
+    
+    # Логируем входящий запрос с дополнительной информацией
     logger.info(f"Входящий запрос: {request.method} {request.url}")
+    logger.info(f"Клиент: {client_host}, User-Agent: {user_agent}")
     
-    # Обрабатываем запрос
-    response = await call_next(request)
-    
-    # Вычисляем время выполнения
-    process_time = time.time() - start_time
-    
-    # Логируем результат
-    logger.info(f"Запрос обработан: {request.method} {request.url} - {response.status_code} ({process_time:.3f}s)")
-    
-    # Добавляем время выполнения в заголовки
-    response.headers["X-Process-Time"] = str(process_time)
-    
-    return response
+    try:
+        # Обрабатываем запрос
+        response = await call_next(request)
+        
+        # Вычисляем время выполнения
+        process_time = time.time() - start_time
+        
+        # Логируем результат
+        logger.info(f"Запрос обработан: {request.method} {request.url} - {response.status_code} ({process_time:.3f}s)")
+        
+        # Добавляем время выполнения в заголовки
+        response.headers["X-Process-Time"] = str(process_time)
+        
+        return response
+        
+    except Exception as e:
+        # Логируем ошибки
+        process_time = time.time() - start_time
+        logger.error(f"Ошибка обработки запроса: {request.method} {request.url} - {str(e)} ({process_time:.3f}s)")
+        logger.error(f"Клиент: {client_host}, User-Agent: {user_agent}")
+        
+        # Возвращаем ошибку клиенту
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "Internal Server Error",
+                "detail": "Произошла ошибка при обработке запроса",
+                "timestamp": time.time()
+            }
+        )
 
 
 @app.exception_handler(Exception)
