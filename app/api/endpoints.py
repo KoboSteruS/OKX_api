@@ -4,128 +4,113 @@ API эндпоинты для OKX API
 from fastapi import APIRouter, HTTPException, Query
 from loguru import logger
 
-from app.api.schemas import SignRequest, SignResponse, ErrorResponse
+from app.api.schemas import (
+    SignRequest, SignResponse, ErrorResponse, 
+    TradeRequest, TradeResponse, MarketDataRequest, 
+    MarketDataResponse, TickersRequest, CurrenciesResponse
+)
 from app.services.okx_service import okx_service
 
 router = APIRouter()
 
 
-@router.get(
-    "/sign",
-    response_model=SignResponse,
+@router.post(
+    "/trade",
+    response_model=TradeResponse,
     responses={
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Получить подпись и временную метку",
-    description="Генерирует OK-ACCESS-SIGN и OK-ACCESS-TIMESTAMP для запроса к OKX API"
+    summary="Выполнить торговую стратегию",
+    description="Выполняет торговую стратегию: покупка BTC на 100 USDT -> ожидание -> продажа всего BTC"
 )
-async def get_signature(
-    method: str = Query(..., description="HTTP метод (GET, POST, PUT, DELETE)"),
-    path: str = Query(..., description="Путь API запроса"),
-    body: str = Query("", description="Тело запроса (для POST/PUT запросов)")
-):
+async def execute_trade_strategy(request: TradeRequest):
     """
-    Получить подпись и временную метку для OKX API
+    Выполнение торговой стратегии
     
-    - **method**: HTTP метод запроса
-    - **path**: Путь API запроса
-    - **body**: Тело запроса (опционально)
+    Принимает JSON с параметрами:
+    - **wait_minutes**: Время ожидания в минутах (по умолчанию 5)
+    
+    Выполняет:
+    1. Покупка BTC на 100 USDT
+    2. Ожидание указанное количество минут
+    3. Продажа всего доступного BTC
     
     Возвращает:
-    - **ok_access_sign**: Подпись для заголовка OK-ACCESS-SIGN
-    - **ok_access_timestamp**: Временная метка для заголовка OK-ACCESS-TIMESTAMP
+    - **strategy_completed**: Статус выполнения
+    - **wait_minutes**: Время ожидания
+    - **buy_order**: Результат покупки
+    - **sell_order**: Результат продажи
+    - **btc_balance_sold**: Количество проданного BTC
     """
     try:
-        logger.info(f"Запрос на генерацию подписи: {method} {path}")
+        logger.info(f"Запрос на выполнение торговой стратегии: ожидание {request.wait_minutes} минут")
         
-        # Валидация входных данных
-        if not method or not path:
-            raise HTTPException(
-                status_code=400, 
-                detail="Метод и путь обязательны"
-            )
+        # Выполнение торговой стратегии
+        result = okx_service.execute_trade_strategy(wait_minutes=request.wait_minutes)
         
-        method = method.upper()
-        if method not in ['GET', 'POST', 'PUT', 'DELETE']:
-            raise HTTPException(
-                status_code=400, 
-                detail="Неподдерживаемый HTTP метод"
-            )
-        
-        # Получение подписи и временной метки
-        result = okx_service.get_sign_and_timestamp(method, path, body)
-        
-        response = SignResponse(
-            ok_access_sign=result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
-            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
-            method=method,
-            path=path
+        response = TradeResponse(
+            strategy_completed=result["strategy_completed"],
+            wait_minutes=result["wait_minutes"],
+            buy_order=result["buy_order"],
+            sell_order=result["sell_order"],
+            btc_balance_sold=result["btc_balance_sold"]
         )
         
-        logger.info(f"Успешно сгенерирована подпись для {method} {path}")
+        logger.info(f"Торговая стратегия успешно выполнена")
         return response
         
     except ValueError as e:
         logger.error(f"Ошибка валидации: {e}")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error(f"Ошибка генерации подписи: {e}")
+        logger.error(f"Ошибка выполнения торговой стратегии: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post(
-    "/sign",
-    response_model=SignResponse,
+@router.get(
+    "/trade",
+    response_model=TradeResponse,
     responses={
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Получить подпись и временную метку (POST)",
-    description="Генерирует OK-ACCESS-SIGN и OK-ACCESS-TIMESTAMP для запроса к OKX API"
+    summary="Выполнить торговую стратегию (GET)",
+    description="Выполняет торговую стратегию с параметрами из query string"
 )
-async def get_signature_post(request: SignRequest):
+async def execute_trade_strategy_get(
+    wait_minutes: int = Query(default=5, description="Время ожидания в минутах", ge=1, le=60)
+):
     """
-    Получить подпись и временную метку для OKX API (POST метод)
+    Выполнение торговой стратегии (GET метод)
     
-    Принимает JSON с параметрами:
-    - **method**: HTTP метод запроса
-    - **path**: Путь API запроса  
-    - **body**: Тело запроса (опционально)
+    Параметры:
+    - **wait_minutes**: Время ожидания в минутах (по умолчанию 5)
     
-    Возвращает:
-    - **ok_access_sign**: Подпись для заголовка OK-ACCESS-SIGN
-    - **ok_access_timestamp**: Временная метка для заголовка OK-ACCESS-TIMESTAMP
+    Выполняет ту же стратегию, что и POST /trade
     """
     try:
-        logger.info(f"POST запрос на генерацию подписи: {request.method} {request.path}")
+        logger.info(f"GET запрос на выполнение торговой стратегии: ожидание {wait_minutes} минут")
         
-        # Валидация входных данных
-        method = request.method.upper()
-        if method not in ['GET', 'POST', 'PUT', 'DELETE']:
-            raise HTTPException(
-                status_code=400, 
-                detail="Неподдерживаемый HTTP метод"
-            )
+        # Выполнение торговой стратегии
+        result = okx_service.execute_trade_strategy(wait_minutes=wait_minutes)
         
-        # Получение подписи и временной метки
-        result = okx_service.get_sign_and_timestamp(method, request.path, request.body)
-        
-        response = SignResponse(
-            ok_access_sign=result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
-            ok_access_timestamp=result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
-            method=method,
-            path=request.path
+        response = TradeResponse(
+            strategy_completed=result["strategy_completed"],
+            wait_minutes=result["wait_minutes"],
+            buy_order=result["buy_order"],
+            sell_order=result["sell_order"],
+            btc_balance_sold=result["btc_balance_sold"]
         )
         
-        logger.info(f"Успешно сгенерирована подпись для {method} {request.path}")
+        logger.info(f"Торговая стратегия успешно выполнена")
         return response
         
     except ValueError as e:
         logger.error(f"Ошибка валидации: {e}")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error(f"Ошибка генерации подписи: {e}")
+        logger.error(f"Ошибка выполнения торговой стратегии: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -162,41 +147,212 @@ async def health_check():
         )
 
 
-@router.get(
-    "/sign-debug",
-    summary="Отладочный эндпоинт для проверки подписи",
-    description="Генерирует подпись с подробной отладочной информацией"
+@router.post(
+    "/market-data",
+    response_model=MarketDataResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить комплексные рыночные данные",
+    description="Получает полную рыночную информацию: тикер, стакан, свечи (5-минутные интервалы за 24 часа), информация об инструменте, статус системы"
 )
-async def get_signature_debug(
-    method: str = Query(..., description="HTTP метод"),
-    path: str = Query(..., description="Путь API запроса"),
-    body: str = Query("", description="Тело запроса")
-):
+async def get_market_data(request: MarketDataRequest):
     """
-    Отладочный эндпоинт для проверки генерации подписи
+    Получение комплексных рыночных данных
+    
+    Принимает JSON с параметрами:
+    - **inst_id**: Инструмент (по умолчанию BTC-USDT)
+    
+    Возвращает:
+    - **ticker**: Данные тикера (bid, ask, volume, etc.)
+    - **order_book**: Стакан ордеров (глубина 5)
+    - **candles**: Свечи за 24 часа (5-минутные интервалы, 288 свечей)
+    - **instrument_info**: Информация об инструменте
+    - **system_status**: Статус системы
     """
     try:
-        logger.info(f"=== ОТЛАДКА ПОДПИСИ ===")
-        logger.info(f"Method: {method}")
-        logger.info(f"Path: {path}")
-        logger.info(f"Body: '{body}' (длина: {len(body)})")
+        logger.info(f"Запрос на получение рыночных данных для {request.inst_id}")
         
-        result = okx_service.get_sign_and_timestamp(method.upper(), path, body)
+        # Получение рыночных данных
+        result = okx_service.get_market_data(inst_id=request.inst_id)
         
-        logger.info(f"Результат: {result}")
-        logger.info(f"=== КОНЕЦ ОТЛАДКИ ===")
+        response = MarketDataResponse(
+            inst_id=request.inst_id,
+            ticker=result['ticker'],
+            order_book=result['order_book'],
+            candles=result['candles'],
+            instrument_info=result['instrument_info'],
+            system_status=result['system_status']
+        )
         
-        return {
-            "ok_access_sign": result['OK-ACCESS-SIGN'].strip(),  # Убираем пробелы
-            "ok_access_timestamp": result['OK-ACCESS-TIMESTAMP'].strip(),  # Убираем пробелы
-            "method": method.upper(),
-            "path": path,
-            "debug_info": {
-                "body_length": len(body),
-                "body_content": body
-            }
-        }
+        logger.info(f"Рыночные данные для {request.inst_id} успешно получены")
+        return response
         
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error(f"Ошибка отладки: {e}")
-        raise HTTPException(status_code=500, detail=str(e)) 
+        logger.error(f"Ошибка получения рыночных данных: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
+    "/market-data",
+    response_model=MarketDataResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить комплексные рыночные данные (GET)",
+    description="Получает полную рыночную информацию с параметрами из query string: тикер, стакан, свечи (5-минутные интервалы за 24 часа), информация об инструменте, статус системы"
+)
+async def get_market_data_get(
+    inst_id: str = Query(default="BTC-USDT", description="Инструмент для получения данных")
+):
+    """
+    Получение комплексных рыночных данных (GET метод)
+    
+    Параметры:
+    - **inst_id**: Инструмент (по умолчанию BTC-USDT)
+    
+    Возвращает ту же информацию, что и POST /market-data
+    """
+    try:
+        logger.info(f"GET запрос на получение рыночных данных для {inst_id}")
+        
+        # Получение рыночных данных
+        result = okx_service.get_market_data(inst_id=inst_id)
+        
+        response = MarketDataResponse(
+            inst_id=inst_id,
+            ticker=result['ticker'],
+            order_book=result['order_book'],
+            candles=result['candles'],
+            instrument_info=result['instrument_info'],
+            system_status=result['system_status']
+        )
+        
+        logger.info(f"Рыночные данные для {inst_id} успешно получены")
+        return response
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения рыночных данных: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post(
+    "/tickers",
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить данные всех тикеров",
+    description="Получает данные по всем тикерам указанного типа"
+)
+async def get_tickers_data(request: TickersRequest):
+    """
+    Получение данных всех тикеров
+    
+    Принимает JSON с параметрами:
+    - **inst_type**: Тип инструмента (SPOT, SWAP, FUTURES, etc.)
+    
+    Возвращает данные всех тикеров указанного типа
+    """
+    try:
+        logger.info(f"Запрос на получение данных тикеров для {request.inst_type}")
+        
+        # Получение данных тикеров
+        result = okx_service.get_tickers_data(inst_type=request.inst_type)
+        
+        logger.info(f"Данные тикеров для {request.inst_type} успешно получены")
+        return result
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения данных тикеров: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
+    "/tickers",
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить данные всех тикеров (GET)",
+    description="Получает данные по всем тикерам с параметрами из query string"
+)
+async def get_tickers_data_get(
+    inst_type: str = Query(default="SPOT", description="Тип инструмента")
+):
+    """
+    Получение данных всех тикеров (GET метод)
+    
+    Параметры:
+    - **inst_type**: Тип инструмента (SPOT, SWAP, FUTURES, etc.)
+    
+    Возвращает данные всех тикеров указанного типа
+    """
+    try:
+        logger.info(f"GET запрос на получение данных тикеров для {inst_type}")
+        
+        # Получение данных тикеров
+        result = okx_service.get_tickers_data(inst_type=inst_type)
+        
+        logger.info(f"Данные тикеров для {inst_type} успешно получены")
+        return result
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения данных тикеров: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
+    "/currencies",
+    response_model=CurrenciesResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить информацию о валютах",
+    description="Получает информацию о всех валютах и их свойствах"
+)
+async def get_currencies_data():
+    """
+    Получение информации о валютах
+    
+    Возвращает информацию о всех валютах, включая:
+    - Коды валют
+    - Названия
+    - Минимальные комиссии
+    - Другие свойства
+    """
+    try:
+        logger.info("Запрос на получение информации о валютах")
+        
+        # Получение информации о валютах
+        result = okx_service.get_currencies_data()
+        
+        response = CurrenciesResponse(currencies=result)
+        
+        logger.info("Информация о валютах успешно получена")
+        return response
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения информации о валютах: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+ 

@@ -150,5 +150,203 @@ class OKXService:
             raise
 
 
+    def place_market_order(self, side: str, notional: float) -> Dict:
+        """
+        Размещение рыночного ордера
+        
+        Args:
+            side: Сторона (buy/sell)
+            notional: Размер в USDT для покупки или BTC для продажи
+            
+        Returns:
+            Dict: Результат размещения ордера
+        """
+        import json
+        
+        path = '/api/v5/trade/order'
+        url = self.base_url + path
+        
+        body = {
+            "instId": "BTC-USDT",
+            "tdMode": "cash",
+            "side": side,
+            "ordType": "market",
+            "ccy": "USDT" if side == "buy" else "BTC",
+            "sz": str(notional)
+        }
+        
+        body_str = json.dumps(body, separators=(",", ":"))
+        logger.info(f"{side.upper()} BODY: {body_str}")
+        
+        headers = self.get_auth_headers("POST", path, body_str)
+        headers['x-simulated-trading'] = '1'  # Демо режим
+        
+        response = requests.post(url, headers=headers, data=body_str)
+        logger.info(f"{side.upper()} ORDER RESULT: {response.text}")
+        
+        return response.json()
+    
+    def get_balance(self, ccy: str) -> float:
+        """
+        Получение баланса валюты
+        
+        Args:
+            ccy: Код валюты (BTC, USDT, etc.)
+            
+        Returns:
+            float: Доступный баланс
+        """
+        path = f'/api/v5/account/balance?ccy={ccy}'
+        url = self.base_url + path
+        
+        headers = self.get_auth_headers("GET", path)
+        headers['x-simulated-trading'] = '1'  # Демо режим
+        
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        
+        return float(data['data'][0]['details'][0]['availBal'])
+    
+    def execute_trade_strategy(self, wait_minutes: int = 5) -> Dict:
+        """
+        Выполнение торговой стратегии: покупка -> ожидание -> продажа
+        
+        Args:
+            wait_minutes: Время ожидания в минутах
+            
+        Returns:
+            Dict: Результат выполнения стратегии
+        """
+        import time
+        
+        try:
+            logger.info(f"=== НАЧАЛО ТОРГОВОЙ СТРАТЕГИИ ===")
+            logger.info(f"Время ожидания: {wait_minutes} минут")
+            
+            # Шаг 1: Покупка на 100 USDT
+            logger.info("Шаг 1: Покупка BTC на 100 USDT")
+            buy_result = self.place_market_order("buy", notional=100)
+            
+            # Шаг 2: Ожидание
+            logger.info(f"Шаг 2: Ожидание {wait_minutes} минут...")
+            time.sleep(wait_minutes * 60)
+            
+            # Шаг 3: Продажа BTC
+            logger.info("Шаг 3: Продажа BTC")
+            btc_balance = self.get_balance("BTC")
+            sell_result = self.place_market_order("sell", notional=btc_balance)
+            
+            result = {
+                "strategy_completed": True,
+                "wait_minutes": wait_minutes,
+                "buy_order": buy_result,
+                "sell_order": sell_result,
+                "btc_balance_sold": btc_balance
+            }
+            
+            logger.info(f"=== СТРАТЕГИЯ ЗАВЕРШЕНА ===")
+            logger.info(f"Результат: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка выполнения торговой стратегии: {e}")
+            raise
+
+
+    def get_market_data(self, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Получение комплексной рыночной информации
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Комплексная рыночная информация
+        """
+        try:
+            logger.info(f"Получение рыночных данных для {inst_id}")
+            
+            result = {}
+            
+            # 1. Данные тикера
+            ticker_path = f'/api/v5/market/ticker?instId={inst_id}'
+            ticker_response = requests.get(self.base_url + ticker_path)
+            result['ticker'] = ticker_response.json()
+            
+            # 2. Стакан ордеров (глубина 5)
+            books_path = f'/api/v5/market/books?instId={inst_id}&sz=5'
+            books_response = requests.get(self.base_url + books_path)
+            result['order_book'] = books_response.json()
+            
+            # 3. Свечи за 24 часа (5-минутные интервалы)
+            # 24 часа = 1440 минут, 1440 / 5 = 288 свечей для покрытия суток
+            candles_path = f'/api/v5/market/candles?instId={inst_id}&bar=5m&limit=288'
+            candles_response = requests.get(self.base_url + candles_path)
+            result['candles'] = candles_response.json()
+            
+            # 4. Информация об инструменте
+            instruments_path = f'/api/v5/public/instruments?instType=SPOT&instId={inst_id}'
+            instruments_response = requests.get(self.base_url + instruments_path)
+            result['instrument_info'] = instruments_response.json()
+            
+            # 5. Статус системы
+            status_path = '/api/v5/public/status'
+            status_response = requests.get(self.base_url + status_path)
+            result['system_status'] = status_response.json()
+            
+            logger.info(f"Рыночные данные для {inst_id} успешно получены")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения рыночных данных: {e}")
+            raise
+    
+    def get_tickers_data(self, inst_type: str = "SPOT") -> Dict:
+        """
+        Получение данных по всем тикерам
+        
+        Args:
+            inst_type: Тип инструмента (SPOT, SWAP, FUTURES, etc.)
+            
+        Returns:
+            Dict: Данные всех тикеров
+        """
+        try:
+            logger.info(f"Получение данных тикеров для {inst_type}")
+            
+            path = f'/api/v5/market/tickers?instType={inst_type}'
+            response = requests.get(self.base_url + path)
+            result = response.json()
+            
+            logger.info(f"Данные тикеров для {inst_type} успешно получены")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения данных тикеров: {e}")
+            raise
+    
+    def get_currencies_data(self) -> Dict:
+        """
+        Получение информации о валютах
+        
+        Returns:
+            Dict: Информация о валютах
+        """
+        try:
+            logger.info("Получение информации о валютах")
+            
+            path = '/api/v5/public/currencies'
+            response = requests.get(self.base_url + path)
+            result = response.json()
+            
+            logger.info("Информация о валютах успешно получена")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения информации о валютах: {e}")
+            raise
+
+
 # Глобальный экземпляр сервиса
 okx_service = OKXService() 
