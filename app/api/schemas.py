@@ -65,59 +65,6 @@ class ErrorResponse(BaseModel):
     )
 
 
-class TradeRequest(BaseModel):
-    """Схема запроса для торговой стратегии"""
-    
-    wait_minutes: int = Field(
-        default=5,
-        description="Время ожидания в минутах между покупкой и продажей",
-        example=5,
-        ge=1,
-        le=60
-    )
-    buy_amount: float = Field(
-        default=10.0,
-        description="Сумма в USDT для покупки BTC",
-        example=10.0,
-        gt=0
-    )
-
-
-class TradeResponse(BaseModel):
-    """Схема ответа торговой стратегии"""
-    
-    strategy_completed: bool = Field(
-        ...,
-        description="Статус выполнения стратегии",
-        example=True
-    )
-    wait_minutes: int = Field(
-        ...,
-        description="Время ожидания в минутах",
-        example=5
-    )
-    buy_amount: float = Field(
-        ...,
-        description="Сумма в USDT, потраченная на покупку BTC",
-        example=10.0
-    )
-    buy_order: dict = Field(
-        ...,
-        description="Результат покупки BTC",
-        example={"code": "0", "data": [{"ordId": "123456789"}]}
-    )
-    sell_order: dict = Field(
-        ...,
-        description="Результат продажи BTC",
-        example={"code": "0", "data": [{"ordId": "987654321"}]}
-    )
-    btc_balance_sold: float = Field(
-        ...,
-        description="Количество BTC, которое было продано",
-        example=0.001234
-    )
-
-
 class MarketDataRequest(BaseModel):
     """Схема запроса для получения рыночных данных"""
     

@@ -293,55 +293,6 @@ class OKXService:
         except requests.exceptions.RequestException as e:
             logger.error(f"Ошибка сети при получении баланса: {e}")
             raise
-    
-    def execute_trade_strategy(self, wait_minutes: int = 5, buy_amount: float = 10.0) -> Dict:
-        """
-        Выполнение торговой стратегии: покупка -> ожидание -> продажа
-        
-        Args:
-            wait_minutes: Время ожидания в минутах
-            buy_amount: Сумма в USDT для покупки BTC
-            
-        Returns:
-            Dict: Результат выполнения стратегии
-        """
-        import time
-        
-        try:
-            logger.info(f"=== НАЧАЛО ТОРГОВОЙ СТРАТЕГИИ ===")
-            logger.info(f"Время ожидания: {wait_minutes} минут")
-            logger.info(f"Сумма покупки: {buy_amount} USDT")
-            
-            # Шаг 1: Покупка на указанную сумму USDT
-            logger.info(f"Шаг 1: Покупка BTC на {buy_amount} USDT")
-            buy_result = self.place_market_order("buy", notional=buy_amount)
-            
-            # Шаг 2: Ожидание
-            logger.info(f"Шаг 2: Ожидание {wait_minutes} минут...")
-            time.sleep(wait_minutes * 60)
-            
-            # Шаг 3: Продажа BTC
-            logger.info("Шаг 3: Продажа BTC")
-            btc_balance = self.get_balance("BTC")
-            sell_result = self.place_market_order("sell", notional=btc_balance)
-            
-            result = {
-                "strategy_completed": True,
-                "wait_minutes": wait_minutes,
-                "buy_amount": buy_amount,
-                "buy_order": buy_result,
-                "sell_order": sell_result,
-                "btc_balance_sold": btc_balance
-            }
-            
-            logger.info(f"=== СТРАТЕГИЯ ЗАВЕРШЕНА ===")
-            logger.info(f"Результат: {result}")
-            
-            return result
-            
-        except Exception as e:
-            logger.error(f"Ошибка выполнения торговой стратегии: {e}")
-            raise
 
 
     def get_market_data(self, inst_id: str = "BTC-USDT") -> Dict:

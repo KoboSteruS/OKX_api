@@ -7,119 +7,12 @@ from typing import Optional
 
 from app.api.schemas import (
     SignRequest, SignResponse, ErrorResponse, 
-    TradeRequest, TradeResponse, MarketDataRequest, 
-    MarketDataResponse, TickersRequest, CurrenciesResponse,
+    MarketDataRequest, MarketDataResponse, TickersRequest, CurrenciesResponse,
     BuyRequest, BuyResponse, SellRequest, SellResponse, BalanceResponse
 )
 from app.services.okx_service import okx_service
 
 router = APIRouter()
-
-
-@router.post(
-    "/trade",
-    response_model=TradeResponse,
-    responses={
-        400: {"model": ErrorResponse},
-        500: {"model": ErrorResponse}
-    },
-    summary="Выполнить торговую стратегию",
-    description="Выполняет торговую стратегию: покупка BTC на указанную сумму USDT -> ожидание -> продажа всего BTC"
-)
-async def execute_trade_strategy(request: TradeRequest):
-    """
-    Выполнение торговой стратегии
-    
-    Принимает JSON с параметрами:
-    - **wait_minutes**: Время ожидания в минутах (по умолчанию 5)
-    - **buy_amount**: Сумма в USDT для покупки BTC (по умолчанию 10.0)
-    
-    Выполняет:
-    1. Покупка BTC на указанную сумму USDT
-    2. Ожидание указанное количество минут
-    3. Продажа всего доступного BTC
-    
-    Возвращает:
-    - **strategy_completed**: Статус выполнения
-    - **wait_minutes**: Время ожидания
-    - **buy_amount**: Сумма, потраченная на покупку
-    - **buy_order**: Результат покупки
-    - **sell_order**: Результат продажи
-    - **btc_balance_sold**: Количество проданного BTC
-    """
-    try:
-        logger.info(f"Запрос на выполнение торговой стратегии: ожидание {request.wait_minutes} минут, сумма покупки {request.buy_amount} USDT")
-        
-        # Выполнение торговой стратегии
-        result = okx_service.execute_trade_strategy(wait_minutes=request.wait_minutes, buy_amount=request.buy_amount)
-        
-        response = TradeResponse(
-            strategy_completed=result["strategy_completed"],
-            wait_minutes=result["wait_minutes"],
-            buy_amount=result["buy_amount"],
-            buy_order=result["buy_order"],
-            sell_order=result["sell_order"],
-            btc_balance_sold=result["btc_balance_sold"]
-        )
-        
-        logger.info(f"Торговая стратегия успешно выполнена")
-        return response
-        
-    except ValueError as e:
-        logger.error(f"Ошибка валидации: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        logger.error(f"Ошибка выполнения торговой стратегии: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get(
-    "/trade",
-    response_model=TradeResponse,
-    responses={
-        400: {"model": ErrorResponse},
-        500: {"model": ErrorResponse}
-    },
-    summary="Выполнить торговую стратегию (GET)",
-    description="Выполняет торговую стратегию с параметрами из query string"
-)
-async def execute_trade_strategy_get(
-    wait_minutes: int = Query(default=5, description="Время ожидания в минутах", ge=1, le=60),
-    buy_amount: float = Query(default=10.0, description="Сумма в USDT для покупки BTC", gt=0)
-):
-    """
-    Выполнение торговой стратегии (GET метод)
-    
-    Параметры:
-    - **wait_minutes**: Время ожидания в минутах (по умолчанию 5)
-    - **buy_amount**: Сумма в USDT для покупки BTC (по умолчанию 10.0)
-    
-    Выполняет ту же стратегию, что и POST /trade
-    """
-    try:
-        logger.info(f"GET запрос на выполнение торговой стратегии: ожидание {wait_minutes} минут, сумма покупки {buy_amount} USDT")
-        
-        # Выполнение торговой стратегии
-        result = okx_service.execute_trade_strategy(wait_minutes=wait_minutes, buy_amount=buy_amount)
-        
-        response = TradeResponse(
-            strategy_completed=result["strategy_completed"],
-            wait_minutes=result["wait_minutes"],
-            buy_amount=result["buy_amount"],
-            buy_order=result["buy_order"],
-            sell_order=result["sell_order"],
-            btc_balance_sold=result["btc_balance_sold"]
-        )
-        
-        logger.info(f"Торговая стратегия успешно выполнена")
-        return response
-        
-    except ValueError as e:
-        logger.error(f"Ошибка валидации: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        logger.error(f"Ошибка выполнения торговой стратегии: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get(

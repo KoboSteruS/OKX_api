@@ -90,9 +90,9 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
-## Использование API
+## API Эндпоинты
 
-### 1. Тестирование соединения с OKX API
+### 1. Тестирование соединения
 
 ```bash
 curl "http://localhost:8000/api/v1/test-connection"
@@ -100,63 +100,7 @@ curl "http://localhost:8000/api/v1/test-connection"
 
 Проверяет соединение с OKX API и диагностирует проблемы SSL/TLS.
 
-### 2. Выполнение торговой стратегии (POST)
-
-```bash
-curl -X POST "http://localhost:8000/api/v1/trade" \
-  -H "Content-Type: application/json" \
-  -d '{"wait_minutes": 5, "buy_amount": 10.0}'
-```
-
-### 3. Выполнение торговой стратегии (GET)
-
-```bash
-curl "http://localhost:8000/api/v1/trade?wait_minutes=3&buy_amount=15.0"
-```
-
-### 4. Получение упрощенных рыночных данных (POST)
-
-```bash
-curl -X POST "http://localhost:8000/api/v1/market-data" \
-  -H "Content-Type: application/json" \
-  -d '{"inst_id": "BTC-USDT"}'
-```
-
-### 5. Получение упрощенных рыночных данных (GET)
-
-```bash
-curl "http://localhost:8000/api/v1/market-data?inst_id=BTC-USDT"
-```
-
-**Включает**: тикер, стакан ордеров (3 уровня), последние 10 свечей
-
-### 6. Получение данных всех тикеров (POST)
-
-```bash
-curl -X POST "http://localhost:8000/api/v1/tickers" \
-  -H "Content-Type: application/json" \
-  -d '{"inst_type": "SPOT"}'
-```
-
-### 7. Получение данных всех тикеров (GET)
-
-```bash
-curl "http://localhost:8000/api/v1/tickers?inst_type=SWAP"
-```
-
-### 8. Получение информации о валютах
-
-```bash
-curl "http://localhost:8000/api/v1/currencies"
-```
-
-### 9. Проверка здоровья сервиса
-
-```bash
-curl "http://localhost:8000/api/v1/health"
-```
-
-### 10. Покупка BTC (POST)
+### 2. Покупка BTC (POST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/buy" \
@@ -164,13 +108,13 @@ curl -X POST "http://localhost:8000/api/v1/buy" \
   -d '{"buy_amount": 10.0, "inst_id": "BTC-USDT"}'
 ```
 
-### 11. Покупка BTC (GET)
+### 3. Покупка BTC (GET)
 
 ```bash
 curl "http://localhost:8000/api/v1/buy?buy_amount=15.0&inst_id=BTC-USDT"
 ```
 
-### 12. Продажа BTC (POST)
+### 4. Продажа BTC (POST)
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/sell" \
@@ -178,35 +122,65 @@ curl -X POST "http://localhost:8000/api/v1/sell" \
   -d '{"sell_all": true, "inst_id": "BTC-USDT"}'
 ```
 
-### 13. Продажа BTC (GET)
+### 5. Продажа BTC (GET)
 
 ```bash
 curl "http://localhost:8000/api/v1/sell?sell_all=true&inst_id=BTC-USDT"
 ```
 
-### 14. Получение балансов
+### 6. Получение балансов
 
 ```bash
 curl "http://localhost:8000/api/v1/balance"
 ```
 
+### 7. Получение упрощенных рыночных данных (POST)
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/market-data" \
+  -H "Content-Type: application/json" \
+  -d '{"inst_id": "BTC-USDT"}'
+```
+
+### 8. Получение упрощенных рыночных данных (GET)
+
+```bash
+curl "http://localhost:8000/api/v1/market-data?inst_id=BTC-USDT"
+```
+
+**Включает**: тикер, стакан ордеров (3 уровня), последние 10 свечей
+
+### 9. Получение данных всех тикеров (POST)
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/tickers" \
+  -H "Content-Type: application/json" \
+  -d '{"inst_type": "SPOT"}'
+```
+
+### 10. Получение данных всех тикеров (GET)
+
+```bash
+curl "http://localhost:8000/api/v1/tickers?inst_type=SWAP"
+```
+
+### 11. Получение информации о валютах
+
+```bash
+curl "http://localhost:8000/api/v1/currencies"
+```
+
+### 12. Проверка здоровья сервиса
+
+```bash
+curl "http://localhost:8000/api/v1/health"
+```
+
 ## ⚠️ Важно: Торговая стратегия
 
-Приложение поддерживает два режима торговли:
+Приложение поддерживает **разделенные торговые операции** для интеграции с n8n и другими системами автоматизации:
 
-### 1. Автоматическая торговая стратегия (устаревший режим)
-
-Выполняет **автоматическую торговую стратегию** в демо-режиме:
-
-1. **Покупка**: BTC на указанную сумму USDT (по умолчанию 10.0 USDT)
-2. **Ожидание**: Указанное количество минут
-3. **Продажа**: Весь доступный BTC
-
-**Эндпоинт**: `/api/v1/trade`
-
-### 2. Разделенные операции (рекомендуемый режим)
-
-Для интеграции с n8n и другими системами автоматизации:
+### Торговые операции
 
 - **Покупка**: `/api/v1/buy` - покупка BTC на указанную сумму USDT
 - **Продажа**: `/api/v1/sell` - продажа BTC за USDT
@@ -227,34 +201,6 @@ curl "http://localhost:8000/api/v1/balance"
 - `inst_id`: Инструмент для торговли (по умолчанию BTC-USDT)
 
 ## Примеры ответов
-
-### Успешное выполнение стратегии
-
-```json
-{
-  "strategy_completed": true,
-  "wait_minutes": 5,
-  "buy_amount": 10.0,
-  "buy_order": {
-    "code": "0",
-    "data": [{"ordId": "2724253814203600896", "sMsg": "Order placed"}]
-  },
-  "sell_order": {
-    "code": "0",
-    "data": [{"ordId": "2724263944018186240", "sMsg": "Order placed"}]
-  },
-  "btc_balance_sold": 0.001234
-}
-```
-
-### Ответ с ошибкой
-
-```json
-{
-  "error": "API_SECRET не настроен",
-  "detail": "Проверьте настройки в .env файле"
-}
-```
 
 ### Успешная покупка BTC
 
@@ -296,6 +242,15 @@ curl "http://localhost:8000/api/v1/balance"
     "USDT": 89.5
   },
   "message": "Баланс успешно получен"
+}
+```
+
+### Ответ с ошибкой
+
+```json
+{
+  "error": "API_SECRET не настроен",
+  "detail": "Проверьте настройки в .env файле"
 }
 ```
 
