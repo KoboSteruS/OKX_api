@@ -156,19 +156,75 @@ curl "http://localhost:8000/api/v1/currencies"
 curl "http://localhost:8000/api/v1/health"
 ```
 
+### 10. Покупка BTC (POST)
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/buy" \
+  -H "Content-Type: application/json" \
+  -d '{"buy_amount": 10.0, "inst_id": "BTC-USDT"}'
+```
+
+### 11. Покупка BTC (GET)
+
+```bash
+curl "http://localhost:8000/api/v1/buy?buy_amount=15.0&inst_id=BTC-USDT"
+```
+
+### 12. Продажа BTC (POST)
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/sell" \
+  -H "Content-Type: application/json" \
+  -d '{"sell_all": true, "inst_id": "BTC-USDT"}'
+```
+
+### 13. Продажа BTC (GET)
+
+```bash
+curl "http://localhost:8000/api/v1/sell?sell_all=true&inst_id=BTC-USDT"
+```
+
+### 14. Получение балансов
+
+```bash
+curl "http://localhost:8000/api/v1/balance"
+```
+
 ## ⚠️ Важно: Торговая стратегия
 
-Приложение выполняет **автоматическую торговую стратегию** в демо-режиме:
+Приложение поддерживает два режима торговли:
+
+### 1. Автоматическая торговая стратегия (устаревший режим)
+
+Выполняет **автоматическую торговую стратегию** в демо-режиме:
 
 1. **Покупка**: BTC на указанную сумму USDT (по умолчанию 10.0 USDT)
 2. **Ожидание**: Указанное количество минут
 3. **Продажа**: Весь доступный BTC
 
+**Эндпоинт**: `/api/v1/trade`
+
+### 2. Разделенные операции (рекомендуемый режим)
+
+Для интеграции с n8n и другими системами автоматизации:
+
+- **Покупка**: `/api/v1/buy` - покупка BTC на указанную сумму USDT
+- **Продажа**: `/api/v1/sell` - продажа BTC за USDT
+- **Баланс**: `/api/v1/balance` - получение балансов всех валют
+
+**Преимущества**:
+- Контроль времени ожидания в n8n
+- Независимое выполнение операций
+- Лучшая обработка ошибок
+- Гибкость в настройке стратегий
+
 **Демо-режим**: Все операции выполняются в симуляционном режиме (`x-simulated-trading: 1`)
 
 **Параметры**:
-- `wait_minutes`: Время ожидания в минутах (1-60, по умолчанию 5)
 - `buy_amount`: Сумма в USDT для покупки BTC (больше 0, по умолчанию 10.0)
+- `sell_all`: Продать весь доступный BTC (по умолчанию True)
+- `sell_amount`: Количество BTC для продажи (если sell_all=False)
+- `inst_id`: Инструмент для торговли (по умолчанию BTC-USDT)
 
 ## Примеры ответов
 
@@ -197,6 +253,49 @@ curl "http://localhost:8000/api/v1/health"
 {
   "error": "API_SECRET не настроен",
   "detail": "Проверьте настройки в .env файле"
+}
+```
+
+### Успешная покупка BTC
+
+```json
+{
+  "success": true,
+  "buy_amount": 10.0,
+  "buy_order": {
+    "code": "0",
+    "data": [{"ordId": "2724253814203600896", "sMsg": "Order placed"}]
+  },
+  "btc_acquired": 0.001234,
+  "message": "BTC успешно куплен на 10.0 USDT"
+}
+```
+
+### Успешная продажа BTC
+
+```json
+{
+  "success": true,
+  "sell_order": {
+    "code": "0",
+    "data": [{"ordId": "2724263944018186240", "sMsg": "Order placed"}]
+  },
+  "btc_sold": 0.001234,
+  "usdt_received": 10.5,
+  "message": "BTC успешно продан за 10.5 USDT"
+}
+```
+
+### Получение балансов
+
+```json
+{
+  "success": true,
+  "balances": {
+    "BTC": 0.001234,
+    "USDT": 89.5
+  },
+  "message": "Баланс успешно получен"
 }
 ```
 

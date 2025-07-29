@@ -213,13 +213,14 @@ class OKXService:
             raise
 
 
-    def place_market_order(self, side: str, notional: float) -> Dict:
+    def place_market_order(self, side: str, notional: float, inst_id: str = "BTC-USDT") -> Dict:
         """
         Размещение рыночного ордера
         
         Args:
             side: Сторона (buy/sell)
             notional: Размер в USDT для покупки или BTC для продажи
+            inst_id: Инструмент для торговли (по умолчанию BTC-USDT)
             
         Returns:
             Dict: Результат размещения ордера
@@ -230,7 +231,7 @@ class OKXService:
         url = self.base_url + path
         
         body = {
-            "instId": "BTC-USDT",
+            "instId": inst_id,
             "tdMode": "cash",
             "side": side,
             "ordType": "market",
@@ -490,27 +491,205 @@ class OKXService:
         try:
             logger.info("Получение информации о валютах")
             
-            path = '/api/v5/public/currencies'
+            currencies_path = '/api/v5/asset/currencies'
+            
             try:
                 response = self.session.get(
-                    self.base_url + path,
+                    self.base_url + currencies_path,
                     timeout=30,
                     verify=True
                 )
-                result = response.json()
+                data = response.json()
             except requests.exceptions.SSLError as e:
-                logger.error(f"SSL ошибка при получении валют: {e}")
+                logger.error(f"SSL ошибка при получении информации о валютах: {e}")
                 raise
             except requests.exceptions.RequestException as e:
-                logger.error(f"Ошибка сети при получении валют: {e}")
+                logger.error(f"Ошибка сети при получении информации о валютах: {e}")
                 raise
             
             logger.info("Информация о валютах успешно получена")
-            return result
+            return data
             
         except Exception as e:
             logger.error(f"Ошибка получения информации о валютах: {e}")
             raise
+
+
+    def buy_btc(self, buy_amount: float, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Покупка BTC на указанную сумму USDT
+        
+        Args:
+            buy_amount: Сумма в USDT для покупки BTC
+            inst_id: Инструмент для покупки (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Результат покупки с информацией о приобретенном BTC
+        """
+        try:
+            logger.info(f"=== НАЧАЛО ПОКУПКИ BTC ===")
+            logger.info(f"Сумма покупки: {buy_amount} USDT")
+            logger.info(f"Инструмент: {inst_id}")
+            
+            # Покупка BTC на указанную сумму USDT
+            buy_result = self.place_market_order("buy", notional=buy_amount, inst_id=inst_id)
+            
+            # Получаем баланс BTC для определения количества приобретенного BTC
+            btc_balance = self.get_balance("BTC")
+            
+            result = {
+                "success": True,
+                "buy_amount": buy_amount,
+                "buy_order": buy_result,
+                "btc_acquired": btc_balance,
+                "message": f"BTC успешно куплен на {buy_amount} USDT"
+            }
+            
+            logger.info(f"=== ПОКУПКА ЗАВЕРШЕНА ===")
+            logger.info(f"Результат: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка покупки BTC: {e}")
+            return {
+                "success": False,
+                "buy_amount": buy_amount,
+                "buy_order": {"error": str(e)},
+                "btc_acquired": 0.0,
+                "message": f"Ошибка покупки BTC: {e}"
+            }
+
+
+    def sell_btc(self, sell_all: bool = True, sell_amount: Optional[float] = None, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Продажа BTC
+        
+        Args:
+            sell_all: Продать весь доступный BTC (по умолчанию True)
+            sell_amount: Количество BTC для продажи (если sell_all=False)
+            inst_id: Инструмент для продажи (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Результат продажи с информацией о полученных USDT
+        """
+        try:
+            logger.info(f"=== НАЧАЛО ПРОДАЖИ BTC ===")
+            logger.info(f"Продать все: {sell_all}")
+            if not sell_all and sell_amount:
+                logger.info(f"Количество для продажи: {sell_amount} BTC")
+            logger.info(f"Инструмент: {inst_id}")
+            
+            # Получаем текущий баланс BTC
+            btc_balance = self.get_balance("BTC")
+            
+            if btc_balance <= 0:
+                return {
+                    "success": False,
+                    "sell_order": {"error": "Нет доступного BTC для продажи"},
+                    "btc_sold": 0.0,
+                    "usdt_received": 0.0,
+                    "message": "Нет доступного BTC для продажи"
+                }
+            
+            # Определяем количество BTC для продажи
+            if sell_all:
+                amount_to_sell = btc_balance
+            else:
+                if not sell_amount or sell_amount <= 0:
+                    return {
+                        "success": False,
+                        "sell_order": {"error": "Неверное количество BTC для продажи"},
+                        "btc_sold": 0.0,
+                        "usdt_received": 0.0,
+                        "message": "Неверное количество BTC для продажи"
+                    }
+                amount_to_sell = min(sell_amount, btc_balance)
+            
+            # Продажа BTC
+            sell_result = self.place_market_order("sell", notional=amount_to_sell, inst_id=inst_id)
+            
+            # Получаем обновленный баланс USDT для определения полученной суммы
+            usdt_balance_after = self.get_balance("USDT")
+            
+            result = {
+                "success": True,
+                "sell_order": sell_result,
+                "btc_sold": amount_to_sell,
+                "usdt_received": usdt_balance_after,
+                "message": f"BTC успешно продан за {usdt_balance_after} USDT"
+            }
+            
+            logger.info(f"=== ПРОДАЖА ЗАВЕРШЕНА ===")
+            logger.info(f"Результат: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка продажи BTC: {e}")
+            return {
+                "success": False,
+                "sell_order": {"error": str(e)},
+                "btc_sold": 0.0,
+                "usdt_received": 0.0,
+                "message": f"Ошибка продажи BTC: {e}"
+            }
+
+
+    def get_balances(self) -> Dict:
+        """
+        Получение балансов всех валют
+        
+        Returns:
+            Dict: Балансы по всем валютам
+        """
+        try:
+            logger.info("Получение балансов всех валют")
+            
+            balances_path = '/api/v5/account/balance'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + balances_path,
+                    headers=self.get_auth_headers("GET", balances_path),
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении балансов: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении балансов: {e}")
+                raise
+            
+            # Извлекаем балансы из ответа
+            balances = {}
+            if 'data' in data and data['data']:
+                for account in data['data']:
+                    if 'details' in account:
+                        for detail in account['details']:
+                            ccy = detail.get('ccy', '')
+                            bal = detail.get('bal', '0')
+                            if ccy and float(bal) > 0:
+                                balances[ccy] = float(bal)
+            
+            result = {
+                "success": True,
+                "balances": balances,
+                "message": "Баланс успешно получен"
+            }
+            
+            logger.info(f"Балансы успешно получены: {balances}")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения балансов: {e}")
+            return {
+                "success": False,
+                "balances": {},
+                "message": f"Ошибка получения балансов: {e}"
+            }
 
 
 # Глобальный экземпляр сервиса
