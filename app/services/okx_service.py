@@ -166,10 +166,11 @@ class OKXService:
             
             headers = {
                 'OK-ACCESS-KEY': self.api_key.strip(),
-                'OK-ACCESS-SIGN': signature.strip(),  # Убираем лишние пробелы
-                'OK-ACCESS-TIMESTAMP': timestamp.strip(),  # Убираем лишние пробелы
+                'OK-ACCESS-SIGN': signature.strip(),
+                'OK-ACCESS-TIMESTAMP': timestamp.strip(),
                 'OK-ACCESS-PASSPHRASE': self.passphrase.strip(),
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-simulated-trading': '1'  # Демо режим
             }
             
             logger.info(f"Сгенерированы заголовки авторизации для {method} {request_path}")
@@ -243,7 +244,6 @@ class OKXService:
         logger.info(f"{side.upper()} BODY: {body_str}")
         
         headers = self.get_auth_headers("POST", path, body_str)
-        headers['x-simulated-trading'] = '1'  # Демо режим
         
         try:
             response = self.session.post(
@@ -276,7 +276,6 @@ class OKXService:
         url = self.base_url + path
         
         headers = self.get_auth_headers("GET", path)
-        headers['x-simulated-trading'] = '1'  # Демо режим
         
         try:
             response = self.session.get(
