@@ -286,13 +286,37 @@ class OKXService:
                 verify=True
             )
             data = response.json()
-            return float(data['data'][0]['details'][0]['availBal'])
+            
+            # Проверяем наличие ошибки в ответе
+            if 'code' in data and data['code'] != '0':
+                logger.error(f"Ошибка API при получении баланса {ccy}: {data}")
+                return 0.0
+            
+            # Проверяем структуру данных
+            if 'data' not in data or not data['data']:
+                logger.warning(f"Нет данных баланса для {ccy}")
+                return 0.0
+            
+            # Извлекаем баланс
+            for account in data['data']:
+                if 'details' in account and account['details']:
+                    for detail in account['details']:
+                        if detail.get('ccy') == ccy:
+                            avail_bal = detail.get('availBal', '0')
+                            return float(avail_bal)
+            
+            logger.warning(f"Баланс {ccy} не найден")
+            return 0.0
+            
         except requests.exceptions.SSLError as e:
             logger.error(f"SSL ошибка при получении баланса: {e}")
-            raise
+            return 0.0
         except requests.exceptions.RequestException as e:
             logger.error(f"Ошибка сети при получении баланса: {e}")
-            raise
+            return 0.0
+        except (KeyError, ValueError, TypeError) as e:
+            logger.error(f"Ошибка парсинга баланса {ccy}: {e}")
+            return 0.0
 
 
     def get_market_data(self, inst_id: str = "BTC-USDT") -> Dict:
@@ -485,6 +509,18 @@ class OKXService:
             # Покупка BTC на указанную сумму USDT
             buy_result = self.place_market_order("buy", notional=buy_amount, inst_id=inst_id)
             
+            # Проверяем результат покупки
+            if 'code' in buy_result and buy_result['code'] != '0':
+                error_msg = buy_result.get('msg', 'Неизвестная ошибка')
+                logger.error(f"Ошибка покупки BTC: {error_msg}")
+                return {
+                    "success": False,
+                    "buy_amount": buy_amount,
+                    "buy_order": buy_result,
+                    "btc_acquired": 0.0,
+                    "message": f"Ошибка покупки BTC: {error_msg}"
+                }
+            
             # Получаем баланс BTC для определения количества приобретенного BTC
             btc_balance = self.get_balance("BTC")
             
@@ -559,6 +595,18 @@ class OKXService:
             
             # Продажа BTC
             sell_result = self.place_market_order("sell", notional=amount_to_sell, inst_id=inst_id)
+            
+            # Проверяем результат продажи
+            if 'code' in sell_result and sell_result['code'] != '0':
+                error_msg = sell_result.get('msg', 'Неизвестная ошибка')
+                logger.error(f"Ошибка продажи BTC: {error_msg}")
+                return {
+                    "success": False,
+                    "sell_order": sell_result,
+                    "btc_sold": 0.0,
+                    "usdt_received": 0.0,
+                    "message": f"Ошибка продажи BTC: {error_msg}"
+                }
             
             # Получаем обновленный баланс USDT для определения полученной суммы
             usdt_balance_after = self.get_balance("USDT")

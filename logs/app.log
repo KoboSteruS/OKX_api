@@ -35,3 +35,71 @@
 2025-07-25 15:01:45 | INFO     | app.services.okx_service:get_sign_and_timestamp:153 - Получены подпись и временная метка для GET /api/v5/account/balance
 2025-07-25 15:01:45 | INFO     | app.api.endpoints:get_signature:66 - Успешно сгенерирована подпись для GET /api/v5/account/balance
 2025-07-25 15:01:45 | INFO     | app.main:log_requests:52 - Запрос обработан: GET http://localhost:8000/api/v1/sign?method=GET&path=%2Fapi%2Fv5%2Faccount%2Fbalance&body= - 200 (0.873s)
+2025-07-29 14:27:28 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-29 14:27:28 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:27:28 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:27:28Z
+2025-07-29 14:27:28 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.006s)
+2025-07-29 14:27:33 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance
+2025-07-29 14:27:33 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:27:33 | INFO     | app.api.endpoints:get_balances:530 - Запрос на получение балансов всех валют
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:get_balances:598 - Получение балансов всех валют
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:27:33Z
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:27:33ZGET/api/v5/account/balance'
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 46
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Em0uDPRo/SwChbMJSXSqNZRpv9Do20VI7j8o89G2wtI=
+2025-07-29 14:27:33 | INFO     | app.services.okx_service:get_auth_headers:175 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-07-29 14:27:34 | INFO     | app.services.okx_service:get_balances:634 - Балансы успешно получены: {}
+2025-07-29 14:27:34 | INFO     | app.api.endpoints:get_balances:541 - Балансы получены: Баланс успешно получен
+2025-07-29 14:27:34 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (1.167s)
+2025-07-29 14:27:38 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/buy?buy_amount=5.0
+2025-07-29 14:27:38 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:27:38 | INFO     | app.api.endpoints:buy_btc_get:369 - GET запрос на покупку BTC: сумма 5.0 USDT, инструмент BTC-USDT
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:buy_btc:481 - === НАЧАЛО ПОКУПКИ BTC ===
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:buy_btc:482 - Сумма покупки: 5.0 USDT
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:buy_btc:483 - Инструмент: BTC-USDT
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:place_market_order:243 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"5.0"}
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:27:38Z
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:27:38ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"5.0"}'
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 136
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"5.0"}' (длина: 93)
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: ncw/EvIwnHh7BlazQPL93ufEbsbepaLvhYKOrvwLY+M=
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:get_auth_headers:175 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"msg":"This API key doesn't have permission to use this function","code":"50120"}
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:27:38Z
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:27:38ZGET/api/v5/account/balance?ccy=BTC'
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Y+V3XONcqesRR7CuruvufoCMPOn2WZ5W57oTlrf5RY4=
+2025-07-29 14:27:38 | INFO     | app.services.okx_service:get_auth_headers:175 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-07-29 14:27:38 | ERROR    | app.services.okx_service:buy_btc:505 - Ошибка покупки BTC: 'data'
+2025-07-29 14:27:38 | INFO     | app.api.endpoints:buy_btc_get:382 - Покупка BTC завершена: Ошибка покупки BTC: 'data'
+2025-07-29 14:27:38 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/buy?buy_amount=5.0 - 200 (0.766s)
+2025-07-29 14:27:44 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/sell?sell_all=true
+2025-07-29 14:27:44 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:27:44 | INFO     | app.api.endpoints:sell_btc_get:481 - GET запрос на продажу BTC: продать все True, инструмент BTC-USDT
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:sell_btc:528 - === НАЧАЛО ПРОДАЖИ BTC ===
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:sell_btc:529 - Продать все: True
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:sell_btc:532 - Инструмент: BTC-USDT
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:27:44Z
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:27:44ZGET/api/v5/account/balance?ccy=BTC'
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: vXX/RNKMNSx1DPtgkLkFqZE/QQQ/Mjx8LNv/uFetxS0=
+2025-07-29 14:27:44 | INFO     | app.services.okx_service:get_auth_headers:175 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-07-29 14:27:44 | ERROR    | app.services.okx_service:sell_btc:580 - Ошибка продажи BTC: 'data'
+2025-07-29 14:27:44 | INFO     | app.api.endpoints:sell_btc_get:500 - Продажа BTC завершена: Ошибка продажи BTC: 'data'
+2025-07-29 14:27:44 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/sell?sell_all=true - 200 (0.394s)
+2025-07-29 14:45:34 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-29 14:45:34 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:45:34 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:45:34Z
+2025-07-29 14:45:34 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.009s)
+2025-07-29 14:45:42 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-07-29 14:45:42 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:45:42 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.001s)
+2025-07-29 14:45:47 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-07-29 14:45:47 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:45:47 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.020s)
+2025-07-29 14:45:53 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-07-29 14:45:53 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:45:53 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.002s)
