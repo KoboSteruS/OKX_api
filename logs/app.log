@@ -148,3 +148,37 @@
 2025-07-29 14:49:45 | ERROR    | app.services.okx_service:get_balance:292 - Ошибка API при получении баланса BTC: {'msg': 'APIKey does not match current environment.', 'code': '50101'}
 2025-07-29 14:49:45 | INFO     | app.api.endpoints:sell_btc_get:500 - Продажа BTC завершена: Нет доступного BTC для продажи
 2025-07-29 14:49:45 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/sell?sell_all=true - 200 (0.304s)
+2025-07-29 14:51:49 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance
+2025-07-29 14:51:49 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:51:49 | INFO     | app.api.endpoints:get_balances:530 - Запрос на получение балансов всех валют
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:get_balances:645 - Получение балансов всех валют
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:51:49Z
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:51:49ZGET/api/v5/account/balance'
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 46
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: yGL5gNUTFN8rKR5q3qsyWcYIHK01aJU3OFZg+uF1h6Y=
+2025-07-29 14:51:49 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-07-29 14:51:50 | INFO     | app.services.okx_service:get_balances:681 - Балансы успешно получены: {}
+2025-07-29 14:51:50 | INFO     | app.api.endpoints:get_balances:541 - Балансы получены: Баланс успешно получен
+2025-07-29 14:51:50 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (1.130s)
+2025-07-29 14:51:55 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/buy?buy_amount=10.0
+2025-07-29 14:51:55 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:51:55 | INFO     | app.api.endpoints:buy_btc_get:369 - GET запрос на покупку BTC: сумма 10.0 USDT, инструмент BTC-USDT
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:buy_btc:504 - === НАЧАЛО ПОКУПКИ BTC ===
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:buy_btc:505 - Сумма покупки: 10.0 USDT
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:buy_btc:506 - Инструмент: BTC-USDT
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"10.0"}
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:51:55Z
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-29T11:51:55ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"10.0"}'
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 137
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"10.0"}' (длина: 94)
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: XY5gBbi2jurk5GH+XqqdXlYsNImjKq3D/sa/xEmfamk=
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-07-29 14:51:55 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"msg":"This API key doesn't have permission to use this function","code":"50120"}
+2025-07-29 14:51:55 | ERROR    | app.services.okx_service:buy_btc:514 - Ошибка покупки BTC: This API key doesn't have permission to use this function
+2025-07-29 14:51:55 | INFO     | app.api.endpoints:buy_btc_get:382 - Покупка BTC завершена: Ошибка покупки BTC: This API key doesn't have permission to use this function
+2025-07-29 14:51:55 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/buy?buy_amount=10.0 - 200 (0.336s)
+2025-07-29 14:52:05 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-29 14:52:05 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-29 14:52:05 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:52:05Z
+2025-07-29 14:52:05 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.006s)

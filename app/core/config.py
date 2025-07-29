@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     debug: bool = False
     
     # Настройки OKX API
-    okx_base_url: str = "https://www.okx.com"
+    okx_base_url: str = "https://www.okx.com"  # Основной URL для демо-режима
     okx_api_key: Optional[str] = None
     okx_api_secret: Optional[str] = None
     okx_passphrase: Optional[str] = None
