@@ -690,5 +690,288 @@ class OKXService:
             }
 
 
+    def get_orderbook(self, inst_id: str = "BTC-USDT", depth: int = 20) -> Dict:
+        """
+        Получение стакана ордеров
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            depth: Глубина стакана (по умолчанию 20)
+            
+        Returns:
+            Dict: Стакан ордеров
+        """
+        try:
+            logger.info(f"Получение стакана ордеров для {inst_id} с глубиной {depth}")
+            
+            path = f'/api/v5/market/books?instId={inst_id}&sz={depth}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении стакана: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении стакана: {e}")
+                raise
+            
+            logger.info(f"Стакан ордеров для {inst_id} успешно получен")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения стакана ордеров: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения стакана: {e}",
+                "data": []
+            }
+
+
+    def get_current_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 100) -> Dict:
+        """
+        Получение текущих свечей
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)
+            limit: Количество свечей (по умолчанию 100)
+            
+        Returns:
+            Dict: Текущие свечи
+        """
+        try:
+            logger.info(f"Получение текущих свечей для {inst_id}, интервал {bar}, количество {limit}")
+            
+            path = f'/api/v5/market/candles?instId={inst_id}&bar={bar}&limit={limit}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении свечей: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении свечей: {e}")
+                raise
+            
+            logger.info(f"Текущие свечи для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения текущих свечей: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения свечей: {e}",
+                "data": []
+            }
+
+
+    def get_history_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 1000) -> Dict:
+        """
+        Получение исторических свечей
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей
+            limit: Количество свечей (по умолчанию 1000)
+            
+        Returns:
+            Dict: Исторические свечи
+        """
+        try:
+            logger.info(f"Получение исторических свечей для {inst_id}, интервал {bar}, количество {limit}")
+            
+            path = f'/api/v5/market/history-candles?instId={inst_id}&bar={bar}&limit={limit}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении исторических свечей: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении исторических свечей: {e}")
+                raise
+            
+            logger.info(f"Исторические свечи для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения исторических свечей: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения исторических свечей: {e}",
+                "data": []
+            }
+
+
+    def get_active_orders(self, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Получение активных ордеров пользователя
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Активные ордера
+        """
+        try:
+            logger.info(f"Получение активных ордеров для {inst_id}")
+            
+            path = f'/api/v5/trade/orders-pending?instId={inst_id}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    headers=self.get_auth_headers("GET", path),
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении активных ордеров: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении активных ордеров: {e}")
+                raise
+            
+            logger.info(f"Активные ордера для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения активных ордеров: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения активных ордеров: {e}",
+                "data": []
+            }
+
+
+    def get_ticker_data(self, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Получение данных тикера для индикаторов
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Данные тикера
+        """
+        try:
+            logger.info(f"Получение данных тикера для {inst_id}")
+            
+            path = f'/api/v5/market/ticker?instId={inst_id}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении тикера: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении тикера: {e}")
+                raise
+            
+            logger.info(f"Данные тикера для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения данных тикера: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения тикера: {e}",
+                "data": []
+            }
+
+
+    def get_market_analytics(self, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Получение полных аналитических данных для n8n
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Полные аналитические данные
+        """
+        try:
+            logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
+            
+            # Получаем все данные параллельно
+            orderbook = self.get_orderbook(inst_id)
+            current_candles = self.get_current_candles(inst_id)
+            history_candles = self.get_history_candles(inst_id)
+            active_orders = self.get_active_orders(inst_id)
+            balances = self.get_balances()
+            ticker = self.get_ticker_data(inst_id)
+            
+            # Формируем ответ
+            result = {
+                "success": True,
+                "inst_id": inst_id,
+                "market_data": {
+                    "orderbook": orderbook.get("data", []),
+                    "current_candles": current_candles.get("data", []),
+                    "history_candles": history_candles.get("data", [])
+                },
+                "user_data": {
+                    "active_orders": active_orders.get("data", []),
+                    "balances": balances.get("balances", {})
+                },
+                "indicators": {
+                    "current_price": "0",
+                    "volume_24h": "0",
+                    "change_24h": "0",
+                    "high_24h": "0",
+                    "low_24h": "0"
+                },
+                "timestamp": self.get_server_timestamp(),
+                "message": "Аналитические данные успешно получены"
+            }
+            
+            # Извлекаем индикаторы из тикера
+            if ticker.get("data") and ticker["data"]:
+                ticker_data = ticker["data"][0]
+                result["indicators"] = {
+                    "current_price": ticker_data.get("last", "0"),
+                    "volume_24h": ticker_data.get("vol24h", "0"),
+                    "change_24h": ticker_data.get("change24h", "0"),
+                    "high_24h": ticker_data.get("high24h", "0"),
+                    "low_24h": ticker_data.get("low24h", "0")
+                }
+            
+            logger.info(f"=== АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ {inst_id} ===")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения аналитических данных: {e}")
+            return {
+                "success": False,
+                "inst_id": inst_id,
+                "market_data": {"orderbook": [], "current_candles": [], "history_candles": []},
+                "user_data": {"active_orders": [], "balances": {}},
+                "indicators": {"current_price": "0", "volume_24h": "0", "change_24h": "0", "high_24h": "0", "low_24h": "0"},
+                "timestamp": self.get_server_timestamp(),
+                "message": f"Ошибка получения аналитических данных: {e}"
+            }
+
+
 # Глобальный экземпляр сервиса
 okx_service = OKXService() 

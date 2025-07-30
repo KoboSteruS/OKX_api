@@ -8,7 +8,8 @@ from typing import Optional
 from app.api.schemas import (
     SignRequest, SignResponse, ErrorResponse, 
     MarketDataRequest, MarketDataResponse, TickersRequest, CurrenciesResponse,
-    BuyRequest, BuyResponse, SellRequest, SellResponse, BalanceResponse
+    BuyRequest, BuyResponse, SellRequest, SellResponse, BalanceResponse,
+    AnalyticsResponse
 )
 from app.services.okx_service import okx_service
 
@@ -543,6 +544,75 @@ async def get_balances():
         
     except Exception as e:
         logger.error(f"Ошибка получения балансов: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
+    "/market/analytics",
+    response_model=AnalyticsResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить аналитические данные",
+    description="Получает полные аналитические данные для n8n: стакан ордеров, свечи, активные ордера, балансы, индикаторы"
+)
+async def get_market_analytics(
+    inst_id: str = Query(default="BTC-USDT", description="Инструмент для анализа"),
+    bar: str = Query(default="1m", description="Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)"),
+    depth: int = Query(default=20, description="Глубина стакана ордеров", ge=1, le=100),
+    current_limit: int = Query(default=100, description="Количество текущих свечей", ge=1, le=1000),
+    history_limit: int = Query(default=1000, description="Количество исторических свечей", ge=1, le=3000)
+):
+    """
+    Получение полных аналитических данных для n8n
+    
+    Возвращает в одном запросе:
+    - **Стакан ордеров** (order book) - для анализа ликвидности
+    - **Текущие свечи** - для понимания текущей ситуации
+    - **Исторические свечи** - для технического анализа
+    - **Активные ордера** - текущие ордера пользователя
+    - **Балансы** - доступные средства
+    - **Рыночные индикаторы** - цена, объем, изменения
+    
+    Параметры:
+    - **inst_id**: Инструмент для анализа (по умолчанию BTC-USDT)
+    - **bar**: Интервал свечей (по умолчанию 1m)
+    - **depth**: Глубина стакана ордеров (по умолчанию 20)
+    - **current_limit**: Количество текущих свечей (по умолчанию 100)
+    - **history_limit**: Количество исторических свечей (по умолчанию 1000)
+    
+    Использование в n8n:
+    - Один запрос предоставляет всю необходимую информацию
+    - Позволяет быстро принимать торговые решения
+    - Эффективно для автоматизации торговых стратегий
+    """
+    try:
+        logger.info(f"Запрос аналитических данных для {inst_id}")
+        logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
+        
+        # Получение аналитических данных
+        result = okx_service.get_market_analytics(inst_id=inst_id)
+        
+        # Создаем ответ с правильной структурой
+        response = AnalyticsResponse(
+            success=result["success"],
+            inst_id=result["inst_id"],
+            market_data=result["market_data"],
+            user_data=result["user_data"],
+            indicators=result["indicators"],
+            timestamp=result["timestamp"],
+            message=result["message"]
+        )
+        
+        logger.info(f"Аналитические данные для {inst_id} успешно получены")
+        return response
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения аналитических данных: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

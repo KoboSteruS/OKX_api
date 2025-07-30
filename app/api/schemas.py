@@ -235,4 +235,205 @@ class BalanceResponse(BaseModel):
         ...,
         description="Сообщение о результате операции",
         example="Баланс успешно получен"
+    )
+
+
+# Новые схемы для аналитического API
+class OrderBookEntry(BaseModel):
+    """Схема записи стакана ордеров"""
+    
+    price: str = Field(
+        ...,
+        description="Цена",
+        example="50000.0"
+    )
+    size: str = Field(
+        ...,
+        description="Размер",
+        example="1.5"
+    )
+    num_orders: str = Field(
+        ...,
+        description="Количество ордеров",
+        example="10"
+    )
+
+
+class CandleData(BaseModel):
+    """Схема данных свечи"""
+    
+    timestamp: str = Field(
+        ...,
+        description="Временная метка",
+        example="1703123456000"
+    )
+    open: str = Field(
+        ...,
+        description="Цена открытия",
+        example="50000.0"
+    )
+    high: str = Field(
+        ...,
+        description="Максимальная цена",
+        example="50100.0"
+    )
+    low: str = Field(
+        ...,
+        description="Минимальная цена",
+        example="49900.0"
+    )
+    close: str = Field(
+        ...,
+        description="Цена закрытия",
+        example="50050.0"
+    )
+    volume: str = Field(
+        ...,
+        description="Объем",
+        example="100.5"
+    )
+
+
+class MarketData(BaseModel):
+    """Схема рыночных данных"""
+    
+    orderbook: dict = Field(
+        ...,
+        description="Стакан ордеров",
+        example={
+            "bids": [{"price": "50000.0", "size": "1.5", "num_orders": "10"}],
+            "asks": [{"price": "50001.0", "size": "1.0", "num_orders": "5"}]
+        }
+    )
+    current_candles: list = Field(
+        ...,
+        description="Текущие свечи (последние 100)",
+        example=[{"timestamp": "1703123456000", "open": "50000.0", "high": "50100.0", "low": "49900.0", "close": "50050.0", "volume": "100.5"}]
+    )
+    history_candles: list = Field(
+        ...,
+        description="Исторические свечи (последние 1000)",
+        example=[{"timestamp": "1703123456000", "open": "50000.0", "high": "50100.0", "low": "49900.0", "close": "50050.0", "volume": "100.5"}]
+    )
+
+
+class UserOrder(BaseModel):
+    """Схема пользовательского ордера"""
+    
+    ord_id: str = Field(
+        ...,
+        description="ID ордера",
+        example="123456789"
+    )
+    inst_id: str = Field(
+        ...,
+        description="Инструмент",
+        example="BTC-USDT"
+    )
+    side: str = Field(
+        ...,
+        description="Сторона (buy/sell)",
+        example="buy"
+    )
+    ord_type: str = Field(
+        ...,
+        description="Тип ордера (market/limit)",
+        example="limit"
+    )
+    px: str = Field(
+        ...,
+        description="Цена",
+        example="50000.0"
+    )
+    sz: str = Field(
+        ...,
+        description="Размер",
+        example="0.001"
+    )
+    state: str = Field(
+        ...,
+        description="Состояние ордера",
+        example="live"
+    )
+
+
+class UserData(BaseModel):
+    """Схема пользовательских данных"""
+    
+    active_orders: list = Field(
+        ...,
+        description="Активные ордера",
+        example=[{"ord_id": "123456789", "inst_id": "BTC-USDT", "side": "buy", "ord_type": "limit", "px": "50000.0", "sz": "0.001", "state": "live"}]
+    )
+    balances: dict = Field(
+        ...,
+        description="Балансы",
+        example={"BTC": 0.001234, "USDT": 100.5}
+    )
+
+
+class MarketIndicators(BaseModel):
+    """Схема рыночных индикаторов"""
+    
+    current_price: str = Field(
+        ...,
+        description="Текущая цена",
+        example="50000.0"
+    )
+    volume_24h: str = Field(
+        ...,
+        description="Объем за 24 часа",
+        example="1000000.0"
+    )
+    change_24h: str = Field(
+        ...,
+        description="Изменение за 24 часа",
+        example="2.5"
+    )
+    high_24h: str = Field(
+        ...,
+        description="Максимум за 24 часа",
+        example="51000.0"
+    )
+    low_24h: str = Field(
+        ...,
+        description="Минимум за 24 часа",
+        example="49000.0"
+    )
+
+
+class AnalyticsResponse(BaseModel):
+    """Схема ответа аналитического эндпоинта"""
+    
+    success: bool = Field(
+        ...,
+        description="Статус выполнения",
+        example=True
+    )
+    inst_id: str = Field(
+        ...,
+        description="Инструмент",
+        example="BTC-USDT"
+    )
+    market_data: MarketData = Field(
+        ...,
+        description="Рыночные данные"
+    )
+    user_data: UserData = Field(
+        ...,
+        description="Пользовательские данные"
+    )
+    indicators: MarketIndicators = Field(
+        ...,
+        description="Рыночные индикаторы"
+    )
+    timestamp: str = Field(
+        ...,
+        description="Временная метка запроса",
+        example="2025-07-29T11:52:05Z"
+    )
+    message: str = Field(
+        ...,
+        description="Сообщение о результате",
+        example="Аналитические данные успешно получены"
     ) 
