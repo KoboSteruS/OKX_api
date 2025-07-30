@@ -415,17 +415,17 @@ class AnalyticsResponse(BaseModel):
         description="Инструмент",
         example="BTC-USDT"
     )
-    market_data: MarketData = Field(
+    market_data: dict = Field(
         ...,
-        description="Рыночные данные"
+        description="Рыночные данные (стакан ордеров, свечи)"
     )
-    user_data: UserData = Field(
+    user_data: dict = Field(
         ...,
-        description="Пользовательские данные"
+        description="Пользовательские данные (активные ордера, балансы)"
     )
-    indicators: MarketIndicators = Field(
+    indicators: dict = Field(
         ...,
-        description="Рыночные индикаторы"
+        description="Рыночные индикаторы (цена, объем, изменения)"
     )
     timestamp: str = Field(
         ...,

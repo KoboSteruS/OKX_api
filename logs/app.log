@@ -182,3 +182,82 @@
 2025-07-29 14:52:05 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
 2025-07-29 14:52:05 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-29T11:52:05Z
 2025-07-29 14:52:05 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.006s)
+2025-07-30 17:04:18 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/health
+2025-07-30 17:04:18 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-30 17:04:18 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:18Z
+2025-07-30 17:04:18 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/health - 200 (0.002s)
+2025-07-30 17:04:23 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/market/analytics?inst_id=BTC-USDT
+2025-07-30 17:04:23 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-30 17:04:23 | INFO     | app.api.endpoints:get_market_analytics:591 - Запрос аналитических данных для BTC-USDT
+2025-07-30 17:04:23 | INFO     | app.api.endpoints:get_market_analytics:592 - Параметры: bar=1m, depth=20, current_limit=100, history_limit=1000
+2025-07-30 17:04:23 | INFO     | app.services.okx_service:get_market_analytics:915 - === НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ BTC-USDT ===
+2025-07-30 17:04:23 | INFO     | app.services.okx_service:get_orderbook:705 - Получение стакана ордеров для BTC-USDT с глубиной 20
+2025-07-30 17:04:24 | INFO     | app.services.okx_service:get_orderbook:723 - Стакан ордеров для BTC-USDT успешно получен
+2025-07-30 17:04:24 | INFO     | app.services.okx_service:get_current_candles:748 - Получение текущих свечей для BTC-USDT, интервал 1m, количество 100
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_current_candles:766 - Текущие свечи для BTC-USDT успешно получены
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_history_candles:791 - Получение исторических свечей для BTC-USDT, интервал 1m, количество 1000
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_history_candles:809 - Исторические свечи для BTC-USDT успешно получены
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_active_orders:832 - Получение активных ордеров для BTC-USDT
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:25Z
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-30T14:04:25ZGET/api/v5/trade/orders-pending?instId=BTC-USDT'
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 67
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: OG3sit35nxKwUOnMk8Uvz6N6SyQEc2GgaRlMKIqMszU=
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending?instId=BTC-USDT
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_active_orders:851 - Активные ордера для BTC-USDT успешно получены
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_balances:645 - Получение балансов всех валют
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:25Z
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-30T14:04:25ZGET/api/v5/account/balance'
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 46
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: F8AmK+Gd+MwlAcAyzNFB8RTyPWYVTDoDeOkNfTXTtsU=
+2025-07-30 17:04:25 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-07-30 17:04:26 | INFO     | app.services.okx_service:get_balances:681 - Балансы успешно получены: {}
+2025-07-30 17:04:26 | INFO     | app.services.okx_service:get_ticker_data:874 - Получение данных тикера для BTC-USDT
+2025-07-30 17:04:26 | INFO     | app.services.okx_service:get_ticker_data:892 - Данные тикера для BTC-USDT успешно получены
+2025-07-30 17:04:26 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:26Z
+2025-07-30 17:04:26 | INFO     | app.services.okx_service:get_market_analytics:960 - === АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ BTC-USDT ===
+2025-07-30 17:04:26 | ERROR    | app.api.endpoints:get_market_analytics:612 - Ошибка валидации: 1 validation error for AnalyticsResponse
+market_data.orderbook
+  Input should be a valid dictionary [type=dict_type, input_value=[{'asks': [['117708.6', '... 'ts': '1753884264309'}], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.8/v/dict_type
+2025-07-30 17:04:26 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/market/analytics?inst_id=BTC-USDT - 400 (2.850s)
+2025-07-30 17:04:30 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/market/analytics
+2025-07-30 17:04:30 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-30 17:04:30 | INFO     | app.api.endpoints:get_market_analytics:591 - Запрос аналитических данных для BTC-USDT
+2025-07-30 17:04:30 | INFO     | app.api.endpoints:get_market_analytics:592 - Параметры: bar=1m, depth=20, current_limit=100, history_limit=1000
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_market_analytics:915 - === НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ BTC-USDT ===
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_orderbook:705 - Получение стакана ордеров для BTC-USDT с глубиной 20
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_orderbook:723 - Стакан ордеров для BTC-USDT успешно получен
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_current_candles:748 - Получение текущих свечей для BTC-USDT, интервал 1m, количество 100
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_current_candles:766 - Текущие свечи для BTC-USDT успешно получены
+2025-07-30 17:04:30 | INFO     | app.services.okx_service:get_history_candles:791 - Получение исторических свечей для BTC-USDT, интервал 1m, количество 1000
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_history_candles:809 - Исторические свечи для BTC-USDT успешно получены
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_active_orders:832 - Получение активных ордеров для BTC-USDT
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:31Z
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-30T14:04:31ZGET/api/v5/trade/orders-pending?instId=BTC-USDT'
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 67
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: 6P2C1mBzEG3iZyH6yx/Ufrguxed7sKQPTFnZPak0l1c=
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending?instId=BTC-USDT
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_active_orders:851 - Активные ордера для BTC-USDT успешно получены
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_balances:645 - Получение балансов всех валют
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:31Z
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-07-30T14:04:31ZGET/api/v5/account/balance'
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 46
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: fqGCjsMy/3rtdkfSdcpDqMUXlYOBr8OFCC022Za6dBI=
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_balances:681 - Балансы успешно получены: {}
+2025-07-30 17:04:31 | INFO     | app.services.okx_service:get_ticker_data:874 - Получение данных тикера для BTC-USDT
+2025-07-30 17:04:32 | INFO     | app.services.okx_service:get_ticker_data:892 - Данные тикера для BTC-USDT успешно получены
+2025-07-30 17:04:32 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-07-30T14:04:32Z
+2025-07-30 17:04:32 | INFO     | app.services.okx_service:get_market_analytics:960 - === АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ BTC-USDT ===
+2025-07-30 17:04:32 | ERROR    | app.api.endpoints:get_market_analytics:612 - Ошибка валидации: 1 validation error for AnalyticsResponse
+market_data.orderbook
+  Input should be a valid dictionary [type=dict_type, input_value=[{'asks': [['117708.1', '... 'ts': '1753884269859'}], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.8/v/dict_type
+2025-07-30 17:04:32 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/market/analytics - 400 (1.888s)
+2025-07-30 17:04:35 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-07-30 17:04:35 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-07-30 17:04:35 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
