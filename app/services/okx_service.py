@@ -1016,23 +1016,35 @@ class OKXService:
             return {"success": False, "error": str(e)}
 
 
-    def get_market_analytics(self, inst_id: str = "BTC-USDT") -> Dict:
+    def get_market_analytics(
+        self, 
+        inst_id: str = "BTC-USDT",
+        bar: str = "1m",
+        depth: int = 20,
+        current_limit: int = 100,
+        history_limit: int = 1000
+    ) -> Dict:
         """
         Получение полных аналитических данных для n8n
         
         Args:
             inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей (по умолчанию 1m)
+            depth: Глубина стакана (по умолчанию 20)
+            current_limit: Количество текущих свечей (по умолчанию 100)
+            history_limit: Количество исторических свечей (по умолчанию 1000)
             
         Returns:
             Dict: Полные аналитические данные
         """
         try:
             logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
+            logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
             
-            # Получаем все данные параллельно
-            orderbook = self.get_orderbook(inst_id)
-            current_candles = self.get_current_candles(inst_id)
-            history_candles = self.get_history_candles(inst_id)
+            # Получаем все данные с указанными параметрами
+            orderbook = self.get_orderbook(inst_id, depth)
+            current_candles = self.get_current_candles(inst_id, bar, current_limit)
+            history_candles = self.get_history_candles(inst_id, bar, history_limit)
             active_orders = self.get_active_orders(inst_id)
             balances = self.get_balances()
             ticker = self.get_ticker_data(inst_id)

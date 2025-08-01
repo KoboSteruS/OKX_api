@@ -299,7 +299,13 @@ async def get_market_analytics(
         logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
         
         # Получение аналитических данных
-        result = okx_service.get_market_analytics(inst_id=inst_id)
+        result = okx_service.get_market_analytics(
+            inst_id=inst_id,
+            bar=bar,
+            depth=depth,
+            current_limit=current_limit,
+            history_limit=history_limit
+        )
         
         # Создаем ответ с правильной структурой
         response = AnalyticsResponse(
