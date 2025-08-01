@@ -925,7 +925,7 @@ class OKXService:
         trigger_price: float
     ) -> dict:
         """
-        Размещение Stop Loss ордера через trigger
+        Размещение Stop Loss ордера через algo order
         
         Args:
             inst_id: Инструмент
@@ -941,10 +941,10 @@ class OKXService:
                 "tdMode": "cash",
                 "side": "sell",
                 "ordType": "trigger",
-                "sz": str(size),
-                "triggerPx": str(trigger_price),
-                "triggerPxType": "last",
-                "px": str(trigger_price)  # цена исполнения после срабатывания
+                "triggerPx": str(trigger_price),  # Триггер-цена
+                "triggerPxType": "last",          # Тип цены
+                "orderPx": str(trigger_price),    # Цена исполнения ордера
+                "sz": str(size)
             }
             
             import json
@@ -952,12 +952,12 @@ class OKXService:
             logger.info(f"STOP LOSS BODY: {body_str}")
             
             # Генерируем заголовки авторизации
-            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str)
             logger.info(f"STOP LOSS HEADERS: {headers}")
             
             # Выполняем запрос
             response = self.session.post(
-                f"{self.base_url}/api/v5/trade/order",
+                f"{self.base_url}/api/v5/trade/order-algo",
                 headers=headers,
                 data=body_str,
                 timeout=10
