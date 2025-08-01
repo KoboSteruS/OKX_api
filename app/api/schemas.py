@@ -22,7 +22,7 @@ class ErrorResponse(BaseModel):
 
 # Схемы для торговых операций
 class BuyRequest(BaseModel):
-    """Схема запроса для покупки BTC в LIMIT с точками выхода"""
+    """Схема запроса для покупки BTC с точками выхода"""
     
     buy_amount: float = Field(
         default=10.0,
@@ -34,12 +34,6 @@ class BuyRequest(BaseModel):
         default="BTC-USDT",
         description="Инструмент для покупки",
         example="BTC-USDT"
-    )
-    limit_price: float = Field(
-        ...,
-        description="Цена для LIMIT ордера (в USDT)",
-        example=50000.0,
-        gt=0
     )
     take_profit_percent: float = Field(
         default=5.0,
@@ -56,7 +50,7 @@ class BuyRequest(BaseModel):
 
 
 class BuyResponse(BaseModel):
-    """Схема ответа операции покупки в LIMIT"""
+    """Схема ответа операции покупки с точками выхода"""
     
     success: bool = Field(
         ...,
@@ -68,9 +62,9 @@ class BuyResponse(BaseModel):
         description="Сумма в USDT, потраченная на покупку BTC",
         example=10.0
     )
-    limit_price: float = Field(
+    current_price: float = Field(
         ...,
-        description="Цена LIMIT ордера",
+        description="Текущая цена BTC на момент покупки",
         example=50000.0
     )
     take_profit_price: float = Field(
@@ -106,7 +100,7 @@ class BuyResponse(BaseModel):
     message: str = Field(
         ...,
         description="Сообщение о результате операции",
-        example="BTC успешно куплен на 10.0 USDT по цене 50000.0 с TP 52500.0 и SL 49000.0"
+        example="BTC успешно куплен на 10.0 USDT по текущей цене 50000.0 с TP 52500.0 и SL 49000.0"
     )
 
 

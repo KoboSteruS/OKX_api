@@ -722,17 +722,15 @@ class OKXService:
         self, 
         buy_amount: float, 
         inst_id: str = "BTC-USDT",
-        limit_price: float = None,
         take_profit_percent: float = 5.0,
         stop_loss_percent: float = 2.0
     ) -> dict:
         """
-        Покупка BTC в LIMIT с автоматическими точками выхода
+        Покупка BTC с автоматическими точками выхода
         
         Args:
             buy_amount: Сумма в USDT для покупки
             inst_id: Инструмент (по умолчанию BTC-USDT)
-            limit_price: Цена для LIMIT ордера
             take_profit_percent: Процент для Take Profit
             stop_loss_percent: Процент для Stop Loss
             
@@ -743,7 +741,6 @@ class OKXService:
             logger.info(f"=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
             logger.info(f"Сумма покупки: {buy_amount} USDT")
             logger.info(f"Инструмент: {inst_id}")
-            logger.info(f"LIMIT цена: {limit_price}")
             logger.info(f"Take Profit: {take_profit_percent}%")
             logger.info(f"Stop Loss: {stop_loss_percent}%")
             
@@ -753,7 +750,7 @@ class OKXService:
                 return {
                     "success": False,
                     "buy_amount": buy_amount,
-                    "limit_price": limit_price,
+                    "current_price": 0,
                     "take_profit_price": 0,
                     "stop_loss_price": 0,
                     "buy_order": {"error": "Не удалось получить данные тикера"},
@@ -773,19 +770,14 @@ class OKXService:
             logger.info(f"Take Profit цена: {take_profit_price}")
             logger.info(f"Stop Loss цена: {stop_loss_price}")
             
-            # 3. Покупаем BTC по LIMIT цене
-            buy_result = self.place_limit_order(
-                inst_id=inst_id,
-                side="buy",
-                size=buy_amount,
-                price=limit_price
-            )
+            # 3. Покупаем BTC по текущей рыночной цене
+            buy_result = self.place_market_order("buy", buy_amount, inst_id)
             
             if buy_result.get("code") != "0":
                 return {
                     "success": False,
                     "buy_amount": buy_amount,
-                    "limit_price": limit_price,
+                    "current_price": current_price,
                     "take_profit_price": take_profit_price,
                     "stop_loss_price": stop_loss_price,
                     "buy_order": buy_result,
@@ -796,7 +788,7 @@ class OKXService:
                 }
             
             # 4. Получаем количество купленного BTC
-            btc_acquired = buy_amount / limit_price
+            btc_acquired = buy_amount / current_price
             
             # 5. Устанавливаем Take Profit ордер
             take_profit_result = self.place_limit_order(
@@ -822,7 +814,7 @@ class OKXService:
             )
             
             message = (
-                f"BTC успешно куплен на {buy_amount} USDT по цене {limit_price} "
+                f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
                 f"с TP {take_profit_price} и SL {stop_loss_price}"
             )
             
@@ -834,7 +826,7 @@ class OKXService:
             return {
                 "success": success,
                 "buy_amount": buy_amount,
-                "limit_price": limit_price,
+                "current_price": current_price,
                 "take_profit_price": take_profit_price,
                 "stop_loss_price": stop_loss_price,
                 "buy_order": buy_result,
@@ -849,7 +841,7 @@ class OKXService:
             return {
                 "success": False,
                 "buy_amount": buy_amount,
-                "limit_price": limit_price if limit_price else 0,
+                "current_price": 0,
                 "take_profit_price": 0,
                 "stop_loss_price": 0,
                 "buy_order": {"error": str(e)},

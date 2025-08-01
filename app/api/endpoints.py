@@ -89,29 +89,28 @@ async def test_connection():
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Покупка BTC в LIMIT с точками выхода",
-    description="Покупает BTC по LIMIT цене и устанавливает Take Profit и Stop Loss ордера"
+    summary="Покупка BTC с точками выхода",
+    description="Покупает BTC по текущей рыночной цене и устанавливает Take Profit и Stop Loss ордера"
 )
 async def buy_btc(request: BuyRequest):
     """
-    Покупка BTC в LIMIT с автоматическими точками выхода
+    Покупка BTC с точками выхода
     
     Принимает JSON с параметрами:
     - **buy_amount**: Сумма в USDT для покупки BTC (по умолчанию 10.0)
     - **inst_id**: Инструмент для покупки (по умолчанию BTC-USDT)
-    - **limit_price**: Цена для LIMIT ордера (в USDT)
     - **take_profit_percent**: Процент для Take Profit (по умолчанию 5.0%)
     - **stop_loss_percent**: Процент для Stop Loss (по умолчанию 2.0%)
     
     Выполняет:
-    1. Покупка BTC по LIMIT цене
+    1. Покупка BTC по текущей рыночной цене
     2. Установка Take Profit ордера (автоматическая продажа при росте)
     3. Установка Stop Loss ордера (автоматическая продажа при падении)
     
     Возвращает:
     - **success**: Статус выполнения покупки
     - **buy_amount**: Сумма, потраченная на покупку
-    - **limit_price**: Цена LIMIT ордера
+    - **current_price**: Текущая цена BTC на момент покупки
     - **take_profit_price**: Цена Take Profit
     - **stop_loss_price**: Цена Stop Loss
     - **buy_order**: Результат покупки
@@ -121,13 +120,12 @@ async def buy_btc(request: BuyRequest):
     - **message**: Сообщение о результате операции
     """
     try:
-        logger.info(f"Запрос на покупку BTC: сумма {request.buy_amount} USDT, цена {request.limit_price}, TP {request.take_profit_percent}%, SL {request.stop_loss_percent}%")
+        logger.info(f"Запрос на покупку BTC: сумма {request.buy_amount} USDT, TP {request.take_profit_percent}%, SL {request.stop_loss_percent}%")
         
         # Выполнение покупки BTC с точками выхода
         result = okx_service.buy_btc_with_exits(
             buy_amount=request.buy_amount,
             inst_id=request.inst_id,
-            limit_price=request.limit_price,
             take_profit_percent=request.take_profit_percent,
             stop_loss_percent=request.stop_loss_percent
         )
@@ -135,7 +133,7 @@ async def buy_btc(request: BuyRequest):
         response = BuyResponse(
             success=result["success"],
             buy_amount=result["buy_amount"],
-            limit_price=result["limit_price"],
+            current_price=result["current_price"],
             take_profit_price=result["take_profit_price"],
             stop_loss_price=result["stop_loss_price"],
             buy_order=result["buy_order"],
@@ -163,36 +161,33 @@ async def buy_btc(request: BuyRequest):
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Покупка BTC в LIMIT с точками выхода (GET)",
+    summary="Покупка BTC с точками выхода (GET)",
     description="Покупает BTC с параметрами из query string"
 )
 async def buy_btc_get(
     buy_amount: float = Query(default=10.0, description="Сумма в USDT для покупки BTC", gt=0),
     inst_id: str = Query(default="BTC-USDT", description="Инструмент для покупки"),
-    limit_price: float = Query(..., description="Цена для LIMIT ордера (в USDT)", gt=0),
     take_profit_percent: float = Query(default=5.0, description="Процент для Take Profit", gt=0),
     stop_loss_percent: float = Query(default=2.0, description="Процент для Stop Loss", gt=0)
 ):
     """
-    Покупка BTC в LIMIT с точками выхода (GET метод)
+    Покупка BTC с точками выхода (GET метод)
     
     Параметры:
     - **buy_amount**: Сумма в USDT для покупки BTC (по умолчанию 10.0)
     - **inst_id**: Инструмент для покупки (по умолчанию BTC-USDT)
-    - **limit_price**: Цена для LIMIT ордера (в USDT)
     - **take_profit_percent**: Процент для Take Profit (по умолчанию 5.0%)
     - **stop_loss_percent**: Процент для Stop Loss (по умолчанию 2.0%)
     
     Выполняет ту же операцию, что и POST /buy
     """
     try:
-        logger.info(f"GET запрос на покупку BTC: сумма {buy_amount} USDT, цена {limit_price}, TP {take_profit_percent}%, SL {stop_loss_percent}%")
+        logger.info(f"GET запрос на покупку BTC: сумма {buy_amount} USDT, TP {take_profit_percent}%, SL {stop_loss_percent}%")
         
         # Выполнение покупки BTC с точками выхода
         result = okx_service.buy_btc_with_exits(
             buy_amount=buy_amount,
             inst_id=inst_id,
-            limit_price=limit_price,
             take_profit_percent=take_profit_percent,
             stop_loss_percent=stop_loss_percent
         )
@@ -200,7 +195,7 @@ async def buy_btc_get(
         response = BuyResponse(
             success=result["success"],
             buy_amount=result["buy_amount"],
-            limit_price=result["limit_price"],
+            current_price=result["current_price"],
             take_profit_price=result["take_profit_price"],
             stop_loss_price=result["stop_loss_price"],
             buy_order=result["buy_order"],
