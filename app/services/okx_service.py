@@ -931,16 +931,28 @@ class OKXService:
             dict: Данные тикера
         """
         try:
-            url = f"{self.base_url}/api/v5/market/ticker"
-            params = {"instId": inst_id}
+            logger.info(f"Получение данных тикера для {inst_id}")
             
-            response = requests.get(url, params=params, timeout=10)
-            result = response.json()
+            path = f'/api/v5/market/ticker?instId={inst_id}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                result = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении тикера: {e}")
+                return {"success": False, "error": f"SSL ошибка: {e}"}
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении тикера: {e}")
+                return {"success": False, "error": f"Ошибка сети: {e}"}
             
             logger.info(f"TICKER DATA RESULT: {result}")
             
             # Проверяем успешность запроса
-            if result.get("code") == "0" and result.get("data"):
+            if result.get("code") == "0" and result.get("data") and len(result["data"]) > 0:
                 return {"success": True, "data": result["data"][0]}
             else:
                 logger.error(f"Ошибка API тикера: {result}")
