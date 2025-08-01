@@ -301,3 +301,635 @@ market_data.orderbook
 2025-07-30 17:05:20 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
 2025-07-30 17:05:20 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
 2025-07-30 17:05:20 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.028s)
+2025-08-01 12:38:07 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-01 12:38:07 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:38:07 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-01 12:38:22 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:38:22 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:38:22 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:38:22 | INFO     | app.services.okx_service:get_ticker_data:922 - Получение данных тикера для BTC-USDT
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_ticker_data:940 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115171.9', 'lastSz': '0.00154998', 'askPx': '115172', 'askSz': '1.14080986', 'bidPx': '115171.9', 'bidSz': '0.57090469', 'open24h': '118563.9', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912230983.597476913', 'vol24h': '7855.5153993', 'ts': '1754041101209', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115171.9
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120930.495
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112868.46199999998
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:38:23Z
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:38:23ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Y9CxhuWlbZowqTTH2+/E9If0ipFCPXrp7lCsyQMlgGY=
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735984866651525120","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041103043"}],"inTime":"1754041103042843","msg":"","outTime":"1754041103045066"}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_limit_order:887 - SELL LIMIT BODY: {'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '120930.495'}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:38:23Z
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:38:23ZPOST/api/v5/trade/order{'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '120930.495'}'
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 170
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '120930.495'}' (длина: 6)
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: 6XM9p9Ml9ooJ4OCQwnZPxSInhTd9Nr1grD0I6xP7+Ig=
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_limit_order:891 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': '6XM9p9Ml9ooJ4OCQwnZPxSInhTd9Nr1grD0I6xP7+Ig=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:38:23Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT ORDER RESULT: {'msg': 'Invalid Sign', 'code': '50113'}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_limit_order:887 - SELL LIMIT BODY: {'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '112868.46199999998'}
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:38:23Z
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:38:23ZPOST/api/v5/trade/order{'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '112868.46199999998'}'
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 178
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{'instId': 'BTC-USDT', 'tdMode': 'cash', 'side': 'sell', 'ordType': 'limit', 'sz': '0.0008682673464621145', 'px': '112868.46199999998'}' (длина: 6)
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: CCCTVSFMfgdCuuxXQw0zSSVVFu+86LoCoB7RdNmh1Hs=
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:38:23 | INFO     | app.services.okx_service:place_limit_order:891 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'CCCTVSFMfgdCuuxXQw0zSSVVFu+86LoCoB7RdNmh1Hs=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:38:23Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:38:24 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT ORDER RESULT: {'msg': 'Invalid Sign', 'code': '50113'}
+2025-08-01 12:38:24 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:38:24 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:38:24 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (2.017s)
+2025-08-01 12:40:51 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:40:51 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:40:51 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:40:51 | INFO     | app.services.okx_service:get_ticker_data:924 - Получение данных тикера для BTC-USDT
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_ticker_data:942 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115171.9', 'lastSz': '0.0000289', 'askPx': '115171.9', 'askSz': '0.61520069', 'bidPx': '115171.8', 'bidSz': '0.90204896', 'open24h': '118574.4', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912571355.418845552', 'vol24h': '7858.56883685', 'ts': '1754041251008', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115171.9
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120930.495
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112868.46199999998
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:40:52Z
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:40:52ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Boz0hayBFjO3uZVDg/AmFOBa/+5txBlkkdbzMyrJBWs=
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735989868442931200","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041252108"}],"inTime":"1754041252107654","msg":"","outTime":"1754041252109246"}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"120930.495"}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:40:52Z
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:40:52ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"120930.495"}'
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"120930.495"}' (длина: 116)
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: HKsQFZgw5lNBMhoG2pGx5qgKi3cxtdl/x9wsYTqN7Lo=
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'HKsQFZgw5lNBMhoG2pGx5qgKi3cxtdl/x9wsYTqN7Lo=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:40:52Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735989878240825344', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041252400'}], 'inTime': '1754041252399826', 'msg': '', 'outTime': '1754041252401967'}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"112868.46199999998"}
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:40:52Z
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:40:52ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"112868.46199999998"}'
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682673464621145","px":"112868.46199999998"}' (длина: 124)
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: hxj0CZwsowhUDjOyMX/ttFV6P3LTw6dFlhP2KAC9I9A=
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:40:52 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'hxj0CZwsowhUDjOyMX/ttFV6P3LTw6dFlhP2KAC9I9A=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:40:52Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:40:53 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041252722'}], 'inTime': '1754041252722330', 'msg': 'All operations failed', 'outTime': '1754041252723952'}
+2025-08-01 12:40:53 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:40:53 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:40:53 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.870s)
+2025-08-01 12:41:09 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:41:09 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:41:09 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:41:09 | INFO     | app.services.okx_service:get_ticker_data:924 - Получение данных тикера для BTC-USDT
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_ticker_data:942 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115172.1', 'lastSz': '0.0000561', 'askPx': '115172.1', 'askSz': '1.28093889', 'bidPx': '115172', 'bidSz': '0.36810874', 'open24h': '118558', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912577061.737469032', 'vol24h': '7858.64142235', 'ts': '1754041268807', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115172.1
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120930.70500000002
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112868.65800000001
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:10Z
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:10ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: ZRlhg0hYCBE57eeuPH94TU7yHL0fGrnic/Ij8J0T27M=
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735990467825750016","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041269971"}],"inTime":"1754041269970717","msg":"","outTime":"1754041269972310"}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"120930.70500000002"}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:10Z
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:10ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"120930.70500000002"}'
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"120930.70500000002"}' (длина: 124)
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: QojMTBp5n4pguT1toXgGQs79QGWMW8++Y5HMFlXED2c=
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'QojMTBp5n4pguT1toXgGQs79QGWMW8++Y5HMFlXED2c=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:10Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735990477757861888', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041270267'}], 'inTime': '1754041270266957', 'msg': '', 'outTime': '1754041270268979'}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"112868.65800000001"}
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:10Z
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:10ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"112868.65800000001"}'
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682658386883628","px":"112868.65800000001"}' (длина: 124)
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: UE4fQJCGp9XrqoBMY+VYi3CWuerAMgZvG0srlUizh98=
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:10 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'UE4fQJCGp9XrqoBMY+VYi3CWuerAMgZvG0srlUizh98=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:10Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:11 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041270581'}], 'inTime': '1754041270580612', 'msg': 'All operations failed', 'outTime': '1754041270581778'}
+2025-08-01 12:41:11 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:11 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:11 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.826s)
+2025-08-01 12:41:18 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-01 12:41:18 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:41:18 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.001s)
+2025-08-01 12:41:26 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:41:26 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:41:26 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_ticker_data:924 - Получение данных тикера для BTC-USDT
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_ticker_data:942 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115156', 'lastSz': '0.00168493', 'askPx': '115156.1', 'askSz': '1.52110928', 'bidPx': '115156', 'bidSz': '0.51628932', 'open24h': '118558', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912828020.804445321', 'vol24h': '7860.82081079', 'ts': '1754041285207', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115156.0
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120913.8
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112852.88
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:26Z
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:26ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: FKUgvdPzVd6gDoOLZHCjZpPAQHN1vAfvUPonuph0Djk=
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735991019695493120","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041286418"}],"inTime":"1754041286417312","msg":"","outTime":"1754041286419077"}
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"120913.8"}
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:26Z
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:26ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"120913.8"}'
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 157
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"120913.8"}' (длина: 114)
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: fhPgGmabIf9v/C9R+mQ6aiZOO70T7HdkdHIWLHb64g8=
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:26 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'fhPgGmabIf9v/C9R+mQ6aiZOO70T7HdkdHIWLHb64g8=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:26Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735991030365802496', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041286736'}], 'inTime': '1754041286735915', 'msg': '', 'outTime': '1754041286737464'}
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"112852.88"}
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:27Z
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:27ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"112852.88"}'
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 158
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683872312341519","px":"112852.88"}' (длина: 115)
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Sav7/9M0gm9f0QI9+EmqmfrYYxIB2dS/W5GQMn2NwJA=
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'Sav7/9M0gm9f0QI9+EmqmfrYYxIB2dS/W5GQMn2NwJA=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:27Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041287033'}], 'inTime': '1754041287033069', 'msg': 'All operations failed', 'outTime': '1754041287034232'}
+2025-08-01 12:41:27 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:27 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:27 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.248s)
+2025-08-01 12:41:41 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-01 12:41:41 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-01 12:41:41 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-01 12:41:42 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-01 12:41:42 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-01 12:41:42 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.024s)
+2025-08-01 12:41:42 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:41:42 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:41:42 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:41:42 | INFO     | app.services.okx_service:get_ticker_data:924 - Получение данных тикера для BTC-USDT
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_ticker_data:942 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115152', 'lastSz': '0.00019287', 'askPx': '115152.1', 'askSz': '1.35871413', 'bidPx': '115152', 'bidSz': '0.0012152', 'open24h': '118558', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912931772.024035032', 'vol24h': '7861.72177363', 'ts': '1754041302406', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115152.0
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120909.6
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112848.95999999999
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:43Z
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:43ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: zFs8MB5xDcadjSoWKDhm2vUmkVTjqqjlqze/rsmvCAk=
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735991582101327872","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041303179"}],"inTime":"1754041303179561","msg":"","outTime":"1754041303181670"}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"120909.6"}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:43Z
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:43ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"120909.6"}'
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 157
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"120909.6"}' (длина: 114)
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: SHPChYooecT5kjPJg5lWt1D9FX0Qe2cZ3nOtJDmkDhU=
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'SHPChYooecT5kjPJg5lWt1D9FX0Qe2cZ3nOtJDmkDhU=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:43Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735991591932776448', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041303472'}], 'inTime': '1754041303472324', 'msg': '', 'outTime': '1754041303474304'}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"112848.95999999999"}
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:41:43Z
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:41:43ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"112848.95999999999"}'
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684173961372795","px":"112848.95999999999"}' (длина: 124)
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: HxeZRjfeh3Q0RcCATayP4JMs+EcVabb91SSbBLvoqp4=
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:41:43 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'HxeZRjfeh3Q0RcCATayP4JMs+EcVabb91SSbBLvoqp4=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:41:43Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:41:44 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041303769'}], 'inTime': '1754041303768723', 'msg': 'All operations failed', 'outTime': '1754041303769772'}
+2025-08-01 12:41:44 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:44 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:41:44 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.260s)
+2025-08-01 12:42:01 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:42:01 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:42:01 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_ticker_data:924 - Получение данных тикера для BTC-USDT
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_ticker_data:942 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115177.9', 'lastSz': '0.00017752', 'askPx': '115178', 'askSz': '0.39093602', 'bidPx': '115177.9', 'bidSz': '0.62067774', 'open24h': '118536.3', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912576646.862365224', 'vol24h': '7858.74246903', 'ts': '1754041320619', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115177.9
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120936.795
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112874.34199999999
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:01Z
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:01ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Gp7paKR8o+jC2hcNEVtPVRH+dy5jS14Io5vxayQkUK8=
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735992197086957568","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041321507"}],"inTime":"1754041321506728","msg":"","outTime":"1754041321508367"}
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"120936.795"}
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:01Z
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:01ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"120936.795"}'
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"120936.795"}' (длина: 116)
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: oSyIHCxcyHdyXWcpPmUciivCRSx6R8GAG2qrPqXSVaY=
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:01 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'oSyIHCxcyHdyXWcpPmUciivCRSx6R8GAG2qrPqXSVaY=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:01Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735992208159920128', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041321837'}], 'inTime': '1754041321836491', 'msg': '', 'outTime': '1754041321838037'}
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:place_limit_order:889 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"112874.34199999999"}
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:02Z
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:02ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"112874.34199999999"}'
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008682221155273712","px":"112874.34199999999"}' (длина: 124)
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: zdhc4fWPHie7vElPvdrqlZomJBC7mnZn6rWmsmYZOiY=
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:place_limit_order:893 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'zdhc4fWPHie7vElPvdrqlZomJBC7mnZn6rWmsmYZOiY=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:02Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:place_limit_order:904 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041322144'}], 'inTime': '1754041322144262', 'msg': 'All operations failed', 'outTime': '1754041322145856'}
+2025-08-01 12:42:02 | INFO     | app.services.okx_service:buy_btc_with_exits:824 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:02 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:02 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.239s)
+2025-08-01 12:42:34 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:42:34 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:42:34 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:42:34 | INFO     | app.services.okx_service:get_ticker_data:937 - Получение данных тикера для BTC-USDT
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_ticker_data:955 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115157.4', 'lastSz': '0.0013198', 'askPx': '115157.5', 'askSz': '0.00907925', 'bidPx': '115157.4', 'bidSz': '1.56951509', 'open24h': '118536.3', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912645066.422053443', 'vol24h': '7859.33651138', 'ts': '1754041354708', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115157.4
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120915.27
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112854.252
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:36Z
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:36ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: jozbZb4QP6g5bWlskL0TsghqNTVwYsX3zlVL72kVwBA=
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735993353674674176","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041355976"}],"inTime":"1754041355976365","msg":"","outTime":"1754041355978420"}
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:36Z
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:36ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: +jhcsHtIwD5XC1uhPl0MepsF+J6Z6HCje+eK1XP64N0=
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.67564204713
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"120915.27"}
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:36Z
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:36ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"120915.27"}'
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 158
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"120915.27"}' (длина: 115)
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: rd7gWzXroH3qaAcrucsAM5tReQdizsmixDMgOzkRW3o=
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:36 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'rd7gWzXroH3qaAcrucsAM5tReQdizsmixDMgOzkRW3o=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:36Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:37 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735993373907996672', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041356579'}], 'inTime': '1754041356578907', 'msg': '', 'outTime': '1754041356580532'}
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"112854.252"}
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:38Z
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:38ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"112854.252"}'
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683766740131334","px":"112854.252"}' (длина: 116)
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Cp+qkZtCox/Y29F/lq5M+ihVpgRPfyWEmUudItQ0/Ls=
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'Cp+qkZtCox/Y29F/lq5M+ihVpgRPfyWEmUudItQ0/Ls=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:38Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041357874'}], 'inTime': '1754041357874155', 'msg': 'All operations failed', 'outTime': '1754041357875763'}
+2025-08-01 12:42:38 | INFO     | app.services.okx_service:buy_btc_with_exits:837 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:38 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:38 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (3.353s)
+2025-08-01 12:42:52 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:42:52 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:42:52 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:42:52 | INFO     | app.services.okx_service:get_ticker_data:937 - Получение данных тикера для BTC-USDT
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_ticker_data:955 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115133.8', 'lastSz': '0.00068376', 'askPx': '115132.1', 'askSz': '2.687414', 'bidPx': '115132', 'bidSz': '0.0023553', 'open24h': '118536.3', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912672993.574107518', 'vol24h': '7859.57902366', 'ts': '1754041371914', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115133.8
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120890.49
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112831.124
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:53Z
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:53ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: J4M4xIx5uEvIIfErk8DjCO2bKZRg7I6F/YsLfpTYCpM=
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735993922120306688","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041372917"}],"inTime":"1754041372916933","msg":"","outTime":"1754041372919050"}
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:53Z
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:53ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: jFIh3Yg3lph0+epUtK+ZbBTlkBVOjifJYM+X9mm5hJ8=
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.67564145848
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"120890.49"}
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:53Z
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:53ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"120890.49"}'
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 158
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"120890.49"}' (длина: 115)
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Aq7+dLKB/rZpLrIw5157lZmXwUr8jitcEEvhTYa6Jpo=
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'Aq7+dLKB/rZpLrIw5157lZmXwUr8jitcEEvhTYa6Jpo=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:53Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:53 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735993942420738048', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041373522'}], 'inTime': '1754041373522479', 'msg': '', 'outTime': '1754041373524480'}
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"112831.124"}
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:42:54Z
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:42:54ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"112831.124"}'
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685546729109957","px":"112831.124"}' (длина: 116)
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: kIbMZDOl+LzfS/iDXBnjrUXkkDx1+9EQIyfeSvzyzSs=
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:42:54 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'kIbMZDOl+LzfS/iDXBnjrUXkkDx1+9EQIyfeSvzyzSs=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:42:54Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:42:55 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041374823'}], 'inTime': '1754041374823549', 'msg': 'All operations failed', 'outTime': '1754041374824981'}
+2025-08-01 12:42:55 | INFO     | app.services.okx_service:buy_btc_with_exits:837 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:55 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:42:55 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (2.529s)
+2025-08-01 12:43:13 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:43:13 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:43:13 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:43:13 | INFO     | app.services.okx_service:get_ticker_data:937 - Получение данных тикера для BTC-USDT
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:get_ticker_data:955 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115121.1', 'lastSz': '0.0009809', 'askPx': '115121.9', 'askSz': '0.41252774', 'bidPx': '115121.8', 'bidSz': '2.04841962', 'open24h': '118518.2', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912659488.655062328', 'vol24h': '7859.46953378', 'ts': '1754041393720', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115121.1
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120877.15500000001
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112818.678
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:14Z
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:14ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: zXv6U/cXe33UPyxC/AjQ4WJzc+jM4RtvwU0U88vW4rE=
+2025-08-01 12:43:14 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735994653204271104","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041394705"}],"inTime":"1754041394705281","msg":"","outTime":"1754041394707035"}
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:15Z
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:15ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: nXpxYsKO2h3BJgrPiq11vU1WWgGUef6ypkZNL+CmaJ0=
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.67564049003
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"120877.15500000001"}
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:15Z
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:15ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"120877.15500000001"}'
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"120877.15500000001"}' (длина: 124)
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Lz4JCcPxOlYQL6ty1Ok8iYETxtzvRTYUhGoJ2wHEBmo=
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'Lz4JCcPxOlYQL6ty1Ok8iYETxtzvRTYUhGoJ2wHEBmo=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:43:15Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:43:15 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735994678336540674', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041395454'}], 'inTime': '1754041395454609', 'msg': '', 'outTime': '1754041395456635'}
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"112818.678"}
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:16Z
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:16ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"112818.678"}'
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686504906572296","px":"112818.678"}' (длина: 116)
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: zIXPfWPG6Yq8TAU+sNZh8pEFd+FbFPf2cnIsbvxxubA=
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:16 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'zIXPfWPG6Yq8TAU+sNZh8pEFd+FbFPf2cnIsbvxxubA=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:43:16Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:43:17 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041396812'}], 'inTime': '1754041396812323', 'msg': 'All operations failed', 'outTime': '1754041396813940'}
+2025-08-01 12:43:17 | INFO     | app.services.okx_service:buy_btc_with_exits:837 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:43:17 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:43:17 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (4.167s)
+2025-08-01 12:43:29 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:43:29 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:43:29 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_ticker_data:937 - Получение данных тикера для BTC-USDT
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_ticker_data:955 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115143.4', 'lastSz': '0.00001', 'askPx': '115143.6', 'askSz': '0.020278', 'bidPx': '115143.5', 'bidSz': '1.96988347', 'open24h': '118518.2', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912684029.99815847', 'vol24h': '7859.68269079', 'ts': '1754041408607', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115143.4
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120900.56999999999
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112840.53199999999
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:29Z
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:29ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: vg6xureRcHUxh7hEV0Zi0/mEpbP6ulO9ouVxD+CR1/E=
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735995140146188288","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041409217"}],"inTime":"1754041409216636","msg":"","outTime":"1754041409218330"}
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:29Z
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:29ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: k8O6nJkeeoLjjZocL1xJ412gvZQKLzgEN9GGlHKgdO0=
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.67563945155
+2025-08-01 12:43:29 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"120900.56999999999"}
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:30Z
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:30ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"120900.56999999999"}'
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"120900.56999999999"}' (длина: 124)
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: ai3iOgsTDQj7Erw97eb1UL6Pef7mkcvaKeT6KqPGWPM=
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'ai3iOgsTDQj7Erw97eb1UL6Pef7mkcvaKeT6KqPGWPM=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:43:30Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:43:30 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735995163365855232', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041409909'}], 'inTime': '1754041409908600', 'msg': '', 'outTime': '1754041409910350'}
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"112840.53199999999"}
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:43:31Z
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:43:31ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"112840.53199999999"}'
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008684822577759559","px":"112840.53199999999"}' (длина: 124)
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: 3+MWnA20LWnlffUhYbgFiyzLXqQ6xdZGL6za/JLlRJE=
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': '3+MWnA20LWnlffUhYbgFiyzLXqQ6xdZGL6za/JLlRJE=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:43:31Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041411202'}], 'inTime': '1754041411201445', 'msg': 'All operations failed', 'outTime': '1754041411202603'}
+2025-08-01 12:43:31 | INFO     | app.services.okx_service:buy_btc_with_exits:837 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:43:31 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:43:31 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (2.635s)
+2025-08-01 12:44:09 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-01 12:44:09 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:44:09 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.035s)
+2025-08-01 12:44:17 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:44:17 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:44:17 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:44:17 | INFO     | app.services.okx_service:get_ticker_data:937 - Получение данных тикера для BTC-USDT
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_ticker_data:955 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115155.7', 'lastSz': '0.00002599', 'askPx': '115155.7', 'askSz': '0.2444254', 'bidPx': '115155.6', 'bidSz': '1.28800966', 'open24h': '118541.9', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912564504.127332124', 'vol24h': '7858.67945207', 'ts': '1754041458809', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115155.7
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120913.485
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112852.586
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:44:20Z
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:44:20ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: +1Gv2sbsja3WM7nS3e764Ajy5iR21d8eQ1xDbLtnGA0=
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2735996844879106048","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041460022"}],"inTime":"1754041460022001","msg":"","outTime":"1754041460024182"}
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:44:20Z
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:44:20ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: CmA5ys9MCsCFapy5dsUFO8gcx5JVFueVz5AVL+ceJmA=
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.6856284831699999
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"120913.485"}
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:44:20Z
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:44:20ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"120913.485"}'
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"120913.485"}' (длина: 116)
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: vkrlcdJnqF/vnehqBByMwHQQosp20uEUEDVaf/seuh8=
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:44:20 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'vkrlcdJnqF/vnehqBByMwHQQosp20uEUEDVaf/seuh8=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:44:20Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:44:21 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2735996864743329792', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041460614'}], 'inTime': '1754041460613732', 'msg': '', 'outTime': '1754041460615767'}
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:place_limit_order:902 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"112852.586"}
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:44:22Z
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:44:22ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"112852.586"}'
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008683894935291957","px":"112852.586"}' (длина: 116)
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: evakwWxKJAvsMwkrY44bgPKoQaJkLyuYjcBUKKNXYhg=
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:place_limit_order:906 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'evakwWxKJAvsMwkrY44bgPKoQaJkLyuYjcBUKKNXYhg=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:44:22Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:place_limit_order:917 - SELL LIMIT ORDER RESULT: {'code': '1', 'data': [{'clOrdId': '', 'ordId': '', 'sCode': '51138', 'sMsg': ' ', 'tag': '', 'ts': '1754041461922'}], 'inTime': '1754041461922665', 'msg': 'All operations failed', 'outTime': '1754041461924220'}
+2025-08-01 12:44:22 | INFO     | app.services.okx_service:buy_btc_with_exits:837 - Результат: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:44:22 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: Покупка выполнена, но не все ордера установлены
+2025-08-01 12:44:22 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (5.288s)
+2025-08-01 12:46:31 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:46:31 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: curl/8.13.0
+2025-08-01 12:46:31 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:46:31 | INFO     | app.services.okx_service:get_ticker_data:932 - Получение данных тикера для BTC-USDT
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:get_ticker_data:950 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115128.1', 'lastSz': '0.00014911', 'askPx': '115128.2', 'askSz': '0.00453797', 'bidPx': '115128.1', 'bidSz': '3.32296713', 'open24h': '118533.8', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912636273.974914678', 'vol24h': '7859.347468', 'ts': '1754041591506', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115128.1
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120884.505
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112825.538
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:32Z
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:32ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: cxRZeX778rZ0drAIisOkws8Qf5Ugvc7awhmt+t0JZeY=
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2736001286714150912","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041592399"}],"inTime":"1754041592399070","msg":"","outTime":"1754041592400858"}
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:32Z
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:32ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: ZBI9P7bZmgbdbLfN/diYDguGijHcs0au982fmLoT5fw=
+2025-08-01 12:46:32 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.6856278245799999
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:place_limit_order:897 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685976751114628","px":"120884.505"}
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:33Z
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:33ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685976751114628","px":"120884.505"}'
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 159
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685976751114628","px":"120884.505"}' (длина: 116)
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: yRhTxjl2KWluwCXre3xq6J/ASNUO2q3MSYDZhN/6ROU=
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:place_limit_order:901 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 'yRhTxjl2KWluwCXre3xq6J/ASNUO2q3MSYDZhN/6ROU=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:46:33Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:place_limit_order:912 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2736001305974394880', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041592973'}], 'inTime': '1754041592973043', 'msg': '', 'outTime': '1754041592974602'}
+2025-08-01 12:46:33 | INFO     | app.services.okx_service:buy_btc_with_exits:832 - Результат: BTC успешно куплен на 100.0 USDT по текущей цене 115128.1 с TP 120884.505. Stop Loss нужно установить вручную.
+2025-08-01 12:46:33 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: BTC успешно куплен на 100.0 USDT по текущей цене 115128.1 с TP 120884.505. Stop Loss нужно установить вручную.
+2025-08-01 12:46:33 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.849s)
+2025-08-01 12:46:40 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:46:40 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:46:40 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:get_ticker_data:932 - Получение данных тикера для BTC-USDT
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:get_ticker_data:950 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115131.5', 'lastSz': '0.0004', 'askPx': '115131.5', 'askSz': '1.20993605', 'bidPx': '115131.4', 'bidSz': '0.32946249', 'open24h': '118533.8', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912656030.008927792', 'vol24h': '7859.51906414', 'ts': '1754041600022', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115131.5
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120888.07500000001
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112828.87
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:40Z
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:40ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: y7H3rJyEopokoheNCEwBxF5L/C6SjEygJBPdYedufn8=
+2025-08-01 12:46:40 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2736001559276802048","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041600522"}],"inTime":"1754041600521306","msg":"","outTime":"1754041600523135"}
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:41Z
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:41ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: 6gmm1+6P6XVFD4bArdogjEHQmXQlBTRihqP1ErsIPWY=
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.68562693601
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:place_limit_order:897 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685720241636737","px":"120888.07500000001"}
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:41Z
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:41ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685720241636737","px":"120888.07500000001"}'
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 167
+2025-08-01 12:46:41 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008685720241636737","px":"120888.07500000001"}' (длина: 124)
+2025-08-01 12:46:42 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: 8jFkaOuIsAuTMfrOg5hpIZS4ptIstaTUTr9RCHWkLU8=
+2025-08-01 12:46:42 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:42 | INFO     | app.services.okx_service:place_limit_order:901 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': '8jFkaOuIsAuTMfrOg5hpIZS4ptIstaTUTr9RCHWkLU8=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:46:41Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:46:42 | INFO     | app.services.okx_service:place_limit_order:912 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2736001604776611840', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041601878'}], 'inTime': '1754041601877845', 'msg': '', 'outTime': '1754041601879460'}
+2025-08-01 12:46:42 | INFO     | app.services.okx_service:buy_btc_with_exits:832 - Результат: BTC успешно куплен на 100.0 USDT по текущей цене 115131.5 с TP 120888.07500000001. Stop Loss нужно установить вручную.
+2025-08-01 12:46:42 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: BTC успешно куплен на 100.0 USDT по текущей цене 115131.5 с TP 120888.07500000001. Stop Loss нужно установить вручную.
+2025-08-01 12:46:42 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.967s)
+2025-08-01 12:46:57 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/buy
+2025-08-01 12:46:57 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: python-requests/2.31.0
+2025-08-01 12:46:57 | INFO     | app.api.endpoints:buy_btc:123 - Запрос на покупку BTC: сумма 100.0 USDT, TP 5.0%, SL 2.0%
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:741 - === ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:742 - Сумма покупки: 100.0 USDT
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:743 - Инструмент: BTC-USDT
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:744 - Take Profit: 5.0%
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:745 - Stop Loss: 2.0%
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_ticker_data:932 - Получение данных тикера для BTC-USDT
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_ticker_data:950 - TICKER DATA RESULT: {'code': '0', 'msg': '', 'data': [{'instType': 'SPOT', 'instId': 'BTC-USDT', 'last': '115121', 'lastSz': '0.00026049', 'askPx': '115120.1', 'askSz': '1.29134468', 'bidPx': '115120', 'bidSz': '0.02970185', 'open24h': '118533.8', 'high24h': '118887.4', 'low24h': '114116.5', 'volCcy24h': '912672003.188218584', 'vol24h': '7859.65780496', 'ts': '1754041616511', 'sodUtc0': '115754.8', 'sodUtc8': '118313.9'}]}
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:764 - Текущая цена: 115121.0
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:770 - Take Profit цена: 120877.05
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:buy_btc_with_exits:771 - Stop Loss цена: 112818.58
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:place_market_order:244 - BUY BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:57Z
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:57ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}'
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 138
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"buy","ordType":"market","ccy":"USDT","sz":"100.0"}' (длина: 95)
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Mkn0IjDRdO9JcO7Mjs/mJmWnJ8D7oyRAtQNuVc0eu+Q=
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:place_market_order:256 - BUY ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2736002123326803968","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754041617332"}],"inTime":"1754041617331278","msg":"","outTime":"1754041617332916"}
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:57Z
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:57ZGET/api/v5/account/balance?ccy=BTC'
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 54
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:130 - Body: '' (длина: 0)
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: Px8eNAAhrhV/BfK+ga7oHvcbhfz02csZ0xhY0MYcGrk=
+2025-08-01 12:46:57 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance?ccy=BTC
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:buy_btc_with_exits:795 - Баланс BTC после покупки: 0.69604726736
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:place_limit_order:897 - SELL LIMIT BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686512452115601","px":"120877.05"}
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:get_server_timestamp:44 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-01T09:46:58Z
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:generate_signature:128 - Сообщение для подписи: '2025-08-01T09:46:58ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686512452115601","px":"120877.05"}'
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:generate_signature:129 - Длина сообщения: 158
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:generate_signature:130 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"limit","sz":"0.0008686512452115601","px":"120877.05"}' (длина: 115)
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:generate_signature:139 - Сгенерирована подпись: t1S3cw3SdsUTVn/J9hfJONoy849Am/VRwrLoBE4k214=
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:get_auth_headers:176 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:place_limit_order:901 - SELL LIMIT HEADERS: {'OK-ACCESS-KEY': 'a018bfb8-1997-45db-af2e-6299bff03309', 'OK-ACCESS-SIGN': 't1S3cw3SdsUTVn/J9hfJONoy849Am/VRwrLoBE4k214=', 'OK-ACCESS-TIMESTAMP': '2025-08-01T09:46:58Z', 'OK-ACCESS-PASSPHRASE': '62015326495Fred@', 'Content-Type': 'application/json', 'x-simulated-trading': '1'}
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:place_limit_order:912 - SELL LIMIT ORDER RESULT: {'code': '0', 'data': [{'clOrdId': '', 'ordId': '2736002145338511360', 'sCode': '0', 'sMsg': 'Order placed', 'tag': '', 'ts': '1754041617988'}], 'inTime': '1754041617988179', 'msg': '', 'outTime': '1754041617989688'}
+2025-08-01 12:46:58 | INFO     | app.services.okx_service:buy_btc_with_exits:832 - Результат: BTC успешно куплен на 100.0 USDT по текущей цене 115121.0 с TP 120877.05. Stop Loss нужно установить вручную.
+2025-08-01 12:46:58 | INFO     | app.api.endpoints:buy_btc:146 - Покупка BTC завершена: BTC успешно куплен на 100.0 USDT по текущей цене 115121.0 с TP 120877.05. Stop Loss нужно установить вручную.
+2025-08-01 12:46:58 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/buy - 200 (1.244s)

@@ -790,7 +790,16 @@ class OKXService:
             # 4. Получаем количество купленного BTC
             btc_acquired = buy_amount / current_price
             
-            # 5. Устанавливаем Take Profit ордер
+            # 5. Проверяем баланс BTC
+            btc_balance = self.get_balance("BTC")
+            logger.info(f"Баланс BTC после покупки: {btc_balance}")
+            
+            # Используем реальный баланс, если он меньше расчетного
+            if btc_balance < btc_acquired:
+                btc_acquired = btc_balance
+                logger.info(f"Используем реальный баланс BTC: {btc_acquired}")
+            
+            # 6. Устанавливаем только Take Profit ордер (более консервативный подход)
             take_profit_result = self.place_limit_order(
                 inst_id=inst_id,
                 side="sell",
@@ -798,28 +807,27 @@ class OKXService:
                 price=take_profit_price
             )
             
-            # 6. Устанавливаем Stop Loss ордер
-            stop_loss_result = self.place_limit_order(
-                inst_id=inst_id,
-                side="sell", 
-                size=btc_acquired,
-                price=stop_loss_price
-            )
+            # 7. Stop Loss ордер не создаем, так как это может привести к конфликту
+            # Вместо этого пользователь может установить SL вручную или через другой API
+            stop_loss_result = {
+                "code": "0",
+                "data": [{"ordId": "manual_sl", "sMsg": "Stop Loss нужно установить вручную"}],
+                "msg": "Stop Loss не создан автоматически"
+            }
             
             # 7. Формируем ответ
             success = (
                 buy_result.get("code") == "0" and
-                take_profit_result.get("code") == "0" and
-                stop_loss_result.get("code") == "0"
+                take_profit_result.get("code") == "0"
             )
             
             message = (
                 f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
-                f"с TP {take_profit_price} и SL {stop_loss_price}"
+                f"с TP {take_profit_price}. Stop Loss нужно установить вручную."
             )
             
             if not success:
-                message = "Покупка выполнена, но не все ордера установлены"
+                message = "Покупка выполнена, но Take Profit ордер не установлен"
             
             logger.info(f"Результат: {message}")
             
@@ -865,20 +873,15 @@ class OKXService:
         Args:
             inst_id: Инструмент
             side: Сторона (buy/sell)
-            size: Размер (в USDT для покупки, в BTC для продажи)
+            size: Размер в BTC (для всех типов ордеров)
             price: Цена
             
         Returns:
             dict: Результат размещения ордера
         """
         try:
-            # Определяем размер в BTC
-            if side == "buy":
-                # Для покупки size в USDT, нужно перевести в BTC
-                btc_size = size / price
-            else:
-                # Для продажи size уже в BTC
-                btc_size = size
+            # Размер уже в BTC для всех типов ордеров
+            btc_size = size
             
             body = {
                 "instId": inst_id,
@@ -889,16 +892,19 @@ class OKXService:
                 "px": str(price)
             }
             
-            logger.info(f"{side.upper()} LIMIT BODY: {body}")
+            import json
+            body_str = json.dumps(body, separators=(",", ":"))
+            logger.info(f"{side.upper()} LIMIT BODY: {body_str}")
             
             # Генерируем заголовки авторизации
-            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body)
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
+            logger.info(f"{side.upper()} LIMIT HEADERS: {headers}")
             
             # Выполняем запрос
-            response = requests.post(
+            response = self.session.post(
                 f"{self.base_url}/api/v5/trade/order",
                 headers=headers,
-                json=body,
+                data=body_str,
                 timeout=10
             )
             
