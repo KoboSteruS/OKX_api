@@ -939,7 +939,12 @@ class OKXService:
             
             logger.info(f"TICKER DATA RESULT: {result}")
             
-            return result
+            # Проверяем успешность запроса
+            if result.get("code") == "0" and result.get("data"):
+                return {"success": True, "data": result["data"][0]}
+            else:
+                logger.error(f"Ошибка API тикера: {result}")
+                return {"success": False, "error": result.get("msg", "Неизвестная ошибка")}
             
         except Exception as e:
             logger.error(f"Ошибка получения данных тикера: {e}")
