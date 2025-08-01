@@ -1042,12 +1042,29 @@ class OKXService:
             logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
             
             # Получаем все данные с указанными параметрами
+            logger.info("Получение orderbook...")
             orderbook = self.get_orderbook(inst_id, depth)
+            logger.info(f"Orderbook получен: {len(orderbook.get('data', []))} записей")
+            
+            logger.info("Получение current_candles...")
             current_candles = self.get_current_candles(inst_id, bar, current_limit)
+            logger.info(f"Current candles получены: {len(current_candles.get('data', []))} записей")
+            
+            logger.info("Получение history_candles...")
             history_candles = self.get_history_candles(inst_id, bar, history_limit)
+            logger.info(f"History candles получены: {len(history_candles.get('data', []))} записей")
+            
+            logger.info("Получение active_orders...")
             active_orders = self.get_active_orders(inst_id)
+            logger.info(f"Active orders получены: {len(active_orders.get('data', []))} записей")
+            
+            logger.info("Получение balances...")
             balances = self.get_balances()
+            logger.info(f"Balances получены: {len(balances.get('balances', {}))} валют")
+            
+            logger.info("Получение ticker...")
             ticker = self.get_ticker_data(inst_id)
+            logger.info(f"Ticker получен: {ticker.get('success', False)}")
             
             # Формируем ответ
             result = {
@@ -1074,8 +1091,14 @@ class OKXService:
             }
             
             # Извлекаем индикаторы из тикера
-            if ticker.get("data") and ticker["data"]:
-                ticker_data = ticker["data"][0]
+            if ticker.get("success") and ticker.get("data"):
+                # Проверяем, что data - это список
+                if isinstance(ticker["data"], list) and len(ticker["data"]) > 0:
+                    ticker_data = ticker["data"][0]
+                else:
+                    # Если data - это не список, используем его напрямую
+                    ticker_data = ticker["data"]
+                
                 result["indicators"] = {
                     "current_price": ticker_data.get("last", "0"),
                     "volume_24h": ticker_data.get("vol24h", "0"),
@@ -1083,12 +1106,18 @@ class OKXService:
                     "high_24h": ticker_data.get("high24h", "0"),
                     "low_24h": ticker_data.get("low24h", "0")
                 }
+                logger.info(f"Индикаторы извлечены: {result['indicators']}")
+            else:
+                logger.warning(f"Ticker не содержит данных: {ticker}")
             
             logger.info(f"=== АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ {inst_id} ===")
             return result
             
         except Exception as e:
             logger.error(f"Ошибка получения аналитических данных: {e}")
+            logger.error(f"Тип ошибки: {type(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return {
                 "success": False,
                 "inst_id": inst_id,
