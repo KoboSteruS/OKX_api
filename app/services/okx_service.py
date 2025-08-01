@@ -799,7 +799,7 @@ class OKXService:
                 btc_acquired = btc_balance
                 logger.info(f"Используем реальный баланс BTC: {btc_acquired}")
             
-            # 6. Устанавливаем только Take Profit ордер (более консервативный подход)
+            # 6. Устанавливаем Take Profit ордер (limit)
             take_profit_result = self.place_limit_order(
                 inst_id=inst_id,
                 side="sell",
@@ -807,27 +807,27 @@ class OKXService:
                 price=take_profit_price
             )
             
-            # 7. Stop Loss ордер не создаем, так как это может привести к конфликту
-            # Вместо этого пользователь может установить SL вручную или через другой API
-            stop_loss_result = {
-                "code": "0",
-                "data": [{"ordId": "manual_sl", "sMsg": "Stop Loss нужно установить вручную"}],
-                "msg": "Stop Loss не создан автоматически"
-            }
+            # 7. Устанавливаем Stop Loss ордер (trigger)
+            stop_loss_result = self.place_stop_loss_order(
+                inst_id=inst_id,
+                size=btc_acquired,
+                trigger_price=stop_loss_price
+            )
             
             # 7. Формируем ответ
             success = (
                 buy_result.get("code") == "0" and
-                take_profit_result.get("code") == "0"
+                take_profit_result.get("code") == "0" and
+                stop_loss_result.get("code") == "0"
             )
             
             message = (
                 f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
-                f"с TP {take_profit_price}. Stop Loss нужно установить вручную."
+                f"с TP {take_profit_price} и SL {stop_loss_price}"
             )
             
             if not success:
-                message = "Покупка выполнена, но Take Profit ордер не установлен"
+                message = "Покупка выполнена, но не все ордера установлены"
             
             logger.info(f"Результат: {message}")
             
@@ -915,6 +915,61 @@ class OKXService:
             
         except Exception as e:
             logger.error(f"Ошибка размещения LIMIT ордера: {e}")
+            return {"error": str(e)}
+
+
+    def place_stop_loss_order(
+        self, 
+        inst_id: str, 
+        size: float, 
+        trigger_price: float
+    ) -> dict:
+        """
+        Размещение Stop Loss ордера через trigger
+        
+        Args:
+            inst_id: Инструмент
+            size: Размер в BTC
+            trigger_price: Цена активации (stop price)
+            
+        Returns:
+            dict: Результат размещения ордера
+        """
+        try:
+            body = {
+                "instId": inst_id,
+                "tdMode": "cash",
+                "side": "sell",
+                "ordType": "trigger",
+                "sz": str(size),
+                "triggerPx": str(trigger_price),
+                "triggerPxType": "last",
+                "px": str(trigger_price)  # цена исполнения после срабатывания
+            }
+            
+            import json
+            body_str = json.dumps(body, separators=(",", ":"))
+            logger.info(f"STOP LOSS BODY: {body_str}")
+            
+            # Генерируем заголовки авторизации
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
+            logger.info(f"STOP LOSS HEADERS: {headers}")
+            
+            # Выполняем запрос
+            response = self.session.post(
+                f"{self.base_url}/api/v5/trade/order",
+                headers=headers,
+                data=body_str,
+                timeout=10
+            )
+            
+            result = response.json()
+            logger.info(f"STOP LOSS ORDER RESULT: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка создания Stop Loss ордера: {e}")
             return {"error": str(e)}
 
 
