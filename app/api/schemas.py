@@ -22,7 +22,7 @@ class ErrorResponse(BaseModel):
 
 # Схемы для торговых операций
 class BuyRequest(BaseModel):
-    """Схема запроса для покупки BTC"""
+    """Схема запроса для покупки BTC в LIMIT с точками выхода"""
     
     buy_amount: float = Field(
         default=10.0,
@@ -35,10 +35,28 @@ class BuyRequest(BaseModel):
         description="Инструмент для покупки",
         example="BTC-USDT"
     )
+    limit_price: float = Field(
+        ...,
+        description="Цена для LIMIT ордера (в USDT)",
+        example=50000.0,
+        gt=0
+    )
+    take_profit_percent: float = Field(
+        default=5.0,
+        description="Процент для Take Profit (верхняя точка выхода)",
+        example=5.0,
+        gt=0
+    )
+    stop_loss_percent: float = Field(
+        default=2.0,
+        description="Процент для Stop Loss (нижняя точка выхода)",
+        example=2.0,
+        gt=0
+    )
 
 
 class BuyResponse(BaseModel):
-    """Схема ответа операции покупки"""
+    """Схема ответа операции покупки в LIMIT"""
     
     success: bool = Field(
         ...,
@@ -50,10 +68,35 @@ class BuyResponse(BaseModel):
         description="Сумма в USDT, потраченная на покупку BTC",
         example=10.0
     )
+    limit_price: float = Field(
+        ...,
+        description="Цена LIMIT ордера",
+        example=50000.0
+    )
+    take_profit_price: float = Field(
+        ...,
+        description="Цена Take Profit",
+        example=52500.0
+    )
+    stop_loss_price: float = Field(
+        ...,
+        description="Цена Stop Loss",
+        example=49000.0
+    )
     buy_order: dict = Field(
         ...,
         description="Результат покупки BTC",
         example={"code": "0", "data": [{"ordId": "123456789"}]}
+    )
+    take_profit_order: dict = Field(
+        ...,
+        description="Take Profit ордер",
+        example={"code": "0", "data": [{"ordId": "123456790"}]}
+    )
+    stop_loss_order: dict = Field(
+        ...,
+        description="Stop Loss ордер",
+        example={"code": "0", "data": [{"ordId": "123456791"}]}
     )
     btc_acquired: float = Field(
         ...,
@@ -63,58 +106,7 @@ class BuyResponse(BaseModel):
     message: str = Field(
         ...,
         description="Сообщение о результате операции",
-        example="BTC успешно куплен на 10.0 USDT"
-    )
-
-
-class SellRequest(BaseModel):
-    """Схема запроса для продажи BTC"""
-    
-    sell_all: bool = Field(
-        default=True,
-        description="Продать весь доступный BTC",
-        example=True
-    )
-    sell_amount: Optional[float] = Field(
-        default=None,
-        description="Количество BTC для продажи (если sell_all=False)",
-        example=0.001,
-        gt=0
-    )
-    inst_id: str = Field(
-        default="BTC-USDT",
-        description="Инструмент для продажи",
-        example="BTC-USDT"
-    )
-
-
-class SellResponse(BaseModel):
-    """Схема ответа операции продажи"""
-    
-    success: bool = Field(
-        ...,
-        description="Статус выполнения продажи",
-        example=True
-    )
-    sell_order: dict = Field(
-        ...,
-        description="Результат продажи BTC",
-        example={"code": "0", "data": [{"ordId": "987654321"}]}
-    )
-    btc_sold: float = Field(
-        ...,
-        description="Количество BTC, которое было продано",
-        example=0.001234
-    )
-    usdt_received: float = Field(
-        ...,
-        description="Количество USDT, полученное за продажу",
-        example=10.5
-    )
-    message: str = Field(
-        ...,
-        description="Сообщение о результате операции",
-        example="BTC успешно продан за 10.5 USDT"
+        example="BTC успешно куплен на 10.0 USDT по цене 50000.0 с TP 52500.0 и SL 49000.0"
     )
 
 

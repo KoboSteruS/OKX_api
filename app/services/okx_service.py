@@ -489,149 +489,7 @@ class OKXService:
             raise
 
 
-    def buy_btc(self, buy_amount: float, inst_id: str = "BTC-USDT") -> Dict:
-        """
-        Покупка BTC на указанную сумму USDT
-        
-        Args:
-            buy_amount: Сумма в USDT для покупки BTC
-            inst_id: Инструмент для покупки (по умолчанию BTC-USDT)
-            
-        Returns:
-            Dict: Результат покупки с информацией о приобретенном BTC
-        """
-        try:
-            logger.info(f"=== НАЧАЛО ПОКУПКИ BTC ===")
-            logger.info(f"Сумма покупки: {buy_amount} USDT")
-            logger.info(f"Инструмент: {inst_id}")
-            
-            # Покупка BTC на указанную сумму USDT
-            buy_result = self.place_market_order("buy", notional=buy_amount, inst_id=inst_id)
-            
-            # Проверяем результат покупки
-            if 'code' in buy_result and buy_result['code'] != '0':
-                error_msg = buy_result.get('msg', 'Неизвестная ошибка')
-                logger.error(f"Ошибка покупки BTC: {error_msg}")
-                return {
-                    "success": False,
-                    "buy_amount": buy_amount,
-                    "buy_order": buy_result,
-                    "btc_acquired": 0.0,
-                    "message": f"Ошибка покупки BTC: {error_msg}"
-                }
-            
-            # Получаем баланс BTC для определения количества приобретенного BTC
-            btc_balance = self.get_balance("BTC")
-            
-            result = {
-                "success": True,
-                "buy_amount": buy_amount,
-                "buy_order": buy_result,
-                "btc_acquired": btc_balance,
-                "message": f"BTC успешно куплен на {buy_amount} USDT"
-            }
-            
-            logger.info(f"=== ПОКУПКА ЗАВЕРШЕНА ===")
-            logger.info(f"Результат: {result}")
-            
-            return result
-            
-        except Exception as e:
-            logger.error(f"Ошибка покупки BTC: {e}")
-            return {
-                "success": False,
-                "buy_amount": buy_amount,
-                "buy_order": {"error": str(e)},
-                "btc_acquired": 0.0,
-                "message": f"Ошибка покупки BTC: {e}"
-            }
 
-
-    def sell_btc(self, sell_all: bool = True, sell_amount: Optional[float] = None, inst_id: str = "BTC-USDT") -> Dict:
-        """
-        Продажа BTC
-        
-        Args:
-            sell_all: Продать весь доступный BTC (по умолчанию True)
-            sell_amount: Количество BTC для продажи (если sell_all=False)
-            inst_id: Инструмент для продажи (по умолчанию BTC-USDT)
-            
-        Returns:
-            Dict: Результат продажи с информацией о полученных USDT
-        """
-        try:
-            logger.info(f"=== НАЧАЛО ПРОДАЖИ BTC ===")
-            logger.info(f"Продать все: {sell_all}")
-            if not sell_all and sell_amount:
-                logger.info(f"Количество для продажи: {sell_amount} BTC")
-            logger.info(f"Инструмент: {inst_id}")
-            
-            # Получаем текущий баланс BTC
-            btc_balance = self.get_balance("BTC")
-            
-            if btc_balance <= 0:
-                return {
-                    "success": False,
-                    "sell_order": {"error": "Нет доступного BTC для продажи"},
-                    "btc_sold": 0.0,
-                    "usdt_received": 0.0,
-                    "message": "Нет доступного BTC для продажи"
-                }
-            
-            # Определяем количество BTC для продажи
-            if sell_all:
-                amount_to_sell = btc_balance
-            else:
-                if not sell_amount or sell_amount <= 0:
-                    return {
-                        "success": False,
-                        "sell_order": {"error": "Неверное количество BTC для продажи"},
-                        "btc_sold": 0.0,
-                        "usdt_received": 0.0,
-                        "message": "Неверное количество BTC для продажи"
-                    }
-                amount_to_sell = min(sell_amount, btc_balance)
-            
-            # Продажа BTC
-            sell_result = self.place_market_order("sell", notional=amount_to_sell, inst_id=inst_id)
-            
-            # Проверяем результат продажи
-            if 'code' in sell_result and sell_result['code'] != '0':
-                error_msg = sell_result.get('msg', 'Неизвестная ошибка')
-                logger.error(f"Ошибка продажи BTC: {error_msg}")
-                return {
-                    "success": False,
-                    "sell_order": sell_result,
-                    "btc_sold": 0.0,
-                    "usdt_received": 0.0,
-                    "message": f"Ошибка продажи BTC: {error_msg}"
-                }
-            
-            # Получаем обновленный баланс USDT для определения полученной суммы
-            usdt_balance_after = self.get_balance("USDT")
-            
-            result = {
-                "success": True,
-                "sell_order": sell_result,
-                "btc_sold": amount_to_sell,
-                "usdt_received": usdt_balance_after,
-                "message": f"BTC успешно продан за {usdt_balance_after} USDT"
-            }
-            
-            logger.info(f"=== ПРОДАЖА ЗАВЕРШЕНА ===")
-            logger.info(f"Результат: {result}")
-            
-            return result
-            
-        except Exception as e:
-            logger.error(f"Ошибка продажи BTC: {e}")
-            return {
-                "success": False,
-                "sell_order": {"error": str(e)},
-                "btc_sold": 0.0,
-                "usdt_received": 0.0,
-                "message": f"Ошибка продажи BTC: {e}"
-            }
 
 
     def get_balances(self) -> Dict:
@@ -860,45 +718,232 @@ class OKXService:
             }
 
 
-    def get_ticker_data(self, inst_id: str = "BTC-USDT") -> Dict:
+    def buy_btc_with_exits(
+        self, 
+        buy_amount: float, 
+        inst_id: str = "BTC-USDT",
+        limit_price: float = None,
+        take_profit_percent: float = 5.0,
+        stop_loss_percent: float = 2.0
+    ) -> dict:
         """
-        Получение данных тикера для индикаторов
+        Покупка BTC в LIMIT с автоматическими точками выхода
         
         Args:
+            buy_amount: Сумма в USDT для покупки
             inst_id: Инструмент (по умолчанию BTC-USDT)
+            limit_price: Цена для LIMIT ордера
+            take_profit_percent: Процент для Take Profit
+            stop_loss_percent: Процент для Stop Loss
             
         Returns:
-            Dict: Данные тикера
+            dict: Результат операции с информацией о покупке и ордерах
         """
         try:
-            logger.info(f"Получение данных тикера для {inst_id}")
+            logger.info(f"=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
+            logger.info(f"Сумма покупки: {buy_amount} USDT")
+            logger.info(f"Инструмент: {inst_id}")
+            logger.info(f"LIMIT цена: {limit_price}")
+            logger.info(f"Take Profit: {take_profit_percent}%")
+            logger.info(f"Stop Loss: {stop_loss_percent}%")
             
-            path = f'/api/v5/market/ticker?instId={inst_id}'
+            # 1. Получаем текущую цену для расчета точек выхода
+            ticker_data = self.get_ticker_data(inst_id)
+            if not ticker_data.get("success", False):
+                return {
+                    "success": False,
+                    "buy_amount": buy_amount,
+                    "limit_price": limit_price,
+                    "take_profit_price": 0,
+                    "stop_loss_price": 0,
+                    "buy_order": {"error": "Не удалось получить данные тикера"},
+                    "take_profit_order": {"error": "Не удалось получить данные тикера"},
+                    "stop_loss_order": {"error": "Не удалось получить данные тикера"},
+                    "btc_acquired": 0,
+                    "message": "Ошибка получения данных тикера"
+                }
             
-            try:
-                response = self.session.get(
-                    self.base_url + path,
-                    timeout=30,
-                    verify=True
-                )
-                data = response.json()
-            except requests.exceptions.SSLError as e:
-                logger.error(f"SSL ошибка при получении тикера: {e}")
-                raise
-            except requests.exceptions.RequestException as e:
-                logger.error(f"Ошибка сети при получении тикера: {e}")
-                raise
+            current_price = float(ticker_data["data"]["last"])
+            logger.info(f"Текущая цена: {current_price}")
             
-            logger.info(f"Данные тикера для {inst_id} успешно получены")
-            return data
+            # 2. Рассчитываем цены для точек выхода
+            take_profit_price = current_price * (1 + take_profit_percent / 100)
+            stop_loss_price = current_price * (1 - stop_loss_percent / 100)
+            
+            logger.info(f"Take Profit цена: {take_profit_price}")
+            logger.info(f"Stop Loss цена: {stop_loss_price}")
+            
+            # 3. Покупаем BTC по LIMIT цене
+            buy_result = self.place_limit_order(
+                inst_id=inst_id,
+                side="buy",
+                size=buy_amount,
+                price=limit_price
+            )
+            
+            if buy_result.get("code") != "0":
+                return {
+                    "success": False,
+                    "buy_amount": buy_amount,
+                    "limit_price": limit_price,
+                    "take_profit_price": take_profit_price,
+                    "stop_loss_price": stop_loss_price,
+                    "buy_order": buy_result,
+                    "take_profit_order": {"error": "Покупка не удалась"},
+                    "stop_loss_order": {"error": "Покупка не удалась"},
+                    "btc_acquired": 0,
+                    "message": f"Ошибка покупки: {buy_result.get('msg', 'Неизвестная ошибка')}"
+                }
+            
+            # 4. Получаем количество купленного BTC
+            btc_acquired = buy_amount / limit_price
+            
+            # 5. Устанавливаем Take Profit ордер
+            take_profit_result = self.place_limit_order(
+                inst_id=inst_id,
+                side="sell",
+                size=btc_acquired,
+                price=take_profit_price
+            )
+            
+            # 6. Устанавливаем Stop Loss ордер
+            stop_loss_result = self.place_limit_order(
+                inst_id=inst_id,
+                side="sell", 
+                size=btc_acquired,
+                price=stop_loss_price
+            )
+            
+            # 7. Формируем ответ
+            success = (
+                buy_result.get("code") == "0" and
+                take_profit_result.get("code") == "0" and
+                stop_loss_result.get("code") == "0"
+            )
+            
+            message = (
+                f"BTC успешно куплен на {buy_amount} USDT по цене {limit_price} "
+                f"с TP {take_profit_price} и SL {stop_loss_price}"
+            )
+            
+            if not success:
+                message = "Покупка выполнена, но не все ордера установлены"
+            
+            logger.info(f"Результат: {message}")
+            
+            return {
+                "success": success,
+                "buy_amount": buy_amount,
+                "limit_price": limit_price,
+                "take_profit_price": take_profit_price,
+                "stop_loss_price": stop_loss_price,
+                "buy_order": buy_result,
+                "take_profit_order": take_profit_result,
+                "stop_loss_order": stop_loss_result,
+                "btc_acquired": btc_acquired,
+                "message": message
+            }
+            
+        except Exception as e:
+            logger.error(f"Ошибка покупки BTC с точками выхода: {e}")
+            return {
+                "success": False,
+                "buy_amount": buy_amount,
+                "limit_price": limit_price if limit_price else 0,
+                "take_profit_price": 0,
+                "stop_loss_price": 0,
+                "buy_order": {"error": str(e)},
+                "take_profit_order": {"error": str(e)},
+                "stop_loss_order": {"error": str(e)},
+                "btc_acquired": 0,
+                "message": f"Ошибка покупки BTC: {str(e)}"
+            }
+
+
+    def place_limit_order(
+        self, 
+        inst_id: str, 
+        side: str, 
+        size: float, 
+        price: float
+    ) -> dict:
+        """
+        Размещение LIMIT ордера
+        
+        Args:
+            inst_id: Инструмент
+            side: Сторона (buy/sell)
+            size: Размер (в USDT для покупки, в BTC для продажи)
+            price: Цена
+            
+        Returns:
+            dict: Результат размещения ордера
+        """
+        try:
+            # Определяем размер в BTC
+            if side == "buy":
+                # Для покупки size в USDT, нужно перевести в BTC
+                btc_size = size / price
+            else:
+                # Для продажи size уже в BTC
+                btc_size = size
+            
+            body = {
+                "instId": inst_id,
+                "tdMode": "cash",
+                "side": side,
+                "ordType": "limit",
+                "sz": str(btc_size),
+                "px": str(price)
+            }
+            
+            logger.info(f"{side.upper()} LIMIT BODY: {body}")
+            
+            # Генерируем заголовки авторизации
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body)
+            
+            # Выполняем запрос
+            response = requests.post(
+                f"{self.base_url}/api/v5/trade/order",
+                headers=headers,
+                json=body,
+                timeout=10
+            )
+            
+            result = response.json()
+            logger.info(f"{side.upper()} LIMIT ORDER RESULT: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка размещения LIMIT ордера: {e}")
+            return {"error": str(e)}
+
+
+    def get_ticker_data(self, inst_id: str = "BTC-USDT") -> dict:
+        """
+        Получение данных тикера
+        
+        Args:
+            inst_id: Инструмент
+            
+        Returns:
+            dict: Данные тикера
+        """
+        try:
+            url = f"{self.base_url}/api/v5/market/ticker"
+            params = {"instId": inst_id}
+            
+            response = requests.get(url, params=params, timeout=10)
+            result = response.json()
+            
+            logger.info(f"TICKER DATA RESULT: {result}")
+            
+            return result
             
         except Exception as e:
             logger.error(f"Ошибка получения данных тикера: {e}")
-            return {
-                "code": "1",
-                "msg": f"Ошибка получения тикера: {e}",
-                "data": []
-            }
+            return {"success": False, "error": str(e)}
 
 
     def get_market_analytics(self, inst_id: str = "BTC-USDT") -> Dict:
