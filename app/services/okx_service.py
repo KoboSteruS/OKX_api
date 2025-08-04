@@ -646,585 +646,585 @@ class OKXService:
                 "message": f"Ошибка получения балансов: {e}"
             }
 
-        def get_orderbook(self, inst_id: str = "BTC-USDT", depth: int = 20) -> Dict:
-            """
-            Получение стакана ордеров
+    def get_orderbook(self, inst_id: str = "BTC-USDT", depth: int = 20) -> Dict:
+        """
+        Получение стакана ордеров
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            depth: Глубина стакана (по умолчанию 20)
             
-            Args:
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                depth: Глубина стакана (по умолчанию 20)
-                
-            Returns:
-                Dict: Стакан ордеров
-            """
-            try:
-                logger.info(f"Получение стакана ордеров для {inst_id} с глубиной {depth}")
-                
-                path = f'/api/v5/market/books?instId={inst_id}&sz={depth}'
-                
-                try:
-                    response = self.session.get(
-                        self.base_url + path,
-                        timeout=30,
-                        verify=True
-                    )
-                    data = response.json()
-                except requests.exceptions.SSLError as e:
-                    logger.error(f"SSL ошибка при получении стакана: {e}")
-                    raise
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Ошибка сети при получении стакана: {e}")
-                    raise
-                
-                logger.info(f"Стакан ордеров для {inst_id} успешно получен")
-                return data
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения стакана ордеров: {e}")
-                return {
-                    "code": "1",
-                    "msg": f"Ошибка получения стакана: {e}",
-                    "data": []
-                }
-
-
-        def get_current_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 100) -> Dict:
-            """
-            Получение текущих свечей
+        Returns:
+            Dict: Стакан ордеров
+        """
+        try:
+            logger.info(f"Получение стакана ордеров для {inst_id} с глубиной {depth}")
             
-            Args:
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                bar: Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)
-                limit: Количество свечей (по умолчанию 100)
-                
-            Returns:
-                Dict: Текущие свечи
-            """
-            try:
-                logger.info(f"Получение текущих свечей для {inst_id}, интервал {bar}, количество {limit}")
-                
-                path = f'/api/v5/market/candles?instId={inst_id}&bar={bar}&limit={limit}'
-                
-                try:
-                    response = self.session.get(
-                        self.base_url + path,
-                        timeout=30,
-                        verify=True
-                    )
-                    data = response.json()
-                except requests.exceptions.SSLError as e:
-                    logger.error(f"SSL ошибка при получении свечей: {e}")
-                    raise
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Ошибка сети при получении свечей: {e}")
-                    raise
-                
-                logger.info(f"Текущие свечи для {inst_id} успешно получены")
-                return data
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения текущих свечей: {e}")
-                return {
-                    "code": "1",
-                    "msg": f"Ошибка получения свечей: {e}",
-                    "data": []
-                }
-
-
-        def get_history_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 1000) -> Dict:
-            """
-            Получение исторических свечей
+            path = f'/api/v5/market/books?instId={inst_id}&sz={depth}'
             
-            Args:
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                bar: Интервал свечей
-                limit: Количество свечей (по умолчанию 1000)
-                
-            Returns:
-                Dict: Исторические свечи
-            """
             try:
-                logger.info(f"Получение исторических свечей для {inst_id}, интервал {bar}, количество {limit}")
-                
-                path = f'/api/v5/market/history-candles?instId={inst_id}&bar={bar}&limit={limit}'
-                
-                try:
-                    response = self.session.get(
-                        self.base_url + path,
-                        timeout=30,
-                        verify=True
-                    )
-                    data = response.json()
-                except requests.exceptions.SSLError as e:
-                    logger.error(f"SSL ошибка при получении исторических свечей: {e}")
-                    raise
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Ошибка сети при получении исторических свечей: {e}")
-                    raise
-                
-                logger.info(f"Исторические свечи для {inst_id} успешно получены")
-                return data
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения исторических свечей: {e}")
-                return {
-                    "code": "1",
-                    "msg": f"Ошибка получения исторических свечей: {e}",
-                    "data": []
-                }
-
-
-        def get_active_orders(self, inst_id: str = "BTC-USDT") -> Dict:
-            """
-            Получение активных ордеров пользователя
-            
-            Args:
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                
-            Returns:
-                Dict: Активные ордера
-            """
-            try:
-                logger.info(f"Получение активных ордеров для {inst_id}")
-                
-                path = f'/api/v5/trade/orders-pending?instId={inst_id}'
-                
-                try:
-                    response = self.session.get(
-                        self.base_url + path,
-                        headers=self.get_auth_headers("GET", path),
-                        timeout=30,
-                        verify=True
-                    )
-                    data = response.json()
-                except requests.exceptions.SSLError as e:
-                    logger.error(f"SSL ошибка при получении активных ордеров: {e}")
-                    raise
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Ошибка сети при получении активных ордеров: {e}")
-                    raise
-                
-                logger.info(f"Активные ордера для {inst_id} успешно получены")
-                return data
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения активных ордеров: {e}")
-                return {
-                    "code": "1",
-                    "msg": f"Ошибка получения активных ордеров: {e}",
-                    "data": []
-                }
-
-
-        def buy_btc_with_exits(
-            self, 
-            buy_amount: float, 
-            inst_id: str = "BTC-USDT",
-            take_profit_percent: float = 5.0,
-            stop_loss_percent: float = 2.0
-        ) -> dict:
-            """
-            Покупка BTC с автоматическими точками выхода
-            
-            Args:
-                buy_amount: Сумма в USDT для покупки
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                take_profit_percent: Процент для Take Profit
-                stop_loss_percent: Процент для Stop Loss
-                
-            Returns:
-                dict: Результат операции с информацией о покупке и ордерах
-            """
-            try:
-                logger.info(f"=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
-                logger.info(f"Сумма покупки: {buy_amount} USDT")
-                logger.info(f"Инструмент: {inst_id}")
-                logger.info(f"Take Profit: {take_profit_percent}%")
-                logger.info(f"Stop Loss: {stop_loss_percent}%")
-                
-                # 1. Получаем текущую цену для расчета точек выхода
-                ticker_data = self.get_ticker_data(inst_id)
-                if not ticker_data.get("success", False):
-                    return {
-                        "success": False,
-                        "buy_amount": buy_amount,
-                        "current_price": 0,
-                        "take_profit_price": 0,
-                        "stop_loss_price": 0,
-                        "buy_order": {"error": "Не удалось получить данные тикера"},
-                        "take_profit_order": {"error": "Не удалось получить данные тикера"},
-                        "stop_loss_order": {"error": "Не удалось получить данные тикера"},
-                        "btc_acquired": 0,
-                        "message": "Ошибка получения данных тикера"
-                    }
-                
-                current_price = float(ticker_data["data"]["last"])
-                logger.info(f"Текущая цена: {current_price}")
-                
-                # 2. Рассчитываем цены для точек выхода
-                take_profit_price = current_price * (1 + take_profit_percent / 100)
-                stop_loss_price = current_price * (1 - stop_loss_percent / 100)
-                
-                logger.info(f"Take Profit цена: {take_profit_price}")
-                logger.info(f"Stop Loss цена: {stop_loss_price}")
-                
-                # 3. Покупаем BTC по текущей рыночной цене
-                buy_result = self.place_market_order("buy", buy_amount, inst_id)
-                
-                if buy_result.get("code") != "0":
-                    return {
-                        "success": False,
-                        "buy_amount": buy_amount,
-                        "current_price": current_price,
-                        "take_profit_price": take_profit_price,
-                        "stop_loss_price": stop_loss_price,
-                        "buy_order": buy_result,
-                        "take_profit_order": {"error": "Покупка не удалась"},
-                        "stop_loss_order": {"error": "Покупка не удалась"},
-                        "btc_acquired": 0,
-                        "message": f"Ошибка покупки: {buy_result.get('msg', 'Неизвестная ошибка')}"
-                    }
-                
-                # 4. Получаем количество купленного BTC
-                btc_acquired = buy_amount / current_price
-                
-                # 5. Проверяем баланс BTC
-                btc_balance = self.get_balance("BTC")
-                logger.info(f"Баланс BTC после покупки: {btc_balance}")
-                
-                # Используем реальный баланс, если он меньше расчетного
-                if btc_balance < btc_acquired:
-                    btc_acquired = btc_balance
-                    logger.info(f"Используем реальный баланс BTC: {btc_acquired}")
-                
-                # 6. Устанавливаем Take Profit ордер (limit)
-                take_profit_result = self.place_limit_order(
-                    inst_id=inst_id,
-                    side="sell",
-                    size=btc_acquired,
-                    price=take_profit_price
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
                 )
-                
-                # 7. Устанавливаем Stop Loss ордер (trigger)
-                stop_loss_result = self.place_stop_loss_order(
-                    inst_id=inst_id,
-                    size=btc_acquired,
-                    trigger_price=stop_loss_price
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении стакана: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении стакана: {e}")
+                raise
+            
+            logger.info(f"Стакан ордеров для {inst_id} успешно получен")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения стакана ордеров: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения стакана: {e}",
+                "data": []
+            }
+
+
+    def get_current_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 100) -> Dict:
+        """
+        Получение текущих свечей
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)
+            limit: Количество свечей (по умолчанию 100)
+            
+        Returns:
+            Dict: Текущие свечи
+        """
+        try:
+            logger.info(f"Получение текущих свечей для {inst_id}, интервал {bar}, количество {limit}")
+            
+            path = f'/api/v5/market/candles?instId={inst_id}&bar={bar}&limit={limit}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
                 )
-                
-                # 7. Формируем ответ
-                success = (
-                    buy_result.get("code") == "0" and
-                    take_profit_result.get("code") == "0" and
-                    stop_loss_result.get("code") == "0"
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении свечей: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении свечей: {e}")
+                raise
+            
+            logger.info(f"Текущие свечи для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения текущих свечей: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения свечей: {e}",
+                "data": []
+            }
+
+
+    def get_history_candles(self, inst_id: str = "BTC-USDT", bar: str = "1m", limit: int = 1000) -> Dict:
+        """
+        Получение исторических свечей
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей
+            limit: Количество свечей (по умолчанию 1000)
+            
+        Returns:
+            Dict: Исторические свечи
+        """
+        try:
+            logger.info(f"Получение исторических свечей для {inst_id}, интервал {bar}, количество {limit}")
+            
+            path = f'/api/v5/market/history-candles?instId={inst_id}&bar={bar}&limit={limit}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
                 )
-                
-                message = (
-                    f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
-                    f"с TP {take_profit_price} и SL {stop_loss_price}"
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении исторических свечей: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении исторических свечей: {e}")
+                raise
+            
+            logger.info(f"Исторические свечи для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения исторических свечей: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения исторических свечей: {e}",
+                "data": []
+            }
+
+
+    def get_active_orders(self, inst_id: str = "BTC-USDT") -> Dict:
+        """
+        Получение активных ордеров пользователя
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            
+        Returns:
+            Dict: Активные ордера
+        """
+        try:
+            logger.info(f"Получение активных ордеров для {inst_id}")
+            
+            path = f'/api/v5/trade/orders-pending?instId={inst_id}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    headers=self.get_auth_headers("GET", path),
+                    timeout=30,
+                    verify=True
                 )
-                
-                if not success:
-                    message = "Покупка выполнена, но не все ордера установлены"
-                
-                logger.info(f"Результат: {message}")
-                
-                return {
-                    "success": success,
-                    "buy_amount": buy_amount,
-                    "current_price": current_price,
-                    "take_profit_price": take_profit_price,
-                    "stop_loss_price": stop_loss_price,
-                    "buy_order": buy_result,
-                    "take_profit_order": take_profit_result,
-                    "stop_loss_order": stop_loss_result,
-                    "btc_acquired": btc_acquired,
-                    "message": message
-                }
-                
-            except Exception as e:
-                logger.error(f"Ошибка покупки BTC с точками выхода: {e}")
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении активных ордеров: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении активных ордеров: {e}")
+                raise
+            
+            logger.info(f"Активные ордера для {inst_id} успешно получены")
+            return data
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения активных ордеров: {e}")
+            return {
+                "code": "1",
+                "msg": f"Ошибка получения активных ордеров: {e}",
+                "data": []
+            }
+
+
+    def buy_btc_with_exits(
+        self, 
+        buy_amount: float, 
+        inst_id: str = "BTC-USDT",
+        take_profit_percent: float = 5.0,
+        stop_loss_percent: float = 2.0
+    ) -> dict:
+        """
+        Покупка BTC с автоматическими точками выхода
+        
+        Args:
+            buy_amount: Сумма в USDT для покупки
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            take_profit_percent: Процент для Take Profit
+            stop_loss_percent: Процент для Stop Loss
+            
+        Returns:
+            dict: Результат операции с информацией о покупке и ордерах
+        """
+        try:
+            logger.info(f"=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
+            logger.info(f"Сумма покупки: {buy_amount} USDT")
+            logger.info(f"Инструмент: {inst_id}")
+            logger.info(f"Take Profit: {take_profit_percent}%")
+            logger.info(f"Stop Loss: {stop_loss_percent}%")
+            
+            # 1. Получаем текущую цену для расчета точек выхода
+            ticker_data = self.get_ticker_data(inst_id)
+            if not ticker_data.get("success", False):
                 return {
                     "success": False,
                     "buy_amount": buy_amount,
                     "current_price": 0,
                     "take_profit_price": 0,
                     "stop_loss_price": 0,
-                    "buy_order": {"error": str(e)},
-                    "take_profit_order": {"error": str(e)},
-                    "stop_loss_order": {"error": str(e)},
+                    "buy_order": {"error": "Не удалось получить данные тикера"},
+                    "take_profit_order": {"error": "Не удалось получить данные тикера"},
+                    "stop_loss_order": {"error": "Не удалось получить данные тикера"},
                     "btc_acquired": 0,
-                    "message": f"Ошибка покупки BTC: {str(e)}"
+                    "message": "Ошибка получения данных тикера"
                 }
-
-
-        def place_limit_order(
-            self, 
-            inst_id: str, 
-            side: str, 
-            size: float, 
-            price: float
-        ) -> dict:
-            """
-            Размещение LIMIT ордера
             
-            Args:
-                inst_id: Инструмент
-                side: Сторона (buy/sell)
-                size: Размер в BTC (для всех типов ордеров)
-                price: Цена
-                
-            Returns:
-                dict: Результат размещения ордера
-            """
-            try:
-                # Размер уже в BTC для всех типов ордеров
-                btc_size = size
-                
-                body = {
-                    "instId": inst_id,
-                    "tdMode": "cash",
-                    "side": side,
-                    "ordType": "limit",
-                    "sz": str(btc_size),
-                    "px": str(price)
-                }
-                
-                import json
-                body_str = json.dumps(body, separators=(",", ":"))
-                logger.info(f"{side.upper()} LIMIT BODY: {body_str}")
-                
-                # Генерируем заголовки авторизации
-                headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
-                logger.info(f"{side.upper()} LIMIT HEADERS: {headers}")
-                
-                # Выполняем запрос
-                response = self.session.post(
-                    f"{self.base_url}/api/v5/trade/order",
-                    headers=headers,
-                    data=body_str,
-                    timeout=10
-                )
-                
-                result = response.json()
-                logger.info(f"{side.upper()} LIMIT ORDER RESULT: {result}")
-                
-                return result
-                
-            except Exception as e:
-                logger.error(f"Ошибка размещения LIMIT ордера: {e}")
-                return {"error": str(e)}
-
-
-        def place_stop_loss_order(
-            self, 
-            inst_id: str, 
-            size: float, 
-            trigger_price: float
-        ) -> dict:
-            """
-            Размещение Stop Loss ордера через algo order
+            current_price = float(ticker_data["data"]["last"])
+            logger.info(f"Текущая цена: {current_price}")
             
-            Args:
-                inst_id: Инструмент
-                size: Размер в BTC
-                trigger_price: Цена активации (stop price)
-                
-            Returns:
-                dict: Результат размещения ордера
-            """
-            try:
-                body = {
-                    "instId": inst_id,
-                    "tdMode": "cash",
-                    "side": "sell",
-                    "ordType": "trigger",
-                    "triggerPx": str(trigger_price),  # Триггер-цена
-                    "triggerPxType": "last",          # Тип цены
-                    "orderPx": str(trigger_price),    # Цена исполнения ордера
-                    "sz": str(size)
-                }
-                
-                import json
-                body_str = json.dumps(body, separators=(",", ":"))
-                logger.info(f"STOP LOSS BODY: {body_str}")
-                
-                # Генерируем заголовки авторизации
-                headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str)
-                logger.info(f"STOP LOSS HEADERS: {headers}")
-                
-                # Выполняем запрос
-                response = self.session.post(
-                    f"{self.base_url}/api/v5/trade/order-algo",
-                    headers=headers,
-                    data=body_str,
-                    timeout=10
-                )
-                
-                result = response.json()
-                logger.info(f"STOP LOSS ORDER RESULT: {result}")
-                
-                return result
-                
-            except Exception as e:
-                logger.error(f"Ошибка создания Stop Loss ордера: {e}")
-                return {"error": str(e)}
-
-
-        def get_ticker_data(self, inst_id: str = "BTC-USDT") -> dict:
-            """
-            Получение данных тикера
+            # 2. Рассчитываем цены для точек выхода
+            take_profit_price = current_price * (1 + take_profit_percent / 100)
+            stop_loss_price = current_price * (1 - stop_loss_percent / 100)
             
-            Args:
-                inst_id: Инструмент
-                
-            Returns:
-                dict: Данные тикера
-            """
-            try:
-                logger.info(f"Получение данных тикера для {inst_id}")
-                
-                path = f'/api/v5/market/ticker?instId={inst_id}'
-                
-                try:
-                    response = self.session.get(
-                        self.base_url + path,
-                        timeout=30,
-                        verify=True
-                    )
-                    result = response.json()
-                except requests.exceptions.SSLError as e:
-                    logger.error(f"SSL ошибка при получении тикера: {e}")
-                    return {"success": False, "error": f"SSL ошибка: {e}"}
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Ошибка сети при получении тикера: {e}")
-                    return {"success": False, "error": f"Ошибка сети: {e}"}
-                
-                logger.info(f"TICKER DATA RESULT: {result}")
-                
-                # Проверяем успешность запроса
-                if result.get("code") == "0" and result.get("data") and len(result["data"]) > 0:
-                    return {"success": True, "data": result["data"][0]}
-                else:
-                    logger.error(f"Ошибка API тикера: {result}")
-                    return {"success": False, "error": result.get("msg", "Неизвестная ошибка")}
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения данных тикера: {e}")
-                return {"success": False, "error": str(e)}
-
-
-        def get_market_analytics(
-            self, 
-            inst_id: str = "BTC-USDT",
-            bar: str = "1m",
-            depth: int = 20,
-            current_limit: int = 100,
-            history_limit: int = 1000
-        ) -> Dict:
-            """
-            Получение полных аналитических данных для n8n
+            logger.info(f"Take Profit цена: {take_profit_price}")
+            logger.info(f"Stop Loss цена: {stop_loss_price}")
             
-            Args:
-                inst_id: Инструмент (по умолчанию BTC-USDT)
-                bar: Интервал свечей (по умолчанию 1m)
-                depth: Глубина стакана (по умолчанию 20)
-                current_limit: Количество текущих свечей (по умолчанию 100)
-                history_limit: Количество исторических свечей (по умолчанию 1000)
-                
-            Returns:
-                Dict: Полные аналитические данные
-            """
-            try:
-                logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
-                logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
-                
-                # Получаем все данные с указанными параметрами
-                logger.info("Получение orderbook...")
-                orderbook = self.get_orderbook(inst_id, depth)
-                logger.info(f"Orderbook получен: {len(orderbook.get('data', []))} записей")
-                
-                logger.info("Получение current_candles...")
-                current_candles = self.get_current_candles(inst_id, bar, current_limit)
-                logger.info(f"Current candles получены: {len(current_candles.get('data', []))} записей")
-                
-                logger.info("Получение history_candles...")
-                history_candles = self.get_history_candles(inst_id, bar, history_limit)
-                logger.info(f"History candles получены: {len(history_candles.get('data', []))} записей")
-                
-                logger.info("Получение active_orders...")
-                active_orders = self.get_active_orders(inst_id)
-                logger.info(f"Active orders получены: {len(active_orders.get('data', []))} записей")
-                
-                logger.info("Получение balances...")
-                balances = self.get_balances()
-                logger.info(f"Balances получены: {len(balances.get('balances', {}))} валют")
-                
-                logger.info("Получение ticker...")
-                ticker = self.get_ticker_data(inst_id)
-                logger.info(f"Ticker получен: {ticker.get('success', False)}")
-                
-                # Формируем ответ
-                result = {
-                    "success": True,
-                    "inst_id": inst_id,
-                    "market_data": {
-                        "orderbook": orderbook.get("data", []),
-                        "current_candles": current_candles.get("data", []),
-                        "history_candles": history_candles.get("data", [])
-                    },
-                    "user_data": {
-                        "active_orders": active_orders.get("data", []),
-                        "balances": balances.get("balances", {})
-                    },
-                    "indicators": {
-                        "current_price": "0",
-                        "volume_24h": "0",
-                        "change_24h": "0",
-                        "high_24h": "0",
-                        "low_24h": "0"
-                    },
-                    "timestamp": self.get_server_timestamp(),
-                    "message": "Аналитические данные успешно получены"
-                }
-                
-                # Извлекаем индикаторы из тикера
-                if ticker.get("success") and ticker.get("data"):
-                    # Проверяем, что data - это список
-                    if isinstance(ticker["data"], list) and len(ticker["data"]) > 0:
-                        ticker_data = ticker["data"][0]
-                    else:
-                        # Если data - это не список, используем его напрямую
-                        ticker_data = ticker["data"]
-                    
-                    result["indicators"] = {
-                        "current_price": ticker_data.get("last", "0"),
-                        "volume_24h": ticker_data.get("vol24h", "0"),
-                        "change_24h": ticker_data.get("change24h", "0"),
-                        "high_24h": ticker_data.get("high24h", "0"),
-                        "low_24h": ticker_data.get("low24h", "0")
-                    }
-                    logger.info(f"Индикаторы извлечены: {result['indicators']}")
-                else:
-                    logger.warning(f"Ticker не содержит данных: {ticker}")
-                
-                logger.info(f"=== АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ {inst_id} ===")
-                return result
-                
-            except Exception as e:
-                logger.error(f"Ошибка получения аналитических данных: {e}")
-                logger.error(f"Тип ошибки: {type(e)}")
-                import traceback
-                logger.error(f"Traceback: {traceback.format_exc()}")
+            # 3. Покупаем BTC по текущей рыночной цене
+            buy_result = self.place_market_order("buy", buy_amount, inst_id)
+            
+            if buy_result.get("code") != "0":
                 return {
                     "success": False,
-                    "inst_id": inst_id,
-                    "market_data": {"orderbook": [], "current_candles": [], "history_candles": []},
-                    "user_data": {"active_orders": [], "balances": {}},
-                    "indicators": {"current_price": "0", "volume_24h": "0", "change_24h": "0", "high_24h": "0", "low_24h": "0"},
-                    "timestamp": self.get_server_timestamp(),
-                    "message": f"Ошибка получения аналитических данных: {e}"
+                    "buy_amount": buy_amount,
+                    "current_price": current_price,
+                    "take_profit_price": take_profit_price,
+                    "stop_loss_price": stop_loss_price,
+                    "buy_order": buy_result,
+                    "take_profit_order": {"error": "Покупка не удалась"},
+                    "stop_loss_order": {"error": "Покупка не удалась"},
+                    "btc_acquired": 0,
+                    "message": f"Ошибка покупки: {buy_result.get('msg', 'Неизвестная ошибка')}"
                 }
+            
+            # 4. Получаем количество купленного BTC
+            btc_acquired = buy_amount / current_price
+            
+            # 5. Проверяем баланс BTC
+            btc_balance = self.get_balance("BTC")
+            logger.info(f"Баланс BTC после покупки: {btc_balance}")
+            
+            # Используем реальный баланс, если он меньше расчетного
+            if btc_balance < btc_acquired:
+                btc_acquired = btc_balance
+                logger.info(f"Используем реальный баланс BTC: {btc_acquired}")
+            
+            # 6. Устанавливаем Take Profit ордер (limit)
+            take_profit_result = self.place_limit_order(
+                inst_id=inst_id,
+                side="sell",
+                size=btc_acquired,
+                price=take_profit_price
+            )
+            
+            # 7. Устанавливаем Stop Loss ордер (trigger)
+            stop_loss_result = self.place_stop_loss_order(
+                inst_id=inst_id,
+                size=btc_acquired,
+                trigger_price=stop_loss_price
+            )
+            
+            # 7. Формируем ответ
+            success = (
+                buy_result.get("code") == "0" and
+                take_profit_result.get("code") == "0" and
+                stop_loss_result.get("code") == "0"
+            )
+            
+            message = (
+                f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
+                f"с TP {take_profit_price} и SL {stop_loss_price}"
+            )
+            
+            if not success:
+                message = "Покупка выполнена, но не все ордера установлены"
+            
+            logger.info(f"Результат: {message}")
+            
+            return {
+                "success": success,
+                "buy_amount": buy_amount,
+                "current_price": current_price,
+                "take_profit_price": take_profit_price,
+                "stop_loss_price": stop_loss_price,
+                "buy_order": buy_result,
+                "take_profit_order": take_profit_result,
+                "stop_loss_order": stop_loss_result,
+                "btc_acquired": btc_acquired,
+                "message": message
+            }
+            
+        except Exception as e:
+            logger.error(f"Ошибка покупки BTC с точками выхода: {e}")
+            return {
+                "success": False,
+                "buy_amount": buy_amount,
+                "current_price": 0,
+                "take_profit_price": 0,
+                "stop_loss_price": 0,
+                "buy_order": {"error": str(e)},
+                "take_profit_order": {"error": str(e)},
+                "stop_loss_order": {"error": str(e)},
+                "btc_acquired": 0,
+                "message": f"Ошибка покупки BTC: {str(e)}"
+            }
+
+
+    def place_limit_order(
+        self, 
+        inst_id: str, 
+        side: str, 
+        size: float, 
+        price: float
+    ) -> dict:
+        """
+        Размещение LIMIT ордера
+        
+        Args:
+            inst_id: Инструмент
+            side: Сторона (buy/sell)
+            size: Размер в BTC (для всех типов ордеров)
+            price: Цена
+            
+        Returns:
+            dict: Результат размещения ордера
+        """
+        try:
+            # Размер уже в BTC для всех типов ордеров
+            btc_size = size
+            
+            body = {
+                "instId": inst_id,
+                "tdMode": "cash",
+                "side": side,
+                "ordType": "limit",
+                "sz": str(btc_size),
+                "px": str(price)
+            }
+            
+            import json
+            body_str = json.dumps(body, separators=(",", ":"))
+            logger.info(f"{side.upper()} LIMIT BODY: {body_str}")
+            
+            # Генерируем заголовки авторизации
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
+            logger.info(f"{side.upper()} LIMIT HEADERS: {headers}")
+            
+            # Выполняем запрос
+            response = self.session.post(
+                f"{self.base_url}/api/v5/trade/order",
+                headers=headers,
+                data=body_str,
+                timeout=10
+            )
+            
+            result = response.json()
+            logger.info(f"{side.upper()} LIMIT ORDER RESULT: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка размещения LIMIT ордера: {e}")
+            return {"error": str(e)}
+
+
+    def place_stop_loss_order(
+        self, 
+        inst_id: str, 
+        size: float, 
+        trigger_price: float
+    ) -> dict:
+        """
+        Размещение Stop Loss ордера через algo order
+        
+        Args:
+            inst_id: Инструмент
+            size: Размер в BTC
+            trigger_price: Цена активации (stop price)
+            
+        Returns:
+            dict: Результат размещения ордера
+        """
+        try:
+            body = {
+                "instId": inst_id,
+                "tdMode": "cash",
+                "side": "sell",
+                "ordType": "trigger",
+                "triggerPx": str(trigger_price),  # Триггер-цена
+                "triggerPxType": "last",          # Тип цены
+                "orderPx": str(trigger_price),    # Цена исполнения ордера
+                "sz": str(size)
+            }
+            
+            import json
+            body_str = json.dumps(body, separators=(",", ":"))
+            logger.info(f"STOP LOSS BODY: {body_str}")
+            
+            # Генерируем заголовки авторизации
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str)
+            logger.info(f"STOP LOSS HEADERS: {headers}")
+            
+            # Выполняем запрос
+            response = self.session.post(
+                f"{self.base_url}/api/v5/trade/order-algo",
+                headers=headers,
+                data=body_str,
+                timeout=10
+            )
+            
+            result = response.json()
+            logger.info(f"STOP LOSS ORDER RESULT: {result}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка создания Stop Loss ордера: {e}")
+            return {"error": str(e)}
+
+
+    def get_ticker_data(self, inst_id: str = "BTC-USDT") -> dict:
+        """
+        Получение данных тикера
+        
+        Args:
+            inst_id: Инструмент
+            
+        Returns:
+            dict: Данные тикера
+        """
+        try:
+            logger.info(f"Получение данных тикера для {inst_id}")
+            
+            path = f'/api/v5/market/ticker?instId={inst_id}'
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    timeout=30,
+                    verify=True
+                )
+                result = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении тикера: {e}")
+                return {"success": False, "error": f"SSL ошибка: {e}"}
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении тикера: {e}")
+                return {"success": False, "error": f"Ошибка сети: {e}"}
+            
+            logger.info(f"TICKER DATA RESULT: {result}")
+            
+            # Проверяем успешность запроса
+            if result.get("code") == "0" and result.get("data") and len(result["data"]) > 0:
+                return {"success": True, "data": result["data"][0]}
+            else:
+                logger.error(f"Ошибка API тикера: {result}")
+                return {"success": False, "error": result.get("msg", "Неизвестная ошибка")}
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения данных тикера: {e}")
+            return {"success": False, "error": str(e)}
+
+
+    def get_market_analytics(
+        self, 
+        inst_id: str = "BTC-USDT",
+        bar: str = "1m",
+        depth: int = 20,
+        current_limit: int = 100,
+        history_limit: int = 1000
+    ) -> Dict:
+        """
+        Получение полных аналитических данных для n8n
+        
+        Args:
+            inst_id: Инструмент (по умолчанию BTC-USDT)
+            bar: Интервал свечей (по умолчанию 1m)
+            depth: Глубина стакана (по умолчанию 20)
+            current_limit: Количество текущих свечей (по умолчанию 100)
+            history_limit: Количество исторических свечей (по умолчанию 1000)
+            
+        Returns:
+            Dict: Полные аналитические данные
+        """
+        try:
+            logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
+            logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
+            
+            # Получаем все данные с указанными параметрами
+            logger.info("Получение orderbook...")
+            orderbook = self.get_orderbook(inst_id, depth)
+            logger.info(f"Orderbook получен: {len(orderbook.get('data', []))} записей")
+            
+            logger.info("Получение current_candles...")
+            current_candles = self.get_current_candles(inst_id, bar, current_limit)
+            logger.info(f"Current candles получены: {len(current_candles.get('data', []))} записей")
+            
+            logger.info("Получение history_candles...")
+            history_candles = self.get_history_candles(inst_id, bar, history_limit)
+            logger.info(f"History candles получены: {len(history_candles.get('data', []))} записей")
+            
+            logger.info("Получение active_orders...")
+            active_orders = self.get_active_orders(inst_id)
+            logger.info(f"Active orders получены: {len(active_orders.get('data', []))} записей")
+            
+            logger.info("Получение balances...")
+            balances = self.get_balances()
+            logger.info(f"Balances получены: {len(balances.get('balances', {}))} валют")
+            
+            logger.info("Получение ticker...")
+            ticker = self.get_ticker_data(inst_id)
+            logger.info(f"Ticker получен: {ticker.get('success', False)}")
+            
+            # Формируем ответ
+            result = {
+                "success": True,
+                "inst_id": inst_id,
+                "market_data": {
+                    "orderbook": orderbook.get("data", []),
+                    "current_candles": current_candles.get("data", []),
+                    "history_candles": history_candles.get("data", [])
+                },
+                "user_data": {
+                    "active_orders": active_orders.get("data", []),
+                    "balances": balances.get("balances", {})
+                },
+                "indicators": {
+                    "current_price": "0",
+                    "volume_24h": "0",
+                    "change_24h": "0",
+                    "high_24h": "0",
+                    "low_24h": "0"
+                },
+                "timestamp": self.get_server_timestamp(),
+                "message": "Аналитические данные успешно получены"
+            }
+            
+            # Извлекаем индикаторы из тикера
+            if ticker.get("success") and ticker.get("data"):
+                # Проверяем, что data - это список
+                if isinstance(ticker["data"], list) and len(ticker["data"]) > 0:
+                    ticker_data = ticker["data"][0]
+                else:
+                    # Если data - это не список, используем его напрямую
+                    ticker_data = ticker["data"]
+                
+                result["indicators"] = {
+                    "current_price": ticker_data.get("last", "0"),
+                    "volume_24h": ticker_data.get("vol24h", "0"),
+                    "change_24h": ticker_data.get("change24h", "0"),
+                    "high_24h": ticker_data.get("high24h", "0"),
+                    "low_24h": ticker_data.get("low24h", "0")
+                }
+                logger.info(f"Индикаторы извлечены: {result['indicators']}")
+            else:
+                logger.warning(f"Ticker не содержит данных: {ticker}")
+            
+            logger.info(f"=== АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ {inst_id} ===")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения аналитических данных: {e}")
+            logger.error(f"Тип ошибки: {type(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            return {
+                "success": False,
+                "inst_id": inst_id,
+                "market_data": {"orderbook": [], "current_candles": [], "history_candles": []},
+                "user_data": {"active_orders": [], "balances": {}},
+                "indicators": {"current_price": "0", "volume_24h": "0", "change_24h": "0", "high_24h": "0", "low_24h": "0"},
+                "timestamp": self.get_server_timestamp(),
+                "message": f"Ошибка получения аналитических данных: {e}"
+            }
 
 
 # Глобальный экземпляр сервиса

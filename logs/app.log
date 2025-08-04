@@ -684,3 +684,35 @@
 }
 2025-08-04 11:17:40 | INFO     | app.services.okx_service:get_orders:530 - Открытых ордеров: 1
 2025-08-04 11:17:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders - 200 (0.905s)
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-04 11:20:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.027s)
+2025-08-04 11:20:48 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/orders/cancel
+2025-08-04 11:20:48 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-04 11:20:48 | INFO     | app.api.endpoints:cancel_order:103 - Запрос на отмену ордера: 2736584623803588608
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:cancel_order:501 - Попытка отменить ордер 2736584623803588608 на инструменте BTC-USDT
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-04T08:20:48Z
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-04T08:20:48ZPOST/api/v5/trade/cancel-order{"instId": "BTC-USDT", "ordId": "2736584623803588608"}'
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 104
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:generate_signature:131 - Body: '{"instId": "BTC-USDT", "ordId": "2736584623803588608"}' (длина: 54)
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: qJ1lo2Jk/pmvCmXNM311DNcQ55g4dLe/CMuka2+N/A0=
+2025-08-04 11:20:48 | INFO     | app.services.okx_service:get_auth_headers:177 - Сгенерированы заголовки авторизации для POST /api/v5/trade/cancel-order
+2025-08-04 11:20:49 | DEBUG    | app.services.okx_service:cancel_order:518 - Ответ от OKX при отмене ордера: {
+  "code": "0",
+  "data": [
+    {
+      "clOrdId": "",
+      "ordId": "2736584623803588608",
+      "sCode": "0",
+      "sMsg": "",
+      "ts": "1754295648543"
+    }
+  ],
+  "inTime": "1754295648543549",
+  "msg": "",
+  "outTime": "1754295648544652"
+}
+2025-08-04 11:20:49 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/orders/cancel - 200 (0.936s)
