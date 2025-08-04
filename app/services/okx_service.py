@@ -817,122 +817,109 @@ class OKXService:
 
 
     def buy_btc_with_exits(
-        self, 
-        buy_amount: float, 
-        inst_id: str = "BTC-USDT",
-        take_profit_percent: float = 5.0,
-        stop_loss_percent: float = 2.0
-    ) -> dict:
+            self, 
+            buy_amount: float, 
+            inst_id: str = "BTC-USDT",
+            take_profit_percent: float = 0.5,
+            stop_loss_percent: float = 0.2
+        ) -> dict:
         """
         Покупка BTC с автоматическими точками выхода
-        
+
         Args:
             buy_amount: Сумма в USDT для покупки
             inst_id: Инструмент (по умолчанию BTC-USDT)
             take_profit_percent: Процент для Take Profit
             stop_loss_percent: Процент для Stop Loss
-            
+
         Returns:
             dict: Результат операции с информацией о покупке и ордерах
         """
         try:
-            logger.info(f"=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
+            logger.info("=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
             logger.info(f"Сумма покупки: {buy_amount} USDT")
             logger.info(f"Инструмент: {inst_id}")
             logger.info(f"Take Profit: {take_profit_percent}%")
             logger.info(f"Stop Loss: {stop_loss_percent}%")
-            
-            # 1. Получаем текущую цену для расчета точек выхода
-            ticker_data = self.get_ticker_data(inst_id)
-            if not ticker_data.get("success", False):
+
+            # 1. Получаем BTC баланс до покупки
+            btc_before = self.get_balance("BTC")
+            logger.info(f"Баланс BTC до покупки: {btc_before}")
+
+            # 2. Покупаем BTC по рыночной цене
+            buy_result = self.place_market_order("buy", buy_amount, inst_id)
+            logger.info(f"Buy result: {buy_result}")
+            if buy_result.get("code") != "0":
                 return {
                     "success": False,
                     "buy_amount": buy_amount,
                     "current_price": 0,
                     "take_profit_price": 0,
                     "stop_loss_price": 0,
-                    "buy_order": {"error": "Не удалось получить данные тикера"},
-                    "take_profit_order": {"error": "Не удалось получить данные тикера"},
-                    "stop_loss_order": {"error": "Не удалось получить данные тикера"},
-                    "btc_acquired": 0,
-                    "message": "Ошибка получения данных тикера"
-                }
-            
-            current_price = float(ticker_data["data"]["last"])
-            logger.info(f"Текущая цена: {current_price}")
-            
-            # 2. Рассчитываем цены для точек выхода
-            take_profit_price = current_price * (1 + take_profit_percent / 100)
-            stop_loss_price = current_price * (1 - stop_loss_percent / 100)
-            
-            logger.info(f"Take Profit цена: {take_profit_price}")
-            logger.info(f"Stop Loss цена: {stop_loss_price}")
-            
-            # 3. Покупаем BTC по текущей рыночной цене
-            buy_result = self.place_market_order("buy", buy_amount, inst_id)
-            
-            if buy_result.get("code") != "0":
-                return {
-                    "success": False,
-                    "buy_amount": buy_amount,
-                    "current_price": current_price,
-                    "take_profit_price": take_profit_price,
-                    "stop_loss_price": stop_loss_price,
                     "buy_order": buy_result,
                     "take_profit_order": {"error": "Покупка не удалась"},
                     "stop_loss_order": {"error": "Покупка не удалась"},
                     "btc_acquired": 0,
                     "message": f"Ошибка покупки: {buy_result.get('msg', 'Неизвестная ошибка')}"
                 }
-            
-            # 4. Получаем количество купленного BTC
-            btc_acquired = buy_amount / current_price
-            
-            # 5. Проверяем баланс BTC
-            btc_balance = self.get_balance("BTC")
-            logger.info(f"Баланс BTC после покупки: {btc_balance}")
-            
-            # Используем реальный баланс, если он меньше расчетного
-            if btc_balance < btc_acquired:
-                btc_acquired = btc_balance
-                logger.info(f"Используем реальный баланс BTC: {btc_acquired}")
-            
-            # 6. Устанавливаем Take Profit ордер (limit)
+
+            # 3. Получаем BTC баланс после покупки
+            btc_after = self.get_balance("BTC")
+            logger.info(f"Баланс BTC после покупки: {btc_after}")
+
+            # 4. Считаем, сколько BTC реально получили
+            btc_acquired = btc_after - btc_before
+            logger.info(f"Получено BTC: {btc_acquired}")
+
+            if btc_acquired <= 0:
+                raise ValueError("BTC не был получен после покупки.")
+
+            # 5. Вычисляем фактическую цену покупки
+            actual_price = buy_amount / btc_acquired
+            logger.info(f"Фактическая цена покупки: {actual_price}")
+
+            # 6. Рассчитываем TP и SL
+            take_profit_price = actual_price * (1 + take_profit_percent / 100)
+            stop_loss_price = actual_price * (1 - stop_loss_percent / 100)
+            logger.info(f"Рассчитанный Take Profit: {take_profit_price}")
+            logger.info(f"Рассчитанный Stop Loss: {stop_loss_price}")
+
+            # 7. Устанавливаем Take Profit ордер (limit)
             take_profit_result = self.place_limit_order(
                 inst_id=inst_id,
                 side="sell",
                 size=btc_acquired,
                 price=take_profit_price
             )
-            
-            # 7. Устанавливаем Stop Loss ордер (trigger)
+
+            # 8. Устанавливаем Stop Loss ордер (trigger)
             stop_loss_result = self.place_stop_loss_order(
                 inst_id=inst_id,
                 size=btc_acquired,
                 trigger_price=stop_loss_price
             )
-            
-            # 7. Формируем ответ
+
+            # 9. Финальный статус
             success = (
                 buy_result.get("code") == "0" and
                 take_profit_result.get("code") == "0" and
                 stop_loss_result.get("code") == "0"
             )
-            
-            message = (
-                f"BTC успешно куплен на {buy_amount} USDT по текущей цене {current_price} "
-                f"с TP {take_profit_price} и SL {stop_loss_price}"
-            )
-            
-            if not success:
+
+            if success:
+                message = (
+                    f"BTC успешно куплен на {buy_amount} USDT по цене {actual_price} "
+                    f"с TP {take_profit_price} и SL {stop_loss_price}"
+                )
+            else:
                 message = "Покупка выполнена, но не все ордера установлены"
-            
+
             logger.info(f"Результат: {message}")
-            
+
             return {
                 "success": success,
                 "buy_amount": buy_amount,
-                "current_price": current_price,
+                "current_price": actual_price,
                 "take_profit_price": take_profit_price,
                 "stop_loss_price": stop_loss_price,
                 "buy_order": buy_result,
@@ -941,7 +928,7 @@ class OKXService:
                 "btc_acquired": btc_acquired,
                 "message": message
             }
-            
+
         except Exception as e:
             logger.error(f"Ошибка покупки BTC с точками выхода: {e}")
             return {
@@ -956,6 +943,7 @@ class OKXService:
                 "btc_acquired": 0,
                 "message": f"Ошибка покупки BTC: {str(e)}"
             }
+
 
 
     def place_limit_order(
