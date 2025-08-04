@@ -20,6 +20,107 @@ class ErrorResponse(BaseModel):
     )
 
 
+class CancelOrderRequest(BaseModel):
+    instId: str = Field(..., example="BTC-USDT")
+    ordId: str = Field(..., example="1234567890")
+
+class CancelOrderResponse(BaseModel):
+    success: bool
+    message: str
+    cancelled_order: dict
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "success": True,
+                "message": "Ордер успешно отменён",
+                "cancelled_order": {
+                    "instId": "BTC-USDT",
+                    "ordId": "1234567890",
+                    "sCode": "0",
+                    "sMsg": ""
+                }
+            }
+        }
+
+class ErrorResponse(BaseModel):
+    detail: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "detail": "Ошибка отмены ордера: invalid order ID"
+            }
+        }
+
+
+class OrderItem(BaseModel):
+    instId: str
+    ordId: str
+    px: str
+    sz: str
+    side: str
+    ordType: str
+    state: str
+    cTime: Optional[str] = None
+    uTime: Optional[str] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "instId": "BTC-USDT",
+                "ordId": "1234567890",
+                "px": "30000",
+                "sz": "0.1",
+                "side": "buy",
+                "ordType": "limit",
+                "state": "live",
+                "cTime": "2025-08-04T08:01:23.456Z",
+                "uTime": "2025-08-04T08:05:00.123Z"
+            }
+        }
+
+class OrdersResponse(BaseModel):
+    success: bool
+    message: str
+    orders: list[OrderItem]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "success": True,
+                "message": "Ордера успешно получены",
+                "orders": [
+                    {
+                        "instId": "BTC-USDT",
+                        "ordId": "1234567890",
+                        "px": "30000",
+                        "sz": "0.1",
+                        "side": "buy",
+                        "ordType": "limit",
+                        "state": "live",
+                        "cTime": "2025-08-04T08:01:23.456Z",
+                        "uTime": "2025-08-04T08:05:00.123Z"
+                    },
+                    {
+                        "instId": "ETH-USDT",
+                        "ordId": "987654321",
+                        "px": "3500",
+                        "sz": "0.5",
+                        "side": "sell",
+                        "ordType": "limit",
+                        "state": "live",
+                        "cTime": "2025-08-04T07:59:12.789Z",
+                        "uTime": "2025-08-04T08:03:00.000Z"
+                    }
+                ]
+            }
+        }
+
+class ErrorResponse(BaseModel):
+    detail: str
+
+
 # Схемы для торговых операций
 class BuyRequest(BaseModel):
     """Схема запроса для покупки BTC с точками выхода"""

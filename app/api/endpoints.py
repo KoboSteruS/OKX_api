@@ -6,7 +6,7 @@ from loguru import logger
 from typing import Optional
 
 from app.api.schemas import (
-    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse
+    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse
 )
 from app.services.okx_service import okx_service
 
@@ -83,6 +83,47 @@ async def test_connection():
 
 
 @router.post(
+    "/orders/cancel",
+    response_model=CancelOrderResponse,
+    responses={
+        500: {"model": ErrorResponse}
+    },
+    summary="Отменить ордер",
+    description="Отменяет ордер по идентификатору и инструменту"
+)
+async def cancel_order(request: CancelOrderRequest):
+    """
+    Отмена ордера по instId и ordId
+
+    Пример:
+    - instId: BTC-USDT
+    - ordId: 1234567890
+    """
+    try:
+        logger.info(f"Запрос на отмену ордера: {request.ordId}")
+
+        result = okx_service.cancel_order(
+            inst_id=request.instId,
+            ord_id=request.ordId
+        )
+
+        if not result["success"]:
+            raise HTTPException(status_code=500, detail=result["message"])
+
+        return CancelOrderResponse(
+            success=True,
+            message=result["message"],
+            cancelled_order=result["cancelled_order"]
+        )
+
+    except Exception as e:
+        logger.error(f"Ошибка отмены ордера: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+@router.post(
     "/buy",
     response_model=BuyResponse,
     responses={
@@ -155,68 +196,6 @@ async def buy_btc(request: BuyRequest):
 
 
 @router.get(
-    "/buy",
-    response_model=BuyResponse,
-    responses={
-        400: {"model": ErrorResponse},
-        500: {"model": ErrorResponse}
-    },
-    summary="Покупка BTC с точками выхода (GET)",
-    description="Покупает BTC с параметрами из query string"
-)
-async def buy_btc_get(
-    buy_amount: float = Query(default=10.0, description="Сумма в USDT для покупки BTC", gt=0),
-    inst_id: str = Query(default="BTC-USDT", description="Инструмент для покупки"),
-    take_profit_percent: float = Query(default=5.0, description="Процент для Take Profit", gt=0),
-    stop_loss_percent: float = Query(default=2.0, description="Процент для Stop Loss", gt=0)
-):
-    """
-    Покупка BTC с точками выхода (GET метод)
-    
-    Параметры:
-    - **buy_amount**: Сумма в USDT для покупки BTC (по умолчанию 10.0)
-    - **inst_id**: Инструмент для покупки (по умолчанию BTC-USDT)
-    - **take_profit_percent**: Процент для Take Profit (по умолчанию 5.0%)
-    - **stop_loss_percent**: Процент для Stop Loss (по умолчанию 2.0%)
-    
-    Выполняет ту же операцию, что и POST /buy
-    """
-    try:
-        logger.info(f"GET запрос на покупку BTC: сумма {buy_amount} USDT, TP {take_profit_percent}%, SL {stop_loss_percent}%")
-        
-        # Выполнение покупки BTC с точками выхода
-        result = okx_service.buy_btc_with_exits(
-            buy_amount=buy_amount,
-            inst_id=inst_id,
-            take_profit_percent=take_profit_percent,
-            stop_loss_percent=stop_loss_percent
-        )
-        
-        response = BuyResponse(
-            success=result["success"],
-            buy_amount=result["buy_amount"],
-            current_price=result["current_price"],
-            take_profit_price=result["take_profit_price"],
-            stop_loss_price=result["stop_loss_price"],
-            buy_order=result["buy_order"],
-            take_profit_order=result["take_profit_order"],
-            stop_loss_order=result["stop_loss_order"],
-            btc_acquired=result["btc_acquired"],
-            message=result["message"]
-        )
-        
-        logger.info(f"Покупка BTC завершена: {result['message']}")
-        return response
-        
-    except ValueError as e:
-        logger.error(f"Ошибка валидации: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        logger.error(f"Ошибка покупки BTC: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@router.get(
     "/balance",
     response_model=BalanceResponse,
     responses={
@@ -252,6 +231,45 @@ async def get_balances():
     except Exception as e:
         logger.error(f"Ошибка получения балансов: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+@router.get(
+    "/orders",
+    response_model=OrdersResponse,
+    responses={
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить все открытые ордера",
+    description="Возвращает список всех открытых ордеров на OKX"
+)
+async def get_orders():
+    """
+    Получение открытых ордеров
+
+    Возвращает:
+    - **success**: Статус
+    - **orders**: Список ордеров
+    - **message**: Описание результата
+    """
+    try:
+        logger.info("Запрос на получение открытых ордеров")
+
+        result = okx_service.get_orders()
+
+        response = OrdersResponse(
+            success=result["success"],
+            message=result["message"],
+            orders=result["orders"]
+        )
+
+        return response
+
+    except Exception as e:
+        logger.error(f"Ошибка получения ордеров: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @router.get(
