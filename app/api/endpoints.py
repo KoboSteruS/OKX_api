@@ -6,7 +6,7 @@ from loguru import logger
 from typing import Optional
 
 from app.api.schemas import (
-    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse,FillsResponse
+    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse, FillsResponse
 )
 from app.services.okx_service import okx_service
 
@@ -272,16 +272,7 @@ async def get_orders():
 
 
 
-@router.get(
-    "/market/analytics",
-    response_model=AnalyticsResponse,
-    responses={
-        400: {"model": ErrorResponse},
-        500: {"model": ErrorResponse}
-    },
-    summary="Получить аналитические данные",
-    description="Получает полные аналитические данные для n8n: стакан ордеров, свечи, активные ордера, балансы, индикаторы"
-)
+
 
 
 @router.get(
@@ -344,7 +335,16 @@ async def get_fills(
 
 
 
-
+@router.get(
+    "/market/analytics",
+    response_model=AnalyticsResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить аналитические данные",
+    description="Получает полные аналитические данные для n8n: стакан ордеров, свечи, активные ордера, балансы, индикаторы"
+)
 async def get_market_analytics(
     inst_id: str = Query(default="BTC-USDT", description="Инструмент для анализа"),
     bar: str = Query(default="1m", description="Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)"),
