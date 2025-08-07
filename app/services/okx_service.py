@@ -583,6 +583,89 @@ class OKXService:
             }
 
 
+    def get_trade_fills(
+        self,
+        inst_type: Optional[str] = None,
+        inst_id: Optional[str] = None,
+        ord_id: Optional[str] = None,
+        after: Optional[str] = None,
+        before: Optional[str] = None,
+        limit: int = 100
+    ) -> Dict:
+        """
+        Получение последних сделок (заполненных ордеров)
+        
+        Args:
+            inst_type: Тип инструмента (SPOT, MARGIN, SWAP, FUTURES, OPTION)
+            inst_id: Инструмент (например, BTC-USDT)
+            ord_id: ID ордера
+            after: Курсор пагинации (ID сделки, после которой запрашиваются данные)
+            before: Курсор пагинации (ID сделки, до которой запрашиваются данные)
+            limit: Количество записей (по умолчанию 100, максимум 100)
+            
+        Returns:
+            Dict: Список последних сделок и статус выполнения
+        """
+        try:
+            logger.info(f"Получение последних сделок с параметрами: inst_type={inst_type}, inst_id={inst_id}, ord_id={ord_id}, after={after}, before={before}, limit={limit}")
+            
+            path = '/api/v5/trade/fills'
+            params = {}
+            
+            # Формируем параметры запроса, исключая None
+            if inst_type:
+                params['instType'] = inst_type
+            if inst_id:
+                params['instId'] = inst_id
+            if ord_id:
+                params['ordId'] = ord_id
+            if after:
+                params['after'] = after
+            if before:
+                params['before'] = before
+            if limit:
+                params['limit'] = str(limit)
+            
+            # Формируем query string для подписи
+            query_string = '&'.join([f"{k}={v}" for k, v in params.items()]) if params else ''
+            request_path = f"{path}?{query_string}" if query_string else path
+            
+            try:
+                response = self.session.get(
+                    self.base_url + path,
+                    headers=self.get_auth_headers("GET", request_path),
+                    params=params,
+                    timeout=30,
+                    verify=True
+                )
+                data = response.json()
+            except requests.exceptions.SSLError as e:
+                logger.error(f"SSL ошибка при получении сделок: {e}")
+                raise
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Ошибка сети при получении сделок: {e}")
+                raise
+            
+            logger.debug(f"Сырой JSON сделок от OKX: {json.dumps(data, indent=2, ensure_ascii=False)}")
+            
+            fills = data.get("data", [])
+            
+            result = {
+                "success": True,
+                "fills": fills,
+                "message": f"Получено {len(fills)} сделок"
+            }
+            
+            logger.info(f"Последние сделки успешно получены: {len(fills)} записей")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка получения последних сделок: {e}")
+            return {
+                "success": False,
+                "fills": [],
+                "message": f"Ошибка получения сделок: {e}"
+            }
 
 
     def get_balances(self) -> Dict:

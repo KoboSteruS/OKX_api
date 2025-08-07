@@ -6,7 +6,7 @@ from loguru import logger
 from typing import Optional
 
 from app.api.schemas import (
-    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse
+    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse,FillsResponse
 )
 from app.services.okx_service import okx_service
 
@@ -282,6 +282,69 @@ async def get_orders():
     summary="Получить аналитические данные",
     description="Получает полные аналитические данные для n8n: стакан ордеров, свечи, активные ордера, балансы, индикаторы"
 )
+
+
+@router.get(
+    "/fills",
+    response_model=FillsResponse,
+    responses={
+        500: {"model": ErrorResponse}
+    },
+    summary="Получить последние сделки",
+    description="Возвращает список последних заполненных ордеров (сделок) на OKX"
+)
+async def get_fills(
+    inst_type: Optional[str] = Query(default=None, description="Тип инструмента (SPOT, MARGIN, SWAP, FUTURES, OPTION)"),
+    inst_id: Optional[str] = Query(default=None, description="Инструмент (например, BTC-USDT)"),
+    ord_id: Optional[str] = Query(default=None, description="ID ордера"),
+    after: Optional[str] = Query(default=None, description="Курсор пагинации (ID сделки, после которой запрашиваются данные)"),
+    before: Optional[str] = Query(default=None, description="Курсор пагинации (ID сделки, до которой запрашиваются данные)"),
+    limit: int = Query(default=100, description="Количество записей (максимум 100)", ge=1, le=100)
+):
+    """
+    Получение последних сделок (заполненных ордеров)
+    
+    Параметры:
+    - **inst_type**: Тип инструмента (SPOT, MARGIN, SWAP, FUTURES, OPTION)
+    - **inst_id**: Инструмент (например, BTC-USDT)
+    - **ord_id**: ID ордера
+    - **after**: Курсор пагинации (ID сделки, после которой запрашиваются данные)
+    - **before**: Курсор пагинации (ID сделки, до которой запрашиваются данные)
+    - **limit**: Количество записей (по умолчанию 100, максимум 100)
+    
+    Возвращает:
+    - **success**: Статус
+    - **fills**: Список сделок
+    - **message**: Описание результата
+    """
+    try:
+        logger.info(f"Запрос на получение последних сделок: inst_type={inst_type}, inst_id={inst_id}, ord_id={ord_id}, limit={limit}")
+        
+        result = okx_service.get_trade_fills(
+            inst_type=inst_type,
+            inst_id=inst_id,
+            ord_id=ord_id,
+            after=after,
+            before=before,
+            limit=limit
+        )
+        
+        response = FillsResponse(
+            success=result["success"],
+            message=result["message"],
+            fills=result["fills"]
+        )
+        
+        logger.info(f"Сделки получены: {result['message']}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"Ошибка получения сделок: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
 async def get_market_analytics(
     inst_id: str = Query(default="BTC-USDT", description="Инструмент для анализа"),
     bar: str = Query(default="1m", description="Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)"),

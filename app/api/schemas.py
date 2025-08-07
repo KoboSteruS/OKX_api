@@ -43,6 +43,13 @@ class CancelOrderResponse(BaseModel):
             }
         }
 
+
+
+class FillsResponse(BaseModel):
+    success: bool
+    fills: list[dict]
+    message: str
+
 class ErrorResponse(BaseModel):
     detail: str
 
@@ -52,6 +59,10 @@ class ErrorResponse(BaseModel):
                 "detail": "Ошибка отмены ордера: invalid order ID"
             }
         }
+
+
+
+
 
 
 class OrderItem(BaseModel):
