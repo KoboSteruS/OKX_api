@@ -6,7 +6,7 @@ from loguru import logger
 from typing import Optional
 
 from app.api.schemas import (
-    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse, FillsResponse
+    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse, FillsResponse, SellRequest, SellResponse
 )
 from app.services.okx_service import okx_service
 
@@ -91,7 +91,10 @@ async def test_connection():
     summary="Отменить ордер",
     description="Отменяет ордер по идентификатору и инструменту"
 )
-async def cancel_order(request: CancelOrderRequest):
+async def cancel_order(
+    request: CancelOrderRequest,
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
+):
     """
     Отмена ордера по instId и ordId
 
@@ -100,11 +103,12 @@ async def cancel_order(request: CancelOrderRequest):
     - ordId: 1234567890
     """
     try:
-        logger.info(f"Запрос на отмену ордера: {request.ordId}")
+        logger.info(f"Запрос на отмену ордера: {request.ordId} (demo: {demo})")
 
         result = okx_service.cancel_order(
             inst_id=request.instId,
-            ord_id=request.ordId
+            ord_id=request.ordId,
+            demo=demo
         )
 
         if not result["success"]:
@@ -133,7 +137,10 @@ async def cancel_order(request: CancelOrderRequest):
     summary="Покупка BTC с точками выхода",
     description="Покупает BTC по текущей рыночной цене и устанавливает Take Profit и Stop Loss ордера"
 )
-async def buy_btc(request: BuyRequest):
+async def buy_btc(
+    request: BuyRequest,
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
+):
     """
     Покупка BTC с точками выхода
     
@@ -161,14 +168,15 @@ async def buy_btc(request: BuyRequest):
     - **message**: Сообщение о результате операции
     """
     try:
-        logger.info(f"Запрос на покупку BTC: сумма {request.buy_amount} USDT, TP {request.take_profit_percent}%, SL {request.stop_loss_percent}%")
+        logger.info(f"Запрос на покупку BTC: сумма {request.buy_amount} USDT, TP {request.take_profit_percent}%, SL {request.stop_loss_percent}% (demo: {demo})")
         
         # Выполнение покупки BTC с точками выхода
         result = okx_service.buy_btc_with_exits(
             buy_amount=request.buy_amount,
             inst_id=request.inst_id,
             take_profit_percent=request.take_profit_percent,
-            stop_loss_percent=request.stop_loss_percent
+            stop_loss_percent=request.stop_loss_percent,
+            demo=demo
         )
         
         response = BuyResponse(
@@ -195,6 +203,45 @@ async def buy_btc(request: BuyRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post(
+    "/sell",
+    response_model=SellResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Продажа BTC по рыночной цене",
+    description="Продаёт указанное количество BTC по текущей рыночной цене"
+)
+async def sell_btc(
+    request: SellRequest,
+    demo: bool = Query(default=False, description="Включить демо-режим")
+):
+    try:
+        logger.info(f"Запрос на продажу BTC: {request.sell_amount} BTC (demo: {demo})")
+
+        result = okx_service.sell_btc_market(
+            sell_amount=request.sell_amount,
+            inst_id=request.inst_id,
+            demo=demo
+        )
+
+        return SellResponse(
+            success=result["success"],
+            sell_amount=result["sell_amount"],
+            sell_order=result["sell_order"],
+            message=result["message"]
+        )
+
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка продажи BTC: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 @router.get(
     "/balance",
     response_model=BalanceResponse,
@@ -204,7 +251,9 @@ async def buy_btc(request: BuyRequest):
     summary="Получить балансы",
     description="Получает балансы всех валют"
 )
-async def get_balances():
+async def get_balances(
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
+):
     """
     Получение балансов всех валют
     
@@ -214,10 +263,10 @@ async def get_balances():
     - **message**: Сообщение о результате операции
     """
     try:
-        logger.info("Запрос на получение балансов всех валют")
+        logger.info(f"Запрос на получение балансов всех валют (demo: {demo})")
         
         # Получение балансов
-        result = okx_service.get_balances()
+        result = okx_service.get_balances(demo=demo)
         
         response = BalanceResponse(
             success=result["success"],
@@ -244,7 +293,9 @@ async def get_balances():
     summary="Получить все открытые ордера",
     description="Возвращает список всех открытых ордеров на OKX"
 )
-async def get_orders():
+async def get_orders(
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
+):
     """
     Получение открытых ордеров
 
@@ -254,9 +305,9 @@ async def get_orders():
     - **message**: Описание результата
     """
     try:
-        logger.info("Запрос на получение открытых ордеров")
+        logger.info(f"Запрос на получение открытых ордеров (demo: {demo})")
 
-        result = okx_service.get_orders()
+        result = okx_service.get_orders(demo=demo)
 
         response = OrdersResponse(
             success=result["success"],
@@ -290,7 +341,8 @@ async def get_fills(
     ord_id: Optional[str] = Query(default=None, description="ID ордера"),
     after: Optional[str] = Query(default=None, description="Курсор пагинации (ID сделки, после которой запрашиваются данные)"),
     before: Optional[str] = Query(default=None, description="Курсор пагинации (ID сделки, до которой запрашиваются данные)"),
-    limit: int = Query(default=100, description="Количество записей (максимум 100)", ge=1, le=100)
+    limit: int = Query(default=100, description="Количество записей (максимум 100)", ge=1, le=100),
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
 ):
     """
     Получение последних сделок (заполненных ордеров)
@@ -309,7 +361,7 @@ async def get_fills(
     - **message**: Описание результата
     """
     try:
-        logger.info(f"Запрос на получение последних сделок: inst_type={inst_type}, inst_id={inst_id}, ord_id={ord_id}, limit={limit}")
+        logger.info(f"Запрос на получение последних сделок: inst_type={inst_type}, inst_id={inst_id}, ord_id={ord_id}, limit={limit} (demo: {demo})")
         
         result = okx_service.get_trade_fills(
             inst_type=inst_type,
@@ -317,7 +369,8 @@ async def get_fills(
             ord_id=ord_id,
             after=after,
             before=before,
-            limit=limit
+            limit=limit,
+            demo=demo
         )
         
         response = FillsResponse(
@@ -350,7 +403,8 @@ async def get_market_analytics(
     bar: str = Query(default="1m", description="Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)"),
     depth: int = Query(default=20, description="Глубина стакана ордеров", ge=1, le=100),
     current_limit: int = Query(default=100, description="Количество текущих свечей", ge=1, le=1000),
-    history_limit: int = Query(default=1000, description="Количество исторических свечей", ge=1, le=3000)
+    history_limit: int = Query(default=1000, description="Количество исторических свечей", ge=1, le=3000),
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
 ):
     """
     Получение полных аналитических данных для n8n
@@ -376,7 +430,7 @@ async def get_market_analytics(
     - Эффективно для автоматизации торговых стратегий
     """
     try:
-        logger.info(f"Запрос аналитических данных для {inst_id}")
+        logger.info(f"Запрос аналитических данных для {inst_id} (demo: {demo})")
         logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
         
         # Получение аналитических данных
@@ -385,7 +439,8 @@ async def get_market_analytics(
             bar=bar,
             depth=depth,
             current_limit=current_limit,
-            history_limit=history_limit
+            history_limit=history_limit,
+            demo=demo
         )
         
         # Создаем ответ с правильной структурой
@@ -408,6 +463,3 @@ async def get_market_analytics(
     except Exception as e:
         logger.error(f"Ошибка получения аналитических данных: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
- 

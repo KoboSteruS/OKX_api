@@ -61,6 +61,15 @@ class ErrorResponse(BaseModel):
         }
 
 
+class SellRequest(BaseModel):
+    sell_amount: float = Field(default=0.001, description="Количество BTC для продажи")
+    inst_id: str = Field(default="BTC-USDT", description="Инструмент для торговли")
+
+class SellResponse(BaseModel):
+    success: bool
+    sell_amount: float
+    sell_order: dict
+    message: str
 
 
 

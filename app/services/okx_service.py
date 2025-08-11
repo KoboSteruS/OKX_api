@@ -148,7 +148,8 @@ class OKXService:
         self, 
         method: str, 
         request_path: str, 
-        body: str = ""
+        body: str = "",
+        demo: bool = False
     ) -> Dict[str, str]:
         """
         Получение заголовков авторизации для OKX API
@@ -157,6 +158,7 @@ class OKXService:
             method: HTTP метод
             request_path: Путь запроса
             body: Тело запроса
+            demo: Режим демо-трейдинга (True для симуляции)
             
         Returns:
             Dict[str, str]: Заголовки авторизации
@@ -164,6 +166,7 @@ class OKXService:
         try:
             timestamp = self.get_server_timestamp()
             signature = self.generate_signature(timestamp, method, request_path, body)
+            mode = "1" if demo else "0"  # '1' для демо (симуляция), '0' для реального
             
             headers = {
                 'OK-ACCESS-KEY': self.api_key.strip(),
@@ -171,10 +174,10 @@ class OKXService:
                 'OK-ACCESS-TIMESTAMP': timestamp.strip(),
                 'OK-ACCESS-PASSPHRASE': self.passphrase.strip(),
                 'Content-Type': 'application/json',
-                'x-simulated-trading': '0'  # Демо режим
+                'x-simulated-trading': mode  # Демо режим
             }
             
-            logger.info(f"Сгенерированы заголовки авторизации для {method} {request_path}")
+            logger.info(f"Сгенерированы заголовки авторизации для {method} {request_path} (demo: {demo})")
             return headers
             
         except Exception as e:
@@ -215,7 +218,7 @@ class OKXService:
             raise
 
 
-    def place_market_order(self, side: str, notional: float, inst_id: str = "BTC-USDT") -> Dict:
+    def place_market_order(self, side: str, notional: float, inst_id: str = "BTC-USDT", demo: bool = False) -> Dict:
         """
         Размещение рыночного ордера
         
@@ -223,6 +226,7 @@ class OKXService:
             side: Сторона (buy/sell)
             notional: Размер в USDT для покупки или BTC для продажи
             inst_id: Инструмент для торговли (по умолчанию BTC-USDT)
+            demo: Режим демо-трейдинга
             
         Returns:
             Dict: Результат размещения ордера
@@ -244,7 +248,7 @@ class OKXService:
         body_str = json.dumps(body, separators=(",", ":"))
         logger.info(f"{side.upper()} BODY: {body_str}")
         
-        headers = self.get_auth_headers("POST", path, body_str)
+        headers = self.get_auth_headers("POST", path, body_str, demo=demo)
         
         try:
             response = self.session.post(
@@ -262,13 +266,61 @@ class OKXService:
         except requests.exceptions.RequestException as e:
             logger.error(f"Ошибка сети при размещении ордера: {e}")
             raise
+
+
+    def place_market_sell_order(self, amount_btc: float, inst_id: str = "BTC-USDT", demo: bool = False) -> Dict:
+        """
+        Продажа BTC по рыночной цене (market order)
+
+        Args:
+            amount_btc: Количество BTC для продажи
+            inst_id: Торговая пара (по умолчанию BTC-USDT)
+            demo: Демо-режим
+
+        Returns:
+            Dict: Результат размещения ордера
+        """
+        import json
+        path = '/api/v5/trade/order'
+        url = self.base_url + path
+
+        body = {
+            "instId": inst_id,
+            "tdMode": "cash",
+            "side": "sell",
+            "ordType": "market",
+            "sz": str(amount_btc)  # всегда в BTC
+        }
+
+        body_str = json.dumps(body, separators=(",", ":"))
+        logger.info(f"SELL MARKET BODY: {body_str}")
+
+        headers = self.get_auth_headers("POST", path, body_str, demo=demo)
+
+        try:
+            response = self.session.post(
+                url,
+                headers=headers,
+                data=body_str,
+                timeout=30,
+                verify=True
+            )
+            logger.info(f"SELL MARKET ORDER RESULT: {response.text}")
+            return response.json()
+        except requests.exceptions.SSLError as e:
+            logger.error(f"SSL ошибка при размещении ордера: {e}")
+            raise
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Ошибка сети при размещении ордера: {e}")
+            raise
     
-    def get_balance(self, ccy: str) -> float:
+    def get_balance(self, ccy: str, demo: bool = False) -> float:
         """
         Получение баланса валюты
         
         Args:
             ccy: Код валюты (BTC, USDT, etc.)
+            demo: Режим демо-трейдинга
             
         Returns:
             float: Доступный баланс
@@ -276,7 +328,7 @@ class OKXService:
         path = f'/api/v5/account/balance?ccy={ccy}'
         url = self.base_url + path
         
-        headers = self.get_auth_headers("GET", path)
+        headers = self.get_auth_headers("GET", path, demo=demo)
         
         try:
             response = self.session.get(
@@ -317,6 +369,27 @@ class OKXService:
         except (KeyError, ValueError, TypeError) as e:
             logger.error(f"Ошибка парсинга баланса {ccy}: {e}")
             return 0.0
+
+
+    def sell_btc_market(self, sell_amount: float, inst_id: str = "BTC-USDT", demo: bool = False) -> Dict:
+        """
+        Обёртка для продажи BTC в маркет
+        """
+        logger.info(f"Продажа BTC в маркет: {sell_amount} BTC (demo: {demo})")
+
+        result = self.place_market_sell_order(
+            amount_btc=sell_amount,
+            inst_id=inst_id,
+            demo=demo
+        )
+
+        return {
+            "success": result.get("code") == "0",
+            "sell_amount": sell_amount,
+            "sell_order": result,
+            "message": "Продажа BTC выполнена" if result.get("code") == "0" else f"Ошибка продажи: {result}"
+        }
+
 
 
     def get_market_data(self, inst_id: str = "BTC-USDT") -> Dict:
@@ -490,7 +563,7 @@ class OKXService:
             raise
 
 
-    def cancel_order(self, inst_id: str, ord_id: str) -> Dict:
+    def cancel_order(self, inst_id: str, ord_id: str, demo: bool = False) -> Dict:
         """
         Отмена ордера по ID и инструменту
 
@@ -506,9 +579,10 @@ class OKXService:
                 "ordId": ord_id
             }
 
+            body_str = json.dumps(payload)
             response = self.session.post(
                 self.base_url + path,
-                headers=self.get_auth_headers("POST", path, body=json.dumps(payload)),
+                headers=self.get_auth_headers("POST", path, body=body_str, demo=demo),
                 json=payload,
                 timeout=30,
                 verify=True
@@ -534,7 +608,7 @@ class OKXService:
             }
 
 
-    def get_orders(self) -> Dict:
+    def get_orders(self, demo: bool = False) -> Dict:
         """
         Получение всех открытых ордеров
 
@@ -549,7 +623,7 @@ class OKXService:
             try:
                 response = self.session.get(
                     self.base_url + orders_path,
-                    headers=self.get_auth_headers("GET", orders_path),
+                    headers=self.get_auth_headers("GET", orders_path, demo=demo),
                     timeout=30,
                     verify=True
                 )
@@ -590,7 +664,8 @@ class OKXService:
         ord_id: Optional[str] = None,
         after: Optional[str] = None,
         before: Optional[str] = None,
-        limit: int = 100
+        limit: int = 100,
+        demo: bool = False
     ) -> Dict:
         """
         Получение последних сделок (заполненных ордеров)
@@ -602,6 +677,7 @@ class OKXService:
             after: Курсор пагинации (ID сделки, после которой запрашиваются данные)
             before: Курсор пагинации (ID сделки, до которой запрашиваются данные)
             limit: Количество записей (по умолчанию 100, максимум 100)
+            demo: Режим демо-трейдинга
             
         Returns:
             Dict: Список последних сделок и статус выполнения
@@ -633,7 +709,7 @@ class OKXService:
             try:
                 response = self.session.get(
                     self.base_url + path,
-                    headers=self.get_auth_headers("GET", request_path),
+                    headers=self.get_auth_headers("GET", request_path, demo=demo),
                     params=params,
                     timeout=30,
                     verify=True
@@ -668,7 +744,7 @@ class OKXService:
             }
 
 
-    def get_balances(self) -> Dict:
+    def get_balances(self, demo: bool = False) -> Dict:
         """
         Получение балансов всех валют
 
@@ -683,7 +759,7 @@ class OKXService:
             try:
                 response = self.session.get(
                     self.base_url + balances_path,
-                    headers=self.get_auth_headers("GET", balances_path),
+                    headers=self.get_auth_headers("GET", balances_path, demo=demo),
                     timeout=30,
                     verify=True
                 )
@@ -857,12 +933,13 @@ class OKXService:
             }
 
 
-    def get_active_orders(self, inst_id: str = "BTC-USDT") -> Dict:
+    def get_active_orders(self, inst_id: str = "BTC-USDT", demo: bool = False) -> Dict:
         """
         Получение активных ордеров пользователя
         
         Args:
             inst_id: Инструмент (по умолчанию BTC-USDT)
+            demo: Режим демо-трейдинга
             
         Returns:
             Dict: Активные ордера
@@ -875,7 +952,7 @@ class OKXService:
             try:
                 response = self.session.get(
                     self.base_url + path,
-                    headers=self.get_auth_headers("GET", path),
+                    headers=self.get_auth_headers("GET", path, demo=demo),
                     timeout=30,
                     verify=True
                 )
@@ -904,7 +981,8 @@ class OKXService:
             buy_amount: float, 
             inst_id: str = "BTC-USDT",
             take_profit_percent: float = 0.5,
-            stop_loss_percent: float = 0.2
+            stop_loss_percent: float = 0.2,
+            demo: bool = False
         ) -> dict:
         """
         Покупка BTC с автоматическими точками выхода
@@ -914,6 +992,7 @@ class OKXService:
             inst_id: Инструмент (по умолчанию BTC-USDT)
             take_profit_percent: Процент для Take Profit
             stop_loss_percent: Процент для Stop Loss
+            demo: Режим демо-трейдинга
 
         Returns:
             dict: Результат операции с информацией о покупке и ордерах
@@ -924,13 +1003,14 @@ class OKXService:
             logger.info(f"Инструмент: {inst_id}")
             logger.info(f"Take Profit: {take_profit_percent}%")
             logger.info(f"Stop Loss: {stop_loss_percent}%")
+            logger.info(f"Demo mode: {demo}")
 
             # 1. Получаем BTC баланс до покупки
-            btc_before = self.get_balance("BTC")
+            btc_before = self.get_balance("BTC", demo=demo)
             logger.info(f"Баланс BTC до покупки: {btc_before}")
 
             # 2. Покупаем BTC по рыночной цене
-            buy_result = self.place_market_order("buy", buy_amount, inst_id)
+            buy_result = self.place_market_order("buy", buy_amount, inst_id, demo=demo)
             logger.info(f"Buy result: {buy_result}")
             if buy_result.get("code") != "0":
                 return {
@@ -947,7 +1027,7 @@ class OKXService:
                 }
 
             # 3. Получаем BTC баланс после покупки
-            btc_after = self.get_balance("BTC")
+            btc_after = self.get_balance("BTC", demo=demo)
             logger.info(f"Баланс BTC после покупки: {btc_after}")
 
             # 4. Считаем, сколько BTC реально получили
@@ -972,14 +1052,16 @@ class OKXService:
                 inst_id=inst_id,
                 side="sell",
                 size=btc_acquired,
-                price=take_profit_price
+                price=take_profit_price,
+                demo=demo
             )
 
             # 8. Устанавливаем Stop Loss ордер (trigger)
             stop_loss_result = self.place_stop_loss_order(
                 inst_id=inst_id,
                 size=btc_acquired,
-                trigger_price=stop_loss_price
+                trigger_price=stop_loss_price,
+                demo=demo
             )
 
             # 9. Финальный статус
@@ -1034,7 +1116,8 @@ class OKXService:
         inst_id: str, 
         side: str, 
         size: float, 
-        price: float
+        price: float,
+        demo: bool = False
     ) -> dict:
         """
         Размещение LIMIT ордера
@@ -1044,6 +1127,7 @@ class OKXService:
             side: Сторона (buy/sell)
             size: Размер в BTC (для всех типов ордеров)
             price: Цена
+            demo: Режим демо-трейдинга
             
         Returns:
             dict: Результат размещения ордера
@@ -1066,7 +1150,7 @@ class OKXService:
             logger.info(f"{side.upper()} LIMIT BODY: {body_str}")
             
             # Генерируем заголовки авторизации
-            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str)
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str, demo=demo)
             logger.info(f"{side.upper()} LIMIT HEADERS: {headers}")
             
             # Выполняем запрос
@@ -1091,7 +1175,8 @@ class OKXService:
         self, 
         inst_id: str, 
         size: float, 
-        trigger_price: float
+        trigger_price: float,
+        demo: bool = False
     ) -> dict:
         """
         Размещение Stop Loss ордера через algo order
@@ -1100,6 +1185,7 @@ class OKXService:
             inst_id: Инструмент
             size: Размер в BTC
             trigger_price: Цена активации (stop price)
+            demo: Режим демо-трейдинга
             
         Returns:
             dict: Результат размещения ордера
@@ -1121,7 +1207,7 @@ class OKXService:
             logger.info(f"STOP LOSS BODY: {body_str}")
             
             # Генерируем заголовки авторизации
-            headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str)
+            headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str, demo=demo)
             logger.info(f"STOP LOSS HEADERS: {headers}")
             
             # Выполняем запрос
@@ -1191,7 +1277,8 @@ class OKXService:
         bar: str = "1m",
         depth: int = 20,
         current_limit: int = 100,
-        history_limit: int = 1000
+        history_limit: int = 1000,
+        demo: bool = False
     ) -> Dict:
         """
         Получение полных аналитических данных для n8n
@@ -1202,13 +1289,14 @@ class OKXService:
             depth: Глубина стакана (по умолчанию 20)
             current_limit: Количество текущих свечей (по умолчанию 100)
             history_limit: Количество исторических свечей (по умолчанию 1000)
+            demo: Режим демо-трейдинга
             
         Returns:
             Dict: Полные аналитические данные
         """
         try:
             logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
-            logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
+            logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}, demo={demo}")
             
             # Получаем все данные с указанными параметрами
             logger.info("Получение orderbook...")
@@ -1224,11 +1312,11 @@ class OKXService:
             logger.info(f"History candles получены: {len(history_candles.get('data', []))} записей")
             
             logger.info("Получение active_orders...")
-            active_orders = self.get_active_orders(inst_id)
+            active_orders = self.get_active_orders(inst_id, demo=demo)
             logger.info(f"Active orders получены: {len(active_orders.get('data', []))} записей")
             
             logger.info("Получение balances...")
-            balances = self.get_balances()
+            balances = self.get_balances(demo=demo)
             logger.info(f"Balances получены: {len(balances.get('balances', {}))} валют")
             
             logger.info("Получение ticker...")

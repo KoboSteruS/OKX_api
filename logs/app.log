@@ -3786,3 +3786,2281 @@
 2025-08-11 11:15:24 | INFO     | app.services.okx_service:get_balances:721 - Балансы успешно получены: {'USDT': 100.0}
 2025-08-11 11:15:24 | INFO     | app.api.endpoints:get_balances:228 - Балансы получены: Баланс успешно получен
 2025-08-11 11:15:24 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (1.003s)
+2025-08-11 15:37:16 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/
+2025-08-11 15:37:16 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:37:16 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/ - 200 (0.040s)
+2025-08-11 15:37:20 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 15:37:20 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:37:20 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.001s)
+2025-08-11 15:37:40 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 15:37:40 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:37:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.025s)
+2025-08-11 15:37:47 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance
+2025-08-11 15:37:47 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:37:47 | INFO     | app.api.endpoints:get_balances:217 - Запрос на получение балансов всех валют
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:get_balances:684 - Получение балансов всех валют
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T12:37:47Z
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T12:37:47ZGET/api/v5/account/balance'
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: yKM5fIWbIXp3SDeNT8S/ReTDSolbRRuh7q8CiDX4Qkw=
+2025-08-11 15:37:47 | INFO     | app.services.okx_service:get_auth_headers:182 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-08-11 15:37:48 | DEBUG    | app.services.okx_service:get_balances:704 - Сырой JSON от OKX: {
+  "msg": "APIKey does not match current environment.",
+  "code": "50101"
+}
+2025-08-11 15:37:48 | INFO     | app.services.okx_service:get_balances:726 - Балансы успешно получены: {}
+2025-08-11 15:37:48 | INFO     | app.api.endpoints:get_balances:228 - Балансы получены: Баланс успешно получен
+2025-08-11 15:37:48 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (0.953s)
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:38:22 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.050s)
+2025-08-11 15:38:27 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance
+2025-08-11 15:38:27 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:38:27 | INFO     | app.api.endpoints:get_balances:217 - Запрос на получение балансов всех валют
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:get_balances:684 - Получение балансов всех валют
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T12:38:27Z
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T12:38:27ZGET/api/v5/account/balance'
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: wqSUKTCugdeaLvjDHdj28L57WXIxgBieaSjuipaqTpA=
+2025-08-11 15:38:27 | INFO     | app.services.okx_service:get_auth_headers:182 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance
+2025-08-11 15:38:28 | DEBUG    | app.services.okx_service:get_balances:704 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "125810.92332711791",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "125810.92332711791",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "125810.92332711791",
+          "eqUsd": "125774.43815935304",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "100",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "100",
+          "ccy": "OKB",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "100",
+          "eqUsd": "4612.1",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703675",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "1",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "1",
+          "ccy": "ETH",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "1",
+          "eqUsd": "4178.89",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703684",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.00000000849",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.00000000849",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.00000000849",
+          "eqUsd": "0.001017756579",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "134565.42917710962",
+      "uTime": "1754915907799",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 15:38:28 | INFO     | app.services.okx_service:get_balances:726 - Балансы успешно получены: {'USDT': 125810.92332711791, 'OKB': 100.0, 'ETH': 1.0, 'BTC': 8.49e-09}
+2025-08-11 15:38:28 | INFO     | app.api.endpoints:get_balances:228 - Балансы получены: Баланс успешно получен
+2025-08-11 15:38:28 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (0.900s)
+2025-08-11 15:57:55 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 15:57:55 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:57:55 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-11 15:57:56 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 15:57:56 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:57:56 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.026s)
+2025-08-11 15:58:10 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=true
+2025-08-11 15:58:10 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 15:58:10 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: True)
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T12:58:10Z
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T12:58:10ZGET/api/v5/account/balance'
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: w/HnHAkeAc6ay5EHK3ZL3F2S683ILbty3ShI9K3MbOU=
+2025-08-11 15:58:10 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: True)
+2025-08-11 15:58:11 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "125810.92332711791",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "125810.92332711791",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "125810.92332711791",
+          "eqUsd": "125778.21248705285",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "100",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "100",
+          "ccy": "OKB",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "100",
+          "eqUsd": "4617.3",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703675",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "1",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "1",
+          "ccy": "ETH",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "1",
+          "eqUsd": "4179.5",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703684",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.00000000849",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.00000000849",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.00000000849",
+          "eqUsd": "0.001014787626",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "134575.01350184047",
+      "uTime": "1754917090493",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 15:58:11 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'USDT': 125810.92332711791, 'OKB': 100.0, 'ETH': 1.0, 'BTC': 8.49e-09}
+2025-08-11 15:58:11 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 15:58:11 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=true - 200 (0.901s)
+2025-08-11 16:13:40 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 16:13:40 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:13:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-11 16:13:41 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 16:13:41 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:13:41 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.015s)
+2025-08-11 16:17:30 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 16:17:30 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:30 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.001s)
+2025-08-11 16:17:31 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 16:17:31 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:31 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.004s)
+2025-08-11 16:17:34 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 16:17:34 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:34 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:17:34Z
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:17:34ZGET/api/v5/account/balance'
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: 7dvgdkLPH+SVfdpZMhG33K6CKCfcEppMILnsZNVZd1k=
+2025-08-11 16:17:34 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:17:35 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "msg": "APIKey does not match current environment.",
+  "code": "50101"
+}
+2025-08-11 16:17:35 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {}
+2025-08-11 16:17:35 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:17:35 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (1.171s)
+2025-08-11 16:17:41 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance
+2025-08-11 16:17:41 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:41 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:17:41Z
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:17:41ZGET/api/v5/account/balance'
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: sCAfhhBErHVLby2ToJzY/il8Kz+QrZBuHj6OEuwvkdU=
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:17:41 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "msg": "APIKey does not match current environment.",
+  "code": "50101"
+}
+2025-08-11 16:17:41 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {}
+2025-08-11 16:17:41 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:17:41 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance - 200 (0.532s)
+2025-08-11 16:17:46 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=true
+2025-08-11 16:17:46 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:46 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: True)
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:17:46Z
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:17:46ZGET/api/v5/account/balance'
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: pyXM1QLsLKfka3GJEaH1YYR1mMOOVN9JJmH8Fpxrzgs=
+2025-08-11 16:17:46 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: True)
+2025-08-11 16:17:47 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "125810.92332711791",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "125810.92332711791",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "125810.92332711791",
+          "eqUsd": "125779.47059628613",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "100",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "100",
+          "ccy": "OKB",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "100",
+          "eqUsd": "4615.8",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703675",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "1",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "1",
+          "ccy": "ETH",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "1",
+          "eqUsd": "4181.64",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1752846703684",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.00000000849",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.00000000849",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "colRes": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.00000000849",
+          "eqUsd": "0.001015636626",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754894775782",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "134576.91161192275",
+      "uTime": "1754918265978",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:17:47 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'USDT': 125810.92332711791, 'OKB': 100.0, 'ETH': 1.0, 'BTC': 8.49e-09}
+2025-08-11 16:17:47 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:17:47 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=true - 200 (0.374s)
+2025-08-11 16:17:56 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 16:17:56 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:56 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.002s)
+2025-08-11 16:17:57 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 16:17:57 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:17:57 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.029s)
+2025-08-11 16:18:00 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 16:18:00 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:18:00 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:18:00Z
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:18:00ZGET/api/v5/account/balance'
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: zIKC8rh74+byxLssLC8HfgqNdOsZqF+a+O7zFLTtgZc=
+2025-08-11 16:18:00 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:18:01 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "121084.50454489152",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.000085206295",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.000487166295",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.000487166295",
+          "eqUsd": "58.2979726069125",
+          "fixedBal": "0",
+          "frozenBal": "0.00040196",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "121023.96229261906",
+          "ordFrozen": "0.00040196",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "0.000487166295",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "-0.6608227094024353",
+          "spotUplRatio": "-0.0112082125466966",
+          "stgyEq": "0",
+          "totalPnl": "-0.6903168541329592",
+          "totalPnlRatio": "-0.0117026084404232",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "41.002624938",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "41.002624938",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "41.002624938",
+          "eqUsd": "40.991144203017356",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.28911680992985",
+      "uTime": "1754918280802",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:18:01 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'BTC': 0.000487166295, 'USDT': 41.002624938}
+2025-08-11 16:18:01 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:18:01 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (0.978s)
+2025-08-11 16:21:26 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/orders?demo=false
+2025-08-11 16:21:26 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:21:26 | INFO     | app.api.endpoints:get_orders:269 - Запрос на получение открытых ордеров (demo: False)
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:get_orders:551 - Получение открытых ордеров
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:21:26Z
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:21:26ZGET/api/v5/trade/orders-pending'
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 51
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: RKxQfJ986grlN23KQtvKUQaVK4DybkE7E4R2Ome0jYg=
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending (demo: False)
+2025-08-11 16:21:26 | DEBUG    | app.services.okx_service:get_orders:570 - Сырой JSON ордеров от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754910898817",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2765170369771626496",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "121625.8",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00010576",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754910898817"
+    },
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754906870222",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2765035192554643456",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "121851.5",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00013196",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754906870222"
+    },
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754902510304",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2764888897982586880",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "122376.1",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00016424",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754902510304"
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:21:26 | INFO     | app.services.okx_service:get_orders:580 - Открытых ордеров: 3
+2025-08-11 16:21:26 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders?demo=false - 200 (0.335s)
+2025-08-11 16:21:54 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/orders?demo=false
+2025-08-11 16:21:54 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:21:54 | INFO     | app.api.endpoints:get_orders:269 - Запрос на получение открытых ордеров (demo: False)
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:get_orders:551 - Получение открытых ордеров
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:21:54Z
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:21:54ZGET/api/v5/trade/orders-pending'
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 51
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: XH1Y+PhboTWSdtnCIlAAbGbVKsVpzx3kguJ5QqzJaTw=
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending (demo: False)
+2025-08-11 16:21:54 | DEBUG    | app.services.okx_service:get_orders:570 - Сырой JSON ордеров от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754910898817",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2765170369771626496",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "121625.8",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00010576",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754910898817"
+    },
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754906870222",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2765035192554643456",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "121851.5",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00013196",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754906870222"
+    },
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754902510304",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2764888897982586880",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "122376.1",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00016424",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754902510304"
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:21:54 | INFO     | app.services.okx_service:get_orders:580 - Открытых ордеров: 3
+2025-08-11 16:21:54 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders?demo=false - 200 (0.391s)
+2025-08-11 16:22:14 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/orders/cancel?demo=false
+2025-08-11 16:22:14 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:22:14 | INFO     | app.api.endpoints:cancel_order:106 - Запрос на отмену ордера: 2765170369771626496 (demo: False)
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:cancel_order:506 - Попытка отменить ордер 2765170369771626496 на инструменте BTC-USDT
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:22:14Z
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:22:14ZPOST/api/v5/trade/cancel-order{"instId": "BTC-USDT", "ordId": "2765170369771626496"}'
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 104
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:generate_signature:131 - Body: '{"instId": "BTC-USDT", "ordId": "2765170369771626496"}' (длина: 54)
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: lOQcTvMYLmakKXg0NiTnPN62z2zghbuaAo/m29GK7dQ=
+2025-08-11 16:22:14 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для POST /api/v5/trade/cancel-order (demo: False)
+2025-08-11 16:22:15 | DEBUG    | app.services.okx_service:cancel_order:524 - Ответ от OKX при отмене ордера: {
+  "code": "0",
+  "data": [
+    {
+      "clOrdId": "",
+      "ordId": "2765170369771626496",
+      "sCode": "0",
+      "sMsg": "",
+      "ts": "1754918534292"
+    }
+  ],
+  "inTime": "1754918534291719",
+  "msg": "",
+  "outTime": "1754918534293563"
+}
+2025-08-11 16:22:15 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/orders/cancel?demo=false - 200 (0.368s)
+2025-08-11 16:22:22 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/orders?demo=false
+2025-08-11 16:22:22 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:22:22 | INFO     | app.api.endpoints:get_orders:269 - Запрос на получение открытых ордеров (demo: False)
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:get_orders:551 - Получение открытых ордеров
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:22:22Z
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:22:22ZGET/api/v5/trade/orders-pending'
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 51
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: rKETx0oLNw1A5A15EfhCc148Z9cQT6AUv/eIvVHrCKM=
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending (demo: False)
+2025-08-11 16:22:22 | DEBUG    | app.services.okx_service:get_orders:570 - Сырой JSON ордеров от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754906870222",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2765035192554643456",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "121851.5",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00013196",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754906870222"
+    },
+    {
+      "accFillSz": "0",
+      "algoClOrdId": "",
+      "algoId": "",
+      "attachAlgoClOrdId": "",
+      "attachAlgoOrds": [],
+      "avgPx": "",
+      "cTime": "1754902510304",
+      "cancelSource": "",
+      "cancelSourceReason": "",
+      "category": "normal",
+      "ccy": "",
+      "clOrdId": "",
+      "fee": "0",
+      "feeCcy": "USDT",
+      "fillPx": "",
+      "fillSz": "0",
+      "fillTime": "",
+      "instId": "BTC-USDT",
+      "instType": "SPOT",
+      "isTpLimit": "false",
+      "lever": "",
+      "linkedAlgoOrd": {
+        "algoId": ""
+      },
+      "ordId": "2764888897982586880",
+      "ordType": "limit",
+      "pnl": "0",
+      "posSide": "net",
+      "px": "122376.1",
+      "pxType": "",
+      "pxUsd": "",
+      "pxVol": "",
+      "quickMgnType": "",
+      "rebate": "0",
+      "rebateCcy": "BTC",
+      "reduceOnly": "false",
+      "side": "sell",
+      "slOrdPx": "",
+      "slTriggerPx": "",
+      "slTriggerPxType": "",
+      "source": "",
+      "state": "live",
+      "stpId": "",
+      "stpMode": "cancel_maker",
+      "sz": "0.00016424",
+      "tag": "",
+      "tdMode": "cash",
+      "tgtCcy": "",
+      "tpOrdPx": "",
+      "tpTriggerPx": "",
+      "tpTriggerPxType": "",
+      "tradeId": "",
+      "tradeQuoteCcy": "USDT",
+      "uTime": "1754902510304"
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:22:22 | INFO     | app.services.okx_service:get_orders:580 - Открытых ордеров: 2
+2025-08-11 16:22:22 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders?demo=false - 200 (0.342s)
+2025-08-11 16:22:33 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/orders/cancel?demo=false
+2025-08-11 16:22:33 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:22:33 | INFO     | app.api.endpoints:cancel_order:106 - Запрос на отмену ордера: 2765035192554643456 (demo: False)
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:cancel_order:506 - Попытка отменить ордер 2765035192554643456 на инструменте BTC-USDT
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:22:33Z
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:22:33ZPOST/api/v5/trade/cancel-order{"instId": "BTC-USDT", "ordId": "2765035192554643456"}'
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 104
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:generate_signature:131 - Body: '{"instId": "BTC-USDT", "ordId": "2765035192554643456"}' (длина: 54)
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: kjwnxNH6xeS9FOaijcL68sEaf/CQsciWHjZPlrZshSw=
+2025-08-11 16:22:33 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для POST /api/v5/trade/cancel-order (demo: False)
+2025-08-11 16:22:33 | DEBUG    | app.services.okx_service:cancel_order:524 - Ответ от OKX при отмене ордера: {
+  "code": "0",
+  "data": [
+    {
+      "clOrdId": "",
+      "ordId": "2765035192554643456",
+      "sCode": "0",
+      "sMsg": "",
+      "ts": "1754918552333"
+    }
+  ],
+  "inTime": "1754918552333181",
+  "msg": "",
+  "outTime": "1754918552334001"
+}
+2025-08-11 16:22:33 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/orders/cancel?demo=false - 200 (0.580s)
+2025-08-11 16:22:46 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/orders/cancel?demo=false
+2025-08-11 16:22:46 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:22:46 | INFO     | app.api.endpoints:cancel_order:106 - Запрос на отмену ордера: 2764888897982586880 (demo: False)
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:cancel_order:506 - Попытка отменить ордер 2764888897982586880 на инструменте BTC-USDT
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:22:46Z
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:22:46ZPOST/api/v5/trade/cancel-order{"instId": "BTC-USDT", "ordId": "2764888897982586880"}'
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 104
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:generate_signature:131 - Body: '{"instId": "BTC-USDT", "ordId": "2764888897982586880"}' (длина: 54)
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: TdYBZrsqDR9CSZBDFWPG//sgrzZZAq9830RLY1E41CE=
+2025-08-11 16:22:46 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для POST /api/v5/trade/cancel-order (demo: False)
+2025-08-11 16:22:48 | DEBUG    | app.services.okx_service:cancel_order:524 - Ответ от OKX при отмене ордера: {
+  "code": "0",
+  "data": [
+    {
+      "clOrdId": "",
+      "ordId": "2764888897982586880",
+      "sCode": "0",
+      "sMsg": "",
+      "ts": "1754918566451"
+    }
+  ],
+  "inTime": "1754918566450854",
+  "msg": "",
+  "outTime": "1754918566452194"
+}
+2025-08-11 16:22:48 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/orders/cancel?demo=false - 200 (1.655s)
+2025-08-11 16:22:58 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 16:22:58 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:22:58 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:22:58Z
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:22:58ZGET/api/v5/account/balance'
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: f91Jx5JouX2C++SK73eqxuyEtsdNOHjY48AwXrXlcL0=
+2025-08-11 16:22:58 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:22:59 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "121084.50454489152",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.000487166295",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.000487166295",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.000487166295",
+          "eqUsd": "58.2563686053195",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "121023.96229261906",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "0.000487166295",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "-0.7024267109954324",
+          "spotUplRatio": "-0.0119138579278444",
+          "stgyEq": "0",
+          "totalPnl": "-0.73192085572596",
+          "totalPnlRatio": "-0.0124079009988805",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "41.002624938",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "41.002624938",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "41.002624938",
+          "eqUsd": "40.99565449176054",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.25202309708004",
+      "uTime": "1754918578049",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:22:59 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'BTC': 0.000487166295, 'USDT': 41.002624938}
+2025-08-11 16:22:59 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:22:59 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (0.372s)
+2025-08-11 16:23:02 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 16:23:02 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:23:02 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:23:02Z
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:23:02ZGET/api/v5/account/balance'
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: WP3ynrZWPlrpcKEwOHgXQ1BSTNCvd1jzwdpkNJWqsdA=
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:23:02 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "121084.50454489152",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.000487166295",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.000487166295",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.000487166295",
+          "eqUsd": "58.256514755207995",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "121023.96229261906",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "0.000487166295",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "-0.7022805611069382",
+          "spotUplRatio": "-0.0119113790799013",
+          "stgyEq": "0",
+          "totalPnl": "-0.7317747058374664",
+          "totalPnlRatio": "-0.0124054233903615",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "41.002624938",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "41.002624938",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "41.002624938",
+          "eqUsd": "40.996064518009916",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.25257927321792",
+      "uTime": "1754918581782",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:23:02 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'BTC': 0.000487166295, 'USDT': 41.002624938}
+2025-08-11 16:23:02 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:23:02 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (0.371s)
+2025-08-11 16:23:38 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 16:23:38 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:23:38 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:23:38Z
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:23:38ZGET/api/v5/account/balance'
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: KjIOS7rCKbgKim3T1cO+T9r99fnLu+v1n2ppduoYURw=
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 16:23:38 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "121084.50454489152",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.000487166295",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.000487166295",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.000487166295",
+          "eqUsd": "58.2369793867785",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "121023.96229261906",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "0.000487166295",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "-0.7218159295364339",
+          "spotUplRatio": "-0.0122427184216346",
+          "stgyEq": "0",
+          "totalPnl": "-0.7513100742669607",
+          "totalPnlRatio": "-0.0127365970624239",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "41.002624938",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "41.002624938",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "41.002624938",
+          "eqUsd": "40.99729459675806",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754918270033",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.23427398353655",
+      "uTime": "1754918617844",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 16:23:38 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {'BTC': 0.000487166295, 'USDT': 41.002624938}
+2025-08-11 16:23:38 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:23:38 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (0.335s)
+2025-08-11 16:24:02 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=true
+2025-08-11 16:24:02 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:24:02 | INFO     | app.api.endpoints:get_balances:227 - Запрос на получение балансов всех валют (demo: True)
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:get_balances:687 - Получение балансов всех валют
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:24:02Z
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:24:02ZGET/api/v5/account/balance'
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: DXLTr0zKwOW4Qgyi+EVB+nGAmrLYMwoh/T4OHFqEohQ=
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: True)
+2025-08-11 16:24:02 | DEBUG    | app.services.okx_service:get_balances:707 - Сырой JSON от OKX: {
+  "msg": "APIKey does not match current environment.",
+  "code": "50101"
+}
+2025-08-11 16:24:02 | INFO     | app.services.okx_service:get_balances:729 - Балансы успешно получены: {}
+2025-08-11 16:24:02 | INFO     | app.api.endpoints:get_balances:238 - Балансы получены: Баланс успешно получен
+2025-08-11 16:24:02 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=true - 200 (0.344s)
+2025-08-11 16:27:36 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/orders?demo=false
+2025-08-11 16:27:36 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:27:36 | INFO     | app.api.endpoints:get_orders:269 - Запрос на получение открытых ордеров (demo: False)
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:get_orders:551 - Получение открытых ордеров
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:27:36Z
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:27:36ZGET/api/v5/trade/orders-pending'
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 51
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: nEip7Cc4k0T0PvR3IaopY1JPJ/5XiNJbhO0HqERKqxU=
+2025-08-11 16:27:36 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending (demo: False)
+2025-08-11 16:27:40 | DEBUG    | app.services.okx_service:get_orders:570 - Сырой JSON ордеров от OKX: {
+  "code": "0",
+  "data": [],
+  "msg": ""
+}
+2025-08-11 16:27:40 | INFO     | app.services.okx_service:get_orders:580 - Открытых ордеров: 0
+2025-08-11 16:27:40 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders?demo=false - 200 (3.800s)
+2025-08-11 16:27:47 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/orders?demo=true
+2025-08-11 16:27:47 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 16:27:47 | INFO     | app.api.endpoints:get_orders:269 - Запрос на получение открытых ордеров (demo: True)
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:get_orders:551 - Получение открытых ордеров
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T13:27:47Z
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T13:27:47ZGET/api/v5/trade/orders-pending'
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 51
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: lx/acJxLt5hOKB9+bzt1K/56iiD+gHg9cbc4S8PUQMc=
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/trade/orders-pending (demo: True)
+2025-08-11 16:27:47 | DEBUG    | app.services.okx_service:get_orders:570 - Сырой JSON ордеров от OKX: {
+  "msg": "APIKey does not match current environment.",
+  "code": "50101"
+}
+2025-08-11 16:27:47 | INFO     | app.services.okx_service:get_orders:580 - Открытых ордеров: 0
+2025-08-11 16:27:47 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/orders?demo=true - 200 (0.339s)
+2025-08-11 17:32:38 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/docs
+2025-08-11 17:32:38 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 17:32:38 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/docs - 200 (0.003s)
+2025-08-11 17:32:39 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/openapi.json
+2025-08-11 17:32:39 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 17:32:39 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/openapi.json - 200 (0.032s)
+2025-08-11 17:32:52 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 17:32:52 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 17:32:52 | INFO     | app.api.endpoints:get_balances:266 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:get_balances:755 - Получение балансов всех валют
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T14:32:52Z
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T14:32:52ZGET/api/v5/account/balance'
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: rjh0VnaVIJiLGXW0/vdfgfm7hH4ZiNvaE/CQFR7X0JY=
+2025-08-11 17:32:52 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 17:32:53 | DEBUG    | app.services.okx_service:get_balances:775 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "120822.77291386944",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.00060985492",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.00060985492",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.00060985492",
+          "eqUsd": "73.233452300328",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "120762.36152741252",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "0.00060985492",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "-0.4140680279832429",
+          "spotUplRatio": "-0.0056222942216843",
+          "stgyEq": "0",
+          "totalPnl": "-0.4509102092380175",
+          "totalPnlRatio": "-0.0061194830745734",
+          "twap": "0",
+          "uTime": "1754922553051",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "26.303403023",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "26.303403023",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "26.303403023",
+          "eqUsd": "26.297616274334942",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754922553051",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.53106857466294",
+      "uTime": "1754922772233",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 17:32:53 | INFO     | app.services.okx_service:get_balances:797 - Балансы успешно получены: {'BTC': 0.00060985492, 'USDT': 26.303403023}
+2025-08-11 17:32:53 | INFO     | app.api.endpoints:get_balances:277 - Балансы получены: Баланс успешно получен
+2025-08-11 17:32:53 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (1.035s)
+2025-08-11 17:33:09 | INFO     | app.main:log_requests:47 - Входящий запрос: POST http://localhost:8000/api/v1/sell?demo=false
+2025-08-11 17:33:09 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 17:33:09 | INFO     | app.api.endpoints:sell_btc:221 - Запрос на продажу BTC: 0.00060985492 BTC (demo: False)
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:sell_btc_market:378 - Продажа BTC в маркет: 0.00060985492 BTC (demo: False)
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:place_market_sell_order:296 - SELL MARKET BODY: {"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"market","sz":"0.00060985492"}
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T14:33:09Z
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T14:33:09ZPOST/api/v5/trade/order{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"market","sz":"0.00060985492"}'
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 134
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:generate_signature:131 - Body: '{"instId":"BTC-USDT","tdMode":"cash","side":"sell","ordType":"market","sz":"0.00060985492"}' (длина: 91)
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: vSS4gDuguIbtGlbs15X+5j9or0iSlfZIKzc6GmqH/SY=
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для POST /api/v5/trade/order (demo: False)
+2025-08-11 17:33:09 | INFO     | app.services.okx_service:place_market_sell_order:308 - SELL MARKET ORDER RESULT: {"code":"0","data":[{"clOrdId":"","ordId":"2765569318277898240","sCode":"0","sMsg":"Order placed","tag":"","ts":"1754922788408"}],"inTime":"1754922788407958","msg":"","outTime":"1754922788409536"}
+2025-08-11 17:33:09 | INFO     | app.main:log_requests:58 - Запрос обработан: POST http://localhost:8000/api/v1/sell?demo=false - 200 (0.364s)
+2025-08-11 17:33:17 | INFO     | app.main:log_requests:47 - Входящий запрос: GET http://localhost:8000/api/v1/balance?demo=false
+2025-08-11 17:33:17 | INFO     | app.main:log_requests:48 - Клиент: 127.0.0.1, User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 OPR/120.0.0.0 (Edition Yx GX 03)
+2025-08-11 17:33:17 | INFO     | app.api.endpoints:get_balances:266 - Запрос на получение балансов всех валют (demo: False)
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:get_balances:755 - Получение балансов всех валют
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:get_server_timestamp:45 - Сгенерирована временная метка ISO 8601 для OKX: 2025-08-11T14:33:17Z
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:generate_signature:129 - Сообщение для подписи: '2025-08-11T14:33:17ZGET/api/v5/account/balance'
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:generate_signature:130 - Длина сообщения: 46
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:generate_signature:131 - Body: '' (длина: 0)
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:generate_signature:140 - Сгенерирована подпись: xRhKoQ/tyXTCgAJ/Q8vPvDWt11/6O8rp4viI2tzScAM=
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:get_auth_headers:180 - Сгенерированы заголовки авторизации для GET /api/v5/account/balance (demo: False)
+2025-08-11 17:33:17 | DEBUG    | app.services.okx_service:get_balances:775 - Сырой JSON от OKX: {
+  "code": "0",
+  "data": [
+    {
+      "adjEq": "",
+      "availEq": "",
+      "borrowFroz": "",
+      "details": [
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "off",
+          "availBal": "99.5328682888425",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "99.5328682888425",
+          "ccy": "USDT",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "99.5328682888425",
+          "eqUsd": "99.51495237255051",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754922788409",
+          "upl": "",
+          "uplLiab": ""
+        },
+        {
+          "accAvgPx": "",
+          "autoLendAmt": "0",
+          "autoLendMtAmt": "0",
+          "autoLendStatus": "unsupported",
+          "availBal": "0.00000000492",
+          "availEq": "",
+          "borrowFroz": "",
+          "cashBal": "0.00000000492",
+          "ccy": "BTC",
+          "clSpotInUseAmt": "",
+          "colBorrAutoConversion": "0",
+          "collateralEnabled": false,
+          "collateralRestrict": false,
+          "crossLiab": "",
+          "disEq": "0",
+          "eq": "0.00000000492",
+          "eqUsd": "0.00059096088",
+          "fixedBal": "0",
+          "frozenBal": "0",
+          "imr": "",
+          "interest": "",
+          "isoEq": "0",
+          "isoLiab": "",
+          "isoUpl": "",
+          "liab": "",
+          "maxLoan": "",
+          "maxSpotInUse": "",
+          "mgnRatio": "",
+          "mmr": "",
+          "notionalLever": "",
+          "openAvgPx": "",
+          "ordFrozen": "0",
+          "rewardBal": "",
+          "smtSyncEq": "0",
+          "spotBal": "",
+          "spotCopyTradingEq": "0",
+          "spotInUseAmt": "",
+          "spotIsoBal": "0",
+          "spotUpl": "",
+          "spotUplRatio": "",
+          "stgyEq": "0",
+          "totalPnl": "",
+          "totalPnlRatio": "",
+          "twap": "0",
+          "uTime": "1754922788409",
+          "upl": "",
+          "uplLiab": ""
+        }
+      ],
+      "imr": "",
+      "isoEq": "",
+      "mgnRatio": "",
+      "mmr": "",
+      "notionalUsd": "",
+      "notionalUsdForBorrow": "",
+      "notionalUsdForFutures": "",
+      "notionalUsdForOption": "",
+      "notionalUsdForSwap": "",
+      "ordFroz": "",
+      "totalEq": "99.51554333343051",
+      "uTime": "1754922796896",
+      "upl": ""
+    }
+  ],
+  "msg": ""
+}
+2025-08-11 17:33:17 | INFO     | app.services.okx_service:get_balances:797 - Балансы успешно получены: {'USDT': 99.5328682888425, 'BTC': 4.92e-09}
+2025-08-11 17:33:17 | INFO     | app.api.endpoints:get_balances:277 - Балансы получены: Баланс успешно получен
+2025-08-11 17:33:17 | INFO     | app.main:log_requests:58 - Запрос обработан: GET http://localhost:8000/api/v1/balance?demo=false - 200 (0.362s)
