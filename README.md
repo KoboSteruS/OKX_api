@@ -78,7 +78,7 @@ python -m app.main
 ### Продакшн
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Приложение будет доступно по адресу: http://localhost:8000

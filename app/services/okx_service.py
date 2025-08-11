@@ -171,7 +171,7 @@ class OKXService:
                 'OK-ACCESS-TIMESTAMP': timestamp.strip(),
                 'OK-ACCESS-PASSPHRASE': self.passphrase.strip(),
                 'Content-Type': 'application/json',
-                'x-simulated-trading': '1'  # Демо режим
+                'x-simulated-trading': '0'  # Демо режим
             }
             
             logger.info(f"Сгенерированы заголовки авторизации для {method} {request_path}")
