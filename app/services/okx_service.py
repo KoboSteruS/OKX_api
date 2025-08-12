@@ -1042,8 +1042,8 @@ class OKXService:
             logger.info(f"Фактическая цена покупки: {actual_price}")
 
             # 6. Рассчитываем TP и SL
-            take_profit_price = actual_price * (1 + take_profit_percent / 100)
-            stop_loss_price = actual_price * (1 - stop_loss_percent / 100)
+            take_profit_price = round(actual_price * (1 + take_profit_percent / 100))
+            stop_loss_price = round(actual_price * (1 - stop_loss_percent / 100))
             logger.info(f"Рассчитанный Take Profit: {take_profit_price}")
             logger.info(f"Рассчитанный Stop Loss: {stop_loss_price}")
 
