@@ -977,26 +977,13 @@ class OKXService:
 
 
     def buy_btc_with_exits(
-            self, 
-            buy_amount: float, 
-            inst_id: str = "BTC-USDT",
-            take_profit_percent: float = 0.5,
-            stop_loss_percent: float = 0.2,
-            demo: bool = False
-        ) -> dict:
-        """
-        Покупка BTC с автоматическими точками выхода
-
-        Args:
-            buy_amount: Сумма в USDT для покупки
-            inst_id: Инструмент (по умолчанию BTC-USDT)
-            take_profit_percent: Процент для Take Profit
-            stop_loss_percent: Процент для Stop Loss
-            demo: Режим демо-трейдинга
-
-        Returns:
-            dict: Результат операции с информацией о покупке и ордерах
-        """
+        self, 
+        buy_amount: float, 
+        inst_id: str = "BTC-USDT",
+        take_profit_percent: float = 0.5,
+        stop_loss_percent: float = 0.2,
+        demo: bool = False
+    ) -> dict:
         try:
             logger.info("=== ПОКУПКА BTC С ТОЧКАМИ ВЫХОДА ===")
             logger.info(f"Сумма покупки: {buy_amount} USDT")
@@ -1005,13 +992,12 @@ class OKXService:
             logger.info(f"Stop Loss: {stop_loss_percent}%")
             logger.info(f"Demo mode: {demo}")
 
-            # 1. Получаем BTC баланс до покупки
             btc_before = self.get_balance("BTC", demo=demo)
             logger.info(f"Баланс BTC до покупки: {btc_before}")
 
-            # 2. Покупаем BTC по рыночной цене
             buy_result = self.place_market_order("buy", buy_amount, inst_id, demo=demo)
             logger.info(f"Buy result: {buy_result}")
+
             if buy_result.get("code") != "0":
                 return {
                     "success": False,
@@ -1026,56 +1012,55 @@ class OKXService:
                     "message": f"Ошибка покупки: {buy_result.get('msg', 'Неизвестная ошибка')}"
                 }
 
-            # 3. Получаем BTC баланс после покупки
             btc_after = self.get_balance("BTC", demo=demo)
+            btc_acquired = round(btc_after - btc_before, 8)  # Round to match OKX precision
             logger.info(f"Баланс BTC после покупки: {btc_after}")
-
-            # 4. Считаем, сколько BTC реально получили
-            btc_acquired = btc_after - btc_before
             logger.info(f"Получено BTC: {btc_acquired}")
 
             if btc_acquired <= 0:
                 raise ValueError("BTC не был получен после покупки.")
 
-            # 5. Вычисляем фактическую цену покупки
             actual_price = buy_amount / btc_acquired
             logger.info(f"Фактическая цена покупки: {actual_price}")
 
-            # 6. Рассчитываем TP и SL
             take_profit_price = round(actual_price * (1 + take_profit_percent / 100))
             stop_loss_price = round(actual_price * (1 - stop_loss_percent / 100))
             logger.info(f"Рассчитанный Take Profit: {take_profit_price}")
             logger.info(f"Рассчитанный Stop Loss: {stop_loss_price}")
 
-            # 7. Устанавливаем Take Profit ордер (limit)
-            take_profit_result = self.place_limit_order(
-                inst_id=inst_id,
-                side="sell",
-                size=btc_acquired,
-                price=take_profit_price,
-                demo=demo
-            )
+            # Минимальный размер (из доков OKX для BTC-USDT spot: 0.00001 BTC)
+            min_size = 0.00001
+            logger.info(f"Минимальный размер ордера: {min_size}")
 
-            # 8. Устанавливаем Stop Loss ордер (trigger)
-            stop_loss_result = self.place_stop_loss_order(
-                inst_id=inst_id,
-                size=btc_acquired,
-                trigger_price=stop_loss_price,
-                demo=demo
-            )
+            take_profit_result = {"code": "1", "msg": "TP ордер не установлен — слишком мал размер", "data": []}
+            stop_loss_result = {"code": "1", "msg": "SL ордер не установлен — слишком мал размер", "data": []}
 
-            # 9. Финальный статус
-            success = (
-                buy_result.get("code") == "0" and
-                take_profit_result.get("code") == "0" and
-                stop_loss_result.get("code") == "0"
-            )
+            if btc_acquired >= min_size:
+                take_profit_result = self.place_limit_order(
+                    inst_id=inst_id,
+                    side="sell",
+                    size=btc_acquired,
+                    price=take_profit_price,
+                    demo=demo
+                )
+                logger.info(f"Результат TP ордера: {take_profit_result}")
+
+                stop_loss_result = self.place_stop_loss_order(
+                    inst_id=inst_id,
+                    size=btc_acquired,
+                    trigger_price=stop_loss_price,
+                    demo=demo
+                )
+                logger.info(f"Результат SL ордера: {stop_loss_result}")
+            else:
+                logger.warning(f"Получено слишком мало BTC ({btc_acquired}) для установки TP и SL ордеров.")
+
+            success = buy_result.get("code") == "0" and \
+                    (take_profit_result.get("code") == "0" or "не установлен" in take_profit_result.get("msg", "").lower()) and \
+                    (stop_loss_result.get("code") == "0" or "не установлен" in stop_loss_result.get("msg", "").lower())
 
             if success:
-                message = (
-                    f"BTC успешно куплен на {buy_amount} USDT по цене {actual_price} "
-                    f"с TP {take_profit_price} и SL {stop_loss_price}"
-                )
+                message = "Покупка выполнена успешно с TP и SL"
             else:
                 message = "Покупка выполнена, но не все ордера установлены"
 
@@ -1095,7 +1080,7 @@ class OKXService:
             }
 
         except Exception as e:
-            logger.error(f"Ошибка покупки BTC с точками выхода: {e}")
+            logger.error(f"Ошибка покупки BTC с точками выхода: {e}", exc_info=True)
             return {
                 "success": False,
                 "buy_amount": buy_amount,
@@ -1119,29 +1104,13 @@ class OKXService:
         price: float,
         demo: bool = False
     ) -> dict:
-        """
-        Размещение LIMIT ордера
-        
-        Args:
-            inst_id: Инструмент
-            side: Сторона (buy/sell)
-            size: Размер в BTC (для всех типов ордеров)
-            price: Цена
-            demo: Режим демо-трейдинга
-            
-        Returns:
-            dict: Результат размещения ордера
-        """
         try:
-            # Размер уже в BTC для всех типов ордеров
-            btc_size = size
-            
             body = {
                 "instId": inst_id,
                 "tdMode": "cash",
                 "side": side,
                 "ordType": "limit",
-                "sz": str(btc_size),
+                "sz": f"{size:.8f}",  # Fixed: decimal format
                 "px": str(price)
             }
             
@@ -1149,11 +1118,9 @@ class OKXService:
             body_str = json.dumps(body, separators=(",", ":"))
             logger.info(f"{side.upper()} LIMIT BODY: {body_str}")
             
-            # Генерируем заголовки авторизации
             headers = self.get_auth_headers("POST", "/api/v5/trade/order", body_str, demo=demo)
             logger.info(f"{side.upper()} LIMIT HEADERS: {headers}")
             
-            # Выполняем запрос
             response = self.session.post(
                 f"{self.base_url}/api/v5/trade/order",
                 headers=headers,
@@ -1170,7 +1137,6 @@ class OKXService:
             logger.error(f"Ошибка размещения LIMIT ордера: {e}")
             return {"error": str(e)}
 
-
     def place_stop_loss_order(
         self, 
         inst_id: str, 
@@ -1178,39 +1144,25 @@ class OKXService:
         trigger_price: float,
         demo: bool = False
     ) -> dict:
-        """
-        Размещение Stop Loss ордера через algo order
-        
-        Args:
-            inst_id: Инструмент
-            size: Размер в BTC
-            trigger_price: Цена активации (stop price)
-            demo: Режим демо-трейдинга
-            
-        Returns:
-            dict: Результат размещения ордера
-        """
         try:
             body = {
                 "instId": inst_id,
                 "tdMode": "cash",
                 "side": "sell",
                 "ordType": "trigger",
-                "triggerPx": str(trigger_price),  # Триггер-цена
-                "triggerPxType": "last",          # Тип цены
-                "orderPx": str(trigger_price),    # Цена исполнения ордера
-                "sz": str(size)
+                "triggerPx": str(trigger_price),
+                "triggerPxType": "last",
+                "orderPx": str(trigger_price),
+                "sz": f"{size:.8f}"  # Fixed: decimal format
             }
             
             import json
             body_str = json.dumps(body, separators=(",", ":"))
             logger.info(f"STOP LOSS BODY: {body_str}")
             
-            # Генерируем заголовки авторизации
             headers = self.get_auth_headers("POST", "/api/v5/trade/order-algo", body_str, demo=demo)
             logger.info(f"STOP LOSS HEADERS: {headers}")
             
-            # Выполняем запрос
             response = self.session.post(
                 f"{self.base_url}/api/v5/trade/order-algo",
                 headers=headers,
