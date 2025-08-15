@@ -6,7 +6,7 @@ from loguru import logger
 from typing import Optional
 
 from app.api.schemas import (
-    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse, FillsResponse, SellRequest, SellResponse
+    ErrorResponse, BuyRequest, BuyResponse, BalanceResponse, AnalyticsResponse, OrdersResponse, CancelOrderRequest, CancelOrderResponse, FillsResponse, SellRequest, SellResponse, MonitorResponse
 )
 from app.services.okx_service import okx_service
 
@@ -395,53 +395,40 @@ async def get_fills(
         400: {"model": ErrorResponse},
         500: {"model": ErrorResponse}
     },
-    summary="Получить аналитические данные",
-    description="Получает полные аналитические данные для n8n: стакан ордеров, свечи, активные ордера, балансы, индикаторы"
+    summary="Получить аналитические данные по BTC",
+    description="Получает полные аналитические данные по BTC для всех таймфреймов: 1m(120), 5m(144), 15m(96), 1h(72), 4h(90), 1d(90)"
 )
 async def get_market_analytics(
-    inst_id: str = Query(default="BTC-USDT", description="Инструмент для анализа"),
-    bar: str = Query(default="1m", description="Интервал свечей (1m, 5m, 15m, 30m, 1H, 2H, 4H, 6H, 12H, 1D, 1W, 1M, 3M, 6M, 1Y)"),
-    depth: int = Query(default=20, description="Глубина стакана ордеров", ge=1, le=100),
-    current_limit: int = Query(default=100, description="Количество текущих свечей", ge=1, le=1000),
-    history_limit: int = Query(default=1000, description="Количество исторических свечей", ge=1, le=3000),
     demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
 ):
     """
-    Получение полных аналитических данных для n8n
+    Получение полных аналитических данных по BTC для всех таймфреймов
     
-    Возвращает в одном запросе:
+    Возвращает данные по BTC-USDT с фиксированными таймфреймами:
+    - **1m**: 120 баров
+    - **5m**: 144 бара  
+    - **15m**: 96 баров
+    - **1h**: 72 бара
+    - **4h**: 90 баров
+    - **1d**: 90 баров
+    
+    Включает:
     - **Стакан ордеров** (order book) - для анализа ликвидности
-    - **Текущие свечи** - для понимания текущей ситуации
-    - **Исторические свечи** - для технического анализа
+    - **Свечи по всем таймфреймам** - для технического анализа
     - **Активные ордера** - текущие ордера пользователя
     - **Балансы** - доступные средства
     - **Рыночные индикаторы** - цена, объем, изменения
     
-    Параметры:
-    - **inst_id**: Инструмент для анализа (по умолчанию BTC-USDT)
-    - **bar**: Интервал свечей (по умолчанию 1m)
-    - **depth**: Глубина стакана ордеров (по умолчанию 20)
-    - **current_limit**: Количество текущих свечей (по умолчанию 100)
-    - **history_limit**: Количество исторических свечей (по умолчанию 1000)
-    
     Использование в n8n:
-    - Один запрос предоставляет всю необходимую информацию
-    - Позволяет быстро принимать торговые решения
+    - Один запрос предоставляет всю необходимую информацию по BTC
+    - Позволяет быстро принимать торговые решения на основе всех таймфреймов
     - Эффективно для автоматизации торговых стратегий
     """
     try:
-        logger.info(f"Запрос аналитических данных для {inst_id} (demo: {demo})")
-        logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}")
+        logger.info("Запрос аналитических данных по BTC для всех таймфреймов")
         
-        # Получение аналитических данных
-        result = okx_service.get_market_analytics(
-            inst_id=inst_id,
-            bar=bar,
-            depth=depth,
-            current_limit=current_limit,
-            history_limit=history_limit,
-            demo=demo
-        )
+        # Получение аналитических данных по всем таймфреймам BTC
+        result = okx_service.get_market_analytics(demo=demo)
         
         # Создаем ответ с правильной структурой
         response = AnalyticsResponse(
@@ -454,7 +441,7 @@ async def get_market_analytics(
             message=result["message"]
         )
         
-        logger.info(f"Аналитические данные для {inst_id} успешно получены")
+        logger.info("Аналитические данные по BTC успешно получены")
         return response
         
     except ValueError as e:
@@ -462,4 +449,63 @@ async def get_market_analytics(
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Ошибка получения аналитических данных: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get(
+    "/market/monitor",
+    response_model=MonitorResponse,
+    responses={
+        400: {"model": ErrorResponse},
+        500: {"model": ErrorResponse}
+    },
+    summary="Быстрый мониторинг BTC",
+    description="Получает минимальные данные для постоянного мониторинга: последние 10 свечей 1m + баланс + ордера + стакан"
+)
+async def get_quick_monitor(
+    demo: bool = Query(default=False, description="Включить демо-режим (true для симуляции, false для реального)")
+):
+    """
+    Быстрый мониторинг BTC для n8n
+    
+    Возвращает минимальный набор данных для постоянного отслеживания:
+    - **Последние 10 свечей 1m** - для мониторинга краткосрочных движений цены
+    - **Стакан ордеров** - для анализа ликвидности
+    - **Активные ордера** - текущие ордера пользователя
+    - **Балансы** - доступные средства
+    - **Основные индикаторы** - цена, объем, изменения за 24ч
+    
+    Использование в n8n:
+    - Легкий запрос для частого опроса (каждые 10-30 секунд)
+    - Минимальная нагрузка на API
+    - Все данные для принятия быстрых торговых решений
+    - Идеально для алертов и уведомлений
+    """
+    try:
+        logger.info("Запрос на быстрый мониторинг BTC")
+        
+        # Получение мониторинговых данных
+        result = okx_service.get_quick_monitor(demo=demo)
+        
+        # Создаем ответ с правильной структурой
+        response = MonitorResponse(
+            success=result["success"],
+            inst_id=result["inst_id"],
+            candles_1m=result["candles_1m"],
+            orderbook=result["orderbook"],
+            active_orders=result["active_orders"],
+            balances=result["balances"],
+            indicators=result["indicators"],
+            timestamp=result["timestamp"],
+            message=result["message"]
+        )
+        
+        logger.info("Мониторинговые данные по BTC успешно получены")
+        return response
+        
+    except ValueError as e:
+        logger.error(f"Ошибка валидации: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Ошибка получения мониторинговых данных: {e}")
         raise HTTPException(status_code=500, detail=str(e))

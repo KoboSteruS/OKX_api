@@ -828,15 +828,26 @@ class OKXService:
                     verify=True
                 )
                 data = response.json()
+                
+                # Детальное логирование ответа
+                logger.info(f"ORDERBOOK RAW RESPONSE: {data}")
+                logger.info(f"Response code: {data.get('code', 'Нет кода')}")
+                logger.info(f"Response msg: {data.get('msg', 'Нет сообщения')}")
+                logger.info(f"Data length: {len(data.get('data', []))}")
+                
+                if data.get('code') == '0' and data.get('data'):
+                    logger.info(f"Стакан ордеров успешно получен: {len(data['data'])} записей")
+                    return {"success": True, "data": data['data']}
+                else:
+                    logger.warning(f"Проблема с получением стакана: {data}")
+                    return {"success": False, "data": [], "error": data.get('msg', 'Неизвестная ошибка')}
+                
             except requests.exceptions.SSLError as e:
                 logger.error(f"SSL ошибка при получении стакана: {e}")
                 raise
             except requests.exceptions.RequestException as e:
                 logger.error(f"Ошибка сети при получении стакана: {e}")
                 raise
-            
-            logger.info(f"Стакан ордеров для {inst_id} успешно получен")
-            return data
             
         except Exception as e:
             logger.error(f"Ошибка получения стакана ордеров: {e}")
@@ -863,6 +874,7 @@ class OKXService:
             logger.info(f"Получение текущих свечей для {inst_id}, интервал {bar}, количество {limit}")
             
             path = f'/api/v5/market/candles?instId={inst_id}&bar={bar}&limit={limit}'
+            logger.info(f"REQUEST URL: {self.base_url + path}")
             
             try:
                 response = self.session.get(
@@ -871,15 +883,26 @@ class OKXService:
                     verify=True
                 )
                 data = response.json()
+                
+                # Детальное логирование ответа
+                logger.info(f"CANDLES RAW RESPONSE: {data}")
+                logger.info(f"Response code: {data.get('code', 'Нет кода')}")
+                logger.info(f"Response msg: {data.get('msg', 'Нет сообщения')}")
+                logger.info(f"Data length: {len(data.get('data', []))}")
+                
+                if data.get('code') == '0' and data.get('data'):
+                    logger.info(f"Свечи успешно получены: {len(data['data'])} записей")
+                    return {"success": True, "data": data['data']}
+                else:
+                    logger.warning(f"Проблема с получением свечей: {data}")
+                    return {"success": False, "data": [], "error": data.get('msg', 'Неизвестная ошибка')}
+                
             except requests.exceptions.SSLError as e:
                 logger.error(f"SSL ошибка при получении свечей: {e}")
                 raise
             except requests.exceptions.RequestException as e:
                 logger.error(f"Ошибка сети при получении свечей: {e}")
                 raise
-            
-            logger.info(f"Текущие свечи для {inst_id} успешно получены")
-            return data
             
         except Exception as e:
             logger.error(f"Ошибка получения текущих свечей: {e}")
@@ -1225,43 +1248,44 @@ class OKXService:
 
     def get_market_analytics(
         self, 
-        inst_id: str = "BTC-USDT",
-        bar: str = "1m",
-        depth: int = 20,
-        current_limit: int = 100,
-        history_limit: int = 1000,
         demo: bool = False
     ) -> Dict:
         """
-        Получение полных аналитических данных для n8n
+        Получение полных аналитических данных по BTC для всех таймфреймов
+        
+        Возвращает данные по BTC-USDT с фиксированными таймфреймами:
+        - 1m: 120 баров
+        - 5m: 144 бара  
+        - 15m: 96 баров
+        - 1H: 72 бара
+        - 4H: 90 баров
+        - 1D: 90 баров
         
         Args:
-            inst_id: Инструмент (по умолчанию BTC-USDT)
-            bar: Интервал свечей (по умолчанию 1m)
-            depth: Глубина стакана (по умолчанию 20)
-            current_limit: Количество текущих свечей (по умолчанию 100)
-            history_limit: Количество исторических свечей (по умолчанию 1000)
             demo: Режим демо-трейдинга
             
         Returns:
-            Dict: Полные аналитические данные
+            Dict: Полные аналитические данные по всем таймфреймам BTC
         """
         try:
-            logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ДЛЯ {inst_id} ===")
-            logger.info(f"Параметры: bar={bar}, depth={depth}, current_limit={current_limit}, history_limit={history_limit}, demo={demo}")
+            inst_id = "BTC-USDT"
+            logger.info(f"=== НАЧАЛО ПОЛУЧЕНИЯ АНАЛИТИКИ ПО BTC ДЛЯ ВСЕХ ТАЙМФРЕЙМОВ ===")
+            logger.info(f"Режим: {'DEMO' if demo else 'LIVE'}")
             
-            # Получаем все данные с указанными параметрами
+            # Конфигурация таймфреймов
+            timeframes = {
+                "1m": 120,
+                "5m": 144,
+                "15m": 96,
+                "1H": 72,   # OKX использует 1H, не 1h
+                "4H": 90,   # OKX использует 4H, не 4h  
+                "1D": 90    # OKX использует 1D, не 1d
+            }
+            
+            # Получаем общие данные
             logger.info("Получение orderbook...")
-            orderbook = self.get_orderbook(inst_id, depth)
+            orderbook = self.get_orderbook(inst_id, 20)  # Фиксированная глубина 20
             logger.info(f"Orderbook получен: {len(orderbook.get('data', []))} записей")
-            
-            logger.info("Получение current_candles...")
-            current_candles = self.get_current_candles(inst_id, bar, current_limit)
-            logger.info(f"Current candles получены: {len(current_candles.get('data', []))} записей")
-            
-            logger.info("Получение history_candles...")
-            history_candles = self.get_history_candles(inst_id, bar, history_limit)
-            logger.info(f"History candles получены: {len(history_candles.get('data', []))} записей")
             
             logger.info("Получение active_orders...")
             active_orders = self.get_active_orders(inst_id, demo=demo)
@@ -1269,24 +1293,31 @@ class OKXService:
             
             logger.info("Получение balances...")
             balances = self.get_balances(demo=demo)
-            logger.info(f"Balances получены: {len(balances.get('balances', {}))} валют")
+            logger.info(f"Balances получены: {balances.get('success', False)}")
             
             logger.info("Получение ticker...")
             ticker = self.get_ticker_data(inst_id)
             logger.info(f"Ticker получен: {ticker.get('success', False)}")
             
-            # Формируем ответ
+            # Получаем свечи для всех таймфреймов
+            candles_data = {}
+            for timeframe, bars_count in timeframes.items():
+                logger.info(f"Получение свечей для {timeframe} ({bars_count} баров)...")
+                candles = self.get_current_candles(inst_id, timeframe, bars_count)
+                candles_data[timeframe] = candles.get("data", []) if candles.get("success") else []
+                logger.info(f"Свечи {timeframe} получены: {len(candles_data[timeframe])} записей")
+            
+            # Создаем структуру результата
             result = {
                 "success": True,
                 "inst_id": inst_id,
                 "market_data": {
-                    "orderbook": orderbook.get("data", []),
-                    "current_candles": current_candles.get("data", []),
-                    "history_candles": history_candles.get("data", [])
+                    "orderbook": orderbook.get("data", []) if orderbook.get("success") else [],
+                    "candles": candles_data  # Все таймфреймы в одном объекте
                 },
                 "user_data": {
-                    "active_orders": active_orders.get("data", []),
-                    "balances": balances.get("balances", {})
+                    "active_orders": active_orders.get("data", []) if active_orders.get("success") else [],
+                    "balances": balances.get("balances", {}) if balances.get("success") else {}
                 },
                 "indicators": {
                     "current_price": "0",
@@ -1296,7 +1327,7 @@ class OKXService:
                     "low_24h": "0"
                 },
                 "timestamp": self.get_server_timestamp(),
-                "message": "Аналитические данные успешно получены"
+                "message": "Аналитические данные по BTC успешно получены для всех таймфреймов"
             }
             
             # Извлекаем индикаторы из тикера
@@ -1319,7 +1350,11 @@ class OKXService:
             else:
                 logger.warning(f"Ticker не содержит данных: {ticker}")
             
-            logger.info(f"=== АНАЛИТИКА ЗАВЕРШЕНА ДЛЯ {inst_id} ===")
+            logger.info(f"=== АНАЛИТИКА ПО BTC ЗАВЕРШЕНА ===")
+            logger.info(f"Получено таймфреймов: {len(candles_data)}")
+            for tf, data in candles_data.items():
+                logger.info(f"  {tf}: {len(data)} баров")
+            
             return result
             
         except Exception as e:
@@ -1329,12 +1364,135 @@ class OKXService:
             logger.error(f"Traceback: {traceback.format_exc()}")
             return {
                 "success": False,
-                "inst_id": inst_id,
-                "market_data": {"orderbook": [], "current_candles": [], "history_candles": []},
-                "user_data": {"active_orders": [], "balances": {}},
-                "indicators": {"current_price": "0", "volume_24h": "0", "change_24h": "0", "high_24h": "0", "low_24h": "0"},
+                "inst_id": "BTC-USDT",
+                "market_data": {
+                    "orderbook": [],
+                    "candles": {}
+                },
+                "user_data": {
+                    "active_orders": [],
+                    "balances": {}
+                },
+                "indicators": {
+                    "current_price": "0",
+                    "volume_24h": "0",
+                    "change_24h": "0",
+                    "high_24h": "0",
+                    "low_24h": "0"
+                },
                 "timestamp": self.get_server_timestamp(),
                 "message": f"Ошибка получения аналитических данных: {e}"
+            }
+
+
+    def get_quick_monitor(self, demo: bool = False) -> Dict:
+        """
+        Быстрый мониторинг BTC для n8n с минимальным набором данных
+        
+        Возвращает:
+        - Последние 10 свечей 1m
+        - Стакан ордеров (глубина 20)
+        - Активные ордера
+        - Балансы
+        - Основные индикаторы
+        
+        Args:
+            demo: Режим демо-трейдинга
+            
+        Returns:
+            Dict: Мониторинговые данные
+        """
+        try:
+            inst_id = "BTC-USDT"
+            logger.info(f"=== БЫСТРЫЙ МОНИТОРИНГ BTC ===")
+            logger.info(f"Режим: {'DEMO' if demo else 'LIVE'}")
+            
+            # Получаем только самые необходимые данные
+            logger.info("Получение 10 свечей 1m...")
+            candles_1m = self.get_current_candles(inst_id, "1m", 10)
+            logger.info(f"Свечи 1m получены: {len(candles_1m.get('data', []))} записей")
+            
+            logger.info("Получение orderbook...")
+            orderbook = self.get_orderbook(inst_id, 20)  # Фиксированная глубина 20
+            logger.info(f"Orderbook получен: {len(orderbook.get('data', []))} записей")
+            
+            logger.info("Получение active_orders...")
+            active_orders = self.get_active_orders(inst_id, demo=demo)
+            logger.info(f"Active orders получены: {len(active_orders.get('data', []))} записей")
+            
+            logger.info("Получение balances...")
+            balances = self.get_balances(demo=demo)
+            logger.info(f"Balances получены: {balances.get('success', False)}")
+            
+            logger.info("Получение ticker...")
+            ticker = self.get_ticker_data(inst_id)
+            logger.info(f"Ticker получен: {ticker.get('success', False)}")
+            
+            # Создаем структуру результата
+            result = {
+                "success": True,
+                "inst_id": inst_id,
+                "candles_1m": candles_1m.get("data", []) if candles_1m.get("success") else [],
+                "orderbook": orderbook.get("data", []) if orderbook.get("success") else [],
+                "active_orders": active_orders.get("data", []) if active_orders.get("success") else [],
+                "balances": balances.get("balances", {}) if balances.get("success") else {},
+                "indicators": {
+                    "current_price": "0",
+                    "volume_24h": "0", 
+                    "change_24h": "0",
+                    "high_24h": "0",
+                    "low_24h": "0"
+                },
+                "timestamp": self.get_server_timestamp(),
+                "message": "Мониторинговые данные по BTC успешно получены"
+            }
+            
+            # Извлекаем индикаторы из тикера
+            if ticker.get("success") and ticker.get("data"):
+                # Проверяем, что data - это список
+                if isinstance(ticker["data"], list) and len(ticker["data"]) > 0:
+                    ticker_data = ticker["data"][0]
+                else:
+                    # Если data - это не список, используем его напрямую
+                    ticker_data = ticker["data"]
+                
+                result["indicators"] = {
+                    "current_price": ticker_data.get("last", "0"),
+                    "volume_24h": ticker_data.get("vol24h", "0"),
+                    "change_24h": ticker_data.get("change24h", "0"),
+                    "high_24h": ticker_data.get("high24h", "0"),
+                    "low_24h": ticker_data.get("low24h", "0")
+                }
+                logger.info(f"Индикаторы извлечены: {result['indicators']}")
+            else:
+                logger.warning(f"Ticker не содержит данных: {ticker}")
+            
+            logger.info(f"=== МОНИТОРИНГ BTC ЗАВЕРШЕН ===")
+            logger.info(f"Получено: 1m свечей: {len(result['candles_1m'])}, ордеров: {len(result['active_orders'])}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Ошибка быстрого мониторинга: {e}")
+            logger.error(f"Тип ошибки: {type(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            return {
+                "success": False,
+                "inst_id": "BTC-USDT",
+                "candles_1m": [],
+                "orderbook": [],
+                "active_orders": [],
+                "balances": {},
+                "indicators": {
+                    "current_price": "0",
+                    "volume_24h": "0",
+                    "change_24h": "0",
+                    "high_24h": "0",
+                    "low_24h": "0"
+                },
+                "timestamp": self.get_server_timestamp(),
+                "message": f"Ошибка мониторинга: {e}"
             }
 
 
